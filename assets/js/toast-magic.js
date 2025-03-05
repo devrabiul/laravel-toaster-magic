@@ -144,7 +144,7 @@ class ToastMagic {
 
         // Auto close the toast after 3 seconds
         setTimeout(() => {
-            // closeToastMagicItem(toast);
+            closeToastMagicItem(toast);
         }, 5000);
     }
 
@@ -168,6 +168,8 @@ class ToastMagic {
 // Usage
 // Define createToast globally
 const toastMagic = new ToastMagic();
+
+// Example
 // toastMagic.success("Success!", "Your operation was successful!");
 // toastMagic.error("Error!", "Something went wrong.");
 // toastMagic.warning("Warning!", "This is a warning message.");
