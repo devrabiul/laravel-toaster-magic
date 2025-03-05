@@ -1,0 +1,30 @@
+{
+    "name": "devrabiul/toast-magic",
+    "description": "Practice",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Devrabiul\\ToastMagic\\": "src/"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Muhammad Rabiul",
+            "email": "devrabiul@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel" :{
+            "providers" : [
+                "Devrabiul\\ToastMagic\\ToastMagicServiceProvider"
+            ],
+            "aliases": {
+                "ToastMagic": "Devrabiul\\ToastMagic\\Facades\\ToastMagic"
+            }
+        }
+    },
+    "require": {}
+}
