@@ -13,7 +13,7 @@ class ToastMagicServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->updateProcessingAssetRoutes();
         $this->publishes([
@@ -26,7 +26,7 @@ class ToastMagicServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('ToastMagic', function ($app) {
             return new ToastMagic($app['session'], $app['config']);
@@ -38,7 +38,7 @@ class ToastMagicServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return ['ToastMagic'];
     }

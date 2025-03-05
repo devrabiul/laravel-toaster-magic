@@ -26,34 +26,34 @@ class ToastMagic
      *
      * @var array
      */
-    protected $messages = [];
+    protected array $messages = [];
 
     /**
      * The js type src type.
      *
      * @var string
      */
-    protected $jsType = 'text/javascript';
+    protected string $jsType = 'text/javascript';
 
     function __construct(Session $session, Config $config)
     {
         $this->session = $session;
-        $this->config  = $config;
+        $this->config = $config;
     }
 
-    public function styles()
+    public function styles(): string
     {
-        $style = '<link rel="stylesheet" href="'. url('vendor/toast-magic/assets/webfonts/uicons-regular-rounded.css') . '">';
-        $style .= '<link rel="stylesheet" href="'. url('vendor/toast-magic/assets/webfonts/uicons-solid-rounded.css') . '">';
+        $style = '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/webfonts/uicons-regular-rounded.css') . '">';
+        $style .= '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/webfonts/uicons-solid-rounded.css') . '">';
         $style .= '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/css/toast-magic.css') . '">';
         return $style;
     }
 
-    public function scripts()
+    public function scripts(): string
     {
-        $messages = $this->session->get('toastr-magic::messages');
+        $messages = $this->session->get('toast-magic::messages');
 
-        if (! $messages) $messages = [];
+        if (!$messages) $messages = [];
 
         $script = '<script src="' . url('vendor/toast-magic/assets/js/toast-magic.js') . '"></script>';
         $script .= '<script type="' . $this->jsType . '">';
@@ -63,30 +63,27 @@ class ToastMagic
         $delay = 0; // Initial delay of 0ms
 
         foreach ($messages as $message) {
-            $config = (array) $this->config->get('toastr.options');
+            $config = (array)$this->config->get('toast.options');
 
             if (count($message['options'])) {
                 $config = array_merge($config, $message['options']);
             }
 
-            if ($config) {
-                $script .= 'toastr.options = ' . json_encode($config) . ';';
-            }
+//            if ($config) {
+//                $script .= 'toast.options = ' . json_encode($config) . ';';
+//            }
 
-            $title = addslashes($message['title']) ?: null;
+            $description = addslashes($message['description']) ?: null;
+
+            // toastMagic.info("Info!", "Just an informational message.", true, 'close', 'link');
 
             // Add a delay for each message
             $script .= 'setTimeout(function() {
-                createToast({
-                    type: "' . $message['type'] . '",
-                    heading: "' . $title . '",
-                    description: "' . addslashes($message['message']) . '",
-                    showCloseBtn: true,
-                });
+                toastMagic.' . $message['type'] . '("' . addslashes($message['message']) . '", "' . $description . '", '. (bool)$config['closeButton'] .', "'. ($config['customBtnText'] ?? '') .'", "'. ($config['customBtnLink'] ?? '') .'");
             }, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)
-            $delay += 500;
+            $delay += 1000;
         }
 
         $script .= '});'; // End of DOMContentLoaded
@@ -103,131 +100,123 @@ class ToastMagic
      *
      * @param string $type Must be one of info, success, warning, error.
      * @param string $message The flash message content.
-     * @param string $title The flash message title.
-     * @param array  $options The custom options.
+     * @param string|null $description
+     * @param array $options The custom options.
      *
      * @return void
      */
-    public function add($type, $message, $title = null, $options = [])
+    public function add(string $type, string $message, string|null $description = null, array $options = []): void
     {
         $types = ['error', 'info', 'success', 'warning'];
 
-        if (! in_array($type, $types)) {
+        if (!in_array($type, $types)) {
             throw new Exception("The $type remind message is not valid.");
         }
 
         $this->messages[] = [
-            'type'    => $type,
-            'title'   => $title,
+            'type' => $type,
             'message' => $message,
+            'description' => $description,
             'options' => $options,
         ];
 
-        $this->session->flash('toastr-magic::messages', $this->messages);
+        $this->session->flash('toast-magic::messages', $this->messages);
     }
 
     /**
      * Add an info flash message to session.
      *
      * @param string $message The flash message content.
-     * @param string $title The flash message title.
-     * @param array  $options The custom options.
+     * @param string|null $description
+     * @param array $options The custom options.
      *
      * @return void
      */
-    public function info($message, $title = null, $options = [])
+    public function info(string $message, string|null $description = null, array $options = []): void
     {
-		if($message instanceof MessageBag)
-		{
-			$messageString = "";
-			foreach ($message->getMessages() as $messageArray)
-			{
-				foreach ($messageArray as $currentMessage)
-					$messageString .= $currentMessage."<br>";
-			}
+        if ($message instanceof MessageBag) {
+            $messageString = "";
+            foreach ($message->getMessages() as $messageArray) {
+                foreach ($messageArray as $currentMessage)
+                    $messageString .= $currentMessage . "<br>";
+            }
 
-			$this->add('info', rtrim($messageString, "<br>"), $title, $options);
-		}
-		else
-			$this->add('info', $message, $title, $options);
+            $this->add('info', rtrim($messageString, "<br>"), $description, $options);
+        } else {
+            $this->add('info', $message, $description, $options);
+        }
     }
 
     /**
      * Add a success flash message to session.
      *
      * @param string $message The flash message content.
-     * @param string $title The flash message title.
-     * @param array  $options The custom options.
+     * @param string|null $description
+     * @param array $options The custom options.
      *
      * @return void
      */
-    public function success($message, $title = null, $options = [])
+    public function success(string $message, string|null $description = null, array $options = []): void
     {
-		if($message instanceof MessageBag)
-		{
-			$messageString = "";
-			foreach ($message->getMessages() as $messageArray)
-			{
-				foreach ($messageArray as $currentMessage)
-					$messageString .= $currentMessage."<br>";
-			}
+        if ($message instanceof MessageBag) {
+            $messageString = "";
+            foreach ($message->getMessages() as $messageArray) {
+                foreach ($messageArray as $currentMessage)
+                    $messageString .= $currentMessage . "<br>";
+            }
 
-			$this->add('success', rtrim($messageString, "<br>"), $title, $options);
-		}
-		else
-			$this->add('success', $message, $title, $options);
+            $this->add('success', rtrim($messageString, "<br>"), $description, $options);
+        } else {
+            $this->add('success', $message, $description, $options);
+        }
     }
 
     /**
-     * Add an warning flash message to session.
+     * Add a warning flash message to session.
      *
      * @param string $message The flash message content.
-     * @param string $title The flash message title.
-     * @param array  $options The custom options.
+     * @param string|null $description
+     * @param array $options The custom options.
      *
      * @return void
      */
-    public function warning($message, $title = null, $options = [])
+    public function warning(string $message, string|null $description = null, array $options = []): void
     {
-		if($message instanceof MessageBag)
-		{
-			$messageString = "";
-			foreach ($message->getMessages() as $messageArray)
-			{
-				foreach ($messageArray as $currentMessage)
-					$messageString .= $currentMessage."<br>";
-			}
+        if ($message instanceof MessageBag) {
+            $messageString = "";
+            foreach ($message->getMessages() as $messageArray) {
+                foreach ($messageArray as $currentMessage)
+                    $messageString .= $currentMessage . "<br>";
+            }
 
-			$this->add('warning', rtrim($messageString, "<br>"), $title, $options);
-		}
-		else
-			$this->add('warning', $message, $title, $options);
+            $this->add('warning', rtrim($messageString, "<br>"), $description, $options);
+        } else {
+            $this->add('warning', $message, $description, $options);
+        }
     }
 
     /**
      * Add an error flash message to session.
      *
      * @param string $message The flash message content.
-     * @param string $title The flash message title.
-     * @param array  $options The custom options.
+     * @param string|null $description
+     * @param array $options The custom options.
      *
      * @return void
      */
-    public function error($message, $title = null, $options = [])
+    public function error(string $message, string|null $description = null, array $options = []): void
     {
-    	if($message instanceof MessageBag)
-		{
-			$messageString = "";
-			foreach ($message->getMessages() as $messageArray)
-			{
-				foreach ($messageArray as $currentMessage)
-					$messageString .= $currentMessage."<br>";
-			}
+        if ($message instanceof MessageBag) {
+            $messageString = "";
+            foreach ($message->getMessages() as $messageArray) {
+                foreach ($messageArray as $currentMessage)
+                    $messageString .= $currentMessage . "<br>";
+            }
 
-			$this->add('error', rtrim($messageString, "<br>"), $title, $options);
-		}
-    	else
-        	$this->add('error', $message, $title, $options);
+            $this->add('error', rtrim($messageString, "<br>"), $description, $options);
+        } else {
+            $this->add('error', $message, $description, $options);
+        }
     }
 
     /**
@@ -235,16 +224,18 @@ class ToastMagic
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->messages = [];
     }
+
     /**
      * Set js type to module for using vite
      *
      * @return void
      */
-    public function useVite(){
+    public function useVite(): void
+    {
         $this->jsType = 'module';
     }
 }
