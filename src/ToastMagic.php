@@ -55,16 +55,20 @@ class ToastMagic
 
         if (!$messages) $messages = [];
 
+        $config = (array)$this->config->get('toast-magic.options');
+
         $script = '<script src="' . url('vendor/toast-magic/assets/js/toast-magic.js') . '"></script>';
         $script .= '<script type="' . $this->jsType . '">';
+
+        // Output the config as a global JS object
+        $script .= 'window.toastMagicConfig = ' . json_encode($config, JSON_UNESCAPED_SLASHES) . ';';
 
         $script .= 'document.addEventListener("DOMContentLoaded", function() {';
 
         $delay = 0; // Initial delay of 0ms
 
         foreach ($messages as $message) {
-            $config = (array)$this->config->get('toast.options');
-
+            
             if (count($message['options'])) {
                 $config = array_merge($config, $message['options']);
             }
@@ -75,11 +79,9 @@ class ToastMagic
 
             $description = addslashes($message['description']) ?: null;
 
-            // toastMagic.info("Info!", "Just an informational message.", true, 'close', 'link');
-
             // Add a delay for each message
             $script .= 'setTimeout(function() {
-                toastMagic.' . $message['type'] . '("' . addslashes($message['message']) . '", "' . $description . '", '. (bool)$config['closeButton'] .', "'. ($config['customBtnText'] ?? '') .'", "'. ($config['customBtnLink'] ?? '') .'");
+                toastMagic.' . $message['type'] . '("' . addslashes($message['message']) . '", "' . $description . '", '. (isset($config['closeButton']) && $config['closeButton'] ? 'true' : 'false') .', "'. ($config['customBtnText'] ?? '') .'", "'. ($config['customBtnLink'] ?? '') .'");
             }, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)

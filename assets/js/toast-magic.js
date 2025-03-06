@@ -1,10 +1,14 @@
 // Initialize toast container
 document.addEventListener("DOMContentLoaded", function () {
+
+    // Load global config if available
+    const toastMagicConfig = window.toastMagicConfig || {};
+
     // Ensure the toast container exists
     if (!document.querySelector(".toast-container")) {
         document.body.insertAdjacentHTML(
             "afterbegin",
-            `<div><div class="toast-container"></div></div>`
+            `<div><div class="toast-container ${toastMagicPosition}"></div></div>`
         );
     }
 
@@ -45,23 +49,36 @@ document.body.addEventListener("click", function (event) {
 });
 
 function closeToastMagicItem(toast) {
-    toast.classList.add("hide");
-    setTimeout(() => {
-        toast.remove();
-    }, 500);
+    // toast.classList.remove("show");
+    // setTimeout(() => {
+    //     toast.remove();
+    // }, 500);
 }
 
 class ToastMagic {
+
     constructor() {
+
+        const toastMagicConfig = window.toastMagicConfig || {};
+
+        // Set configurations from the global config
+        this.toastMagicPosition = toastMagicConfig.positionClass || "toast-top-end";
+        this.toastMagicCloseButton = toastMagicConfig.closeButton || false;
+
+        // Find or create toast container
         this.toastContainer = document.querySelector(".toast-container");
         if (!this.toastContainer) {
             this.toastContainer = document.createElement("div");
             this.toastContainer.classList.add("toast-container");
             document.body.appendChild(this.toastContainer);
         }
+
+        // Remove any existing position class before adding a new one
+        this.toastContainer.classList.remove(...this.toastContainer.classList);
+        this.toastContainer.classList.add("toast-container", this.toastMagicPosition);
     }
 
-    show({ type, heading, description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "" }) {
+    show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "" }) {
         let icon, toastClass, toastClassBasic;
         switch (type) {
             case "success":
@@ -106,41 +123,47 @@ class ToastMagic {
                         </span>
                         <div class="toast-body-container">
                             ${
-            heading
-                ? `<div class="d-flex gap-3 align-items-center justify-content-between mb-1">
-                                        <h4>${heading}</h4>
-                                    </div>`
-                : ''
-        }
+                                heading
+                                ? `<div class="d-flex gap-3 align-items-center justify-content-between mb-1">
+                                    <h4>${heading}</h4>
+                                </div>`
+                                : ''
+                            }
                             ${
-            description
-                ? `<p class="fs-12">${description}</p>`
-                : ""
-        }
+                                description
+                                ? `<p class="fs-12">${description}</p>`
+                                : ""
+                            }
                         </div>
                     </div>
                     <div class="toast-body-end">
                         ${
-            showCloseBtn
-                ? '<button type="button" class="toast-close-btn"><i class="fi fi-rr-cross-small"></i></button>'
-                : ""
-        }
+                            showCloseBtn
+                            ? '<button type="button" class="toast-close-btn"><i class="fi fi-rr-cross-small"></i></button>'
+                            : ""
+                        }
                         ${
-            customBtnText && customBtnLink
-                ? `<a href="${customBtnLink}" class="toast-custom-btn toast-btn-bg-${toastClassBasic}">${customBtnText}</a>`
-                : ""
-        }
+                            customBtnText && customBtnLink
+                            ? `<a href="${customBtnLink}" class="toast-custom-btn toast-btn-bg-${toastClassBasic}">${customBtnText}</a>`
+                            : ""
+                        }
                     </div>
                 </div>
             </div>
         `;
 
-        this.toastContainer.prepend(toast);
+        const toastMagicConfig = window.toastMagicConfig || {};
+        const toastMagicPosition = toastMagicConfig.positionClass || "toast-top-end";
+        
+        if (toastMagicPosition == 'toast-bottom-end' || toastMagicPosition == 'toast-bottom-start') {
+            this.toastContainer.append(toast);
+        } else {
+            this.toastContainer.prepend(toast);
+        }
 
         setTimeout(() => {
             toast.classList.add("show");
         }, 100);
-
 
         // Auto close the toast after 3 seconds
         setTimeout(() => {

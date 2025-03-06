@@ -50,6 +50,19 @@ toastMagic.info("Info!", "Click below for more details.", false, "Learn More", "
 
 ```
 
+## Toast Position Options
+
+You can configure the position of the toast notifications using the following options:
+
+| Position          | Description                          |
+|------------------|----------------------------------|
+| `toast-top-start`     | Displays toast in the top left corner.     |
+| `toast-top-end`    | Displays toast in the top right corner.    |
+| `toast-bottom-start`  | Displays toast in the bottom left corner.  |
+| `toast-bottom-end` | Displays toast in the bottom right corner. |
+| `toast-top-center`   | Displays toast at the top center.          |
+| `toast-bottom-center`| Displays toast at the bottom center.       |
+
 ## License
 
 This package is open-sourced software licensed under the [MIT license](LICENSE.md).

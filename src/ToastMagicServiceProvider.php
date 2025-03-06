@@ -28,6 +28,13 @@ class ToastMagicServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+
+        $configPath = config_path('toast-magic.php');
+
+        if (!file_exists($configPath)) {
+            config(['toast-magic' => require __DIR__ . '/config/toast-magic.php']);
+        }
+
         $this->app->singleton('ToastMagic', function ($app) {
             return new ToastMagic($app['session'], $app['config']);
         });

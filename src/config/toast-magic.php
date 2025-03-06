@@ -2,11 +2,13 @@
 
 return [
     'options' => [
-        "closeButton" => false,
-        "debug" => false,
+        "closeButton" => true,
         "newestOnTop" => false,
         "progressBar" => false,
-        "positionClass" => "toast-top-right",
+        "positionClass" => "toast-top-start",
+        // "positionClass" => "toast-top-end",
+        // "positionClass" => "toast-bottom-start",
+        // "positionClass" => "toast-bottom-end",
         "preventDuplicates" => false,
         "onclick" => null,
         "showDuration" => "300",
@@ -17,7 +19,5 @@ return [
         "hideEasing" => "linear",
         "showMethod" => "fadeIn",
         "hideMethod" => "fadeOut",
-        "customBtnText" => "",
-        "customBtnLink" => "",
     ],
 ];

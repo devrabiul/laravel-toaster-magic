@@ -1,9 +1,4 @@
 :root {
-    --shadow-color-rgb: 0, 0, 0;
-    --toaster-shadow: -5px 0px 30px 0px rgba(var(--shadow-color-rgb), 0.1);
-    --bs-secondary-color: rgba(33, 37, 41, 0.75);
-    --bs-body-bg-rgb: 247, 248, 250;
-    --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
     --toast-magic-success: #04bb7b;
     --toast-magic-success-rgb: 4, 187, 123;
     --toast-magic-danger: #dc3545;
@@ -14,6 +9,25 @@
     --toast-magic-warning-rgb: 255, 193, 7;
     --toast-item-bg: #fff;
     --toast-item-color: #000;
+    --toast-magic-box-shadow: -5px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    --toast-close-btn-color: #4a4a4a;
+    --toast-custom-btn-color: #000;
+}
+
+body[theme="dark"] {
+    --toast-magic-success: #04bb7b;
+    --toast-magic-success-rgb: 4, 187, 123;
+    --toast-magic-danger: #dc3545;
+    --toast-magic-danger-rgb: 220, 53, 69;
+    --toast-magic-info: #0dcaf0;
+    --toast-magic-info-rgb: 13, 202, 240;
+    --toast-magic-warning: #ffc107;
+    --toast-magic-warning-rgb: 255, 193, 7;
+    --toast-item-bg: #000;
+    --toast-item-color: #FFF;
+    --toast-magic-box-shadow: -5px 0px 30px 0px rgba(255, 255, 255, 0.1);
+    --toast-close-btn-color: #adadad;
+    --toast-custom-btn-color: rgba(255, 255, 255, .8);
 }
 
 * {
@@ -44,58 +58,76 @@
 
 /* Toaster */
 .toast-container {
-    --bs-toast-zindex: 1090;
+    --tm-toast-z-index: 1090;
     position: fixed;
     inset-block-start: 65px;
     inset-inline-end: 20px;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    z-index: var(--bs-toast-zindex, 1050);
+    z-index: var(--tm-toast-z-index, 1050);
     width: max-content;
     max-width: 100%;
     pointer-events: none;
+
+    --toast-progress-start: 0%;
+    --toast-progress-end: 100%;
+    --toast-item-before-opacity: 0.4;
+    --toast-item-after-opacity: 1;
+}
+
+.toast-container.toast-top-start,
+.toast-container.toast-bottom-start {
+    --toast-progress-start: 100%;
+    --toast-progress-end: 0%;
+    --toast-item-before-opacity: 1;
+    --toast-item-after-opacity: 0.4;
+}
+
+.toast-container.toast-bottom-start,
+.toast-container.toast-top-end {
+    inset-block-start: auto;
+    inset-block-end: 65px;
+}
+
+.toast-container.toast-top-start,
+.toast-container.toast-bottom-start {
+    inset-inline-end: auto;
+    inset-inline-start: 20px;
 }
 
 .toast-item {
-    --bs-toast-padding-x: 20px;
-    --bs-toast-padding-y: 20px;
-    --bs-toast-spacing: 0.5rem;
-    --bs-toast-max-width: 370px;
-    --bs-toast-font-size: 0.875rem;
-    --bs-toast-bg: var(--toast-item-bg);
-    --bs-toast-border-width: 1px;
-    --bs-toast-border-color: transparent;
-    --bs-toast-border-radius: 10px;
-    --bs-toast-box-shadow: var(--toaster-shadow);
-    --bs-toast-header-color: var(--bs-secondary-color);
-    --bs-toast-header-bg: rgba(var(--bs-body-bg-rgb), 0.85);
-    --bs-toast-header-border-color: var(--bs-border-color-translucent);
+    --tm-toast-max-width: 370px;
     position: relative;
     overflow: hidden;
     opacity: 0;
     transform: translateX(110%);
     transition: transform .5s ease-in-out, opacity 0.5s ease-in-out;
-    width: var(--bs-toast-max-width);
+    width: var(--tm-toast-max-width);
     max-width: 100%;
-    font-size: var(--bs-toast-font-size);
+    font-size: 0.875rem;
     color: var(--toast-item-color);
     pointer-events: auto;
-    background-color: var(--bs-toast-bg);
+    background-color: var(--toast-item-bg);
     background-clip: padding-box;
-    border: var(--bs-toast-border-width) solid var(--bs-toast-border-color);
-    box-shadow: var(--bs-toast-box-shadow);
-    border-radius: var(--bs-toast-border-radius);
+    border: 1px solid transparent;
+    box-shadow: var(--toast-magic-box-shadow);
+    border-radius: 10px;
     padding: 1.25rem !important;
     align-items: center !important;
 }
 
-.toast-item.show {
+.toast-container.toast-top-start .toast-item,
+.toast-container.toast-bottom-start .toast-item {
+    transform: translateX(-110%);
+}
+
+.toast-container .toast-item.show {
     transform: translateX(0);
     opacity: 1;
 }
 
-.toast-item.hide {
+.toast-container.toast-item.hide {
     transform: translateX(100%);
     opacity: 0;
 }
@@ -157,7 +189,7 @@
     background: transparent;
     border: 0;
     font-size: 1rem;
-    color: #4a4a4a;
+    color: var(--toast-close-btn-color);
     width: 1.25rem;
     height: 1.25rem;
     cursor: pointer;
@@ -166,15 +198,13 @@
 
 .toast-custom-btn {
     --toast-custom-btn-bg-rgb: var(--toast-magic-success-rgb);
-    font-size: .675rem;
+    font-size: 0.75rem;
     border: 0;
     white-space: nowrap;
-    --bs-bg-opacity: 0.1;
-    background-color: rgba(var(--toast-custom-btn-bg-rgb), var(--bs-bg-opacity, 1));
-    --bs-text-opacity: 1;
-    color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;
+    background-color: rgba(var(--toast-custom-btn-bg-rgb), 0.2);
+    color: var(--toast-custom-btn-color);
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    padding: .25rem .5rem;
+    padding: 0.5rem 0.675rem;
     max-width: 100px;
     display: block;
     overflow: hidden;
@@ -182,7 +212,7 @@
     white-space: nowrap;
     text-decoration: none;
     border-radius: .275rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .toast-btn-bg-success {
@@ -212,7 +242,8 @@
     inset-inline-start: 0;
     width: 100%;
     height: 4px;
-    background-color: rgba(var(--toast-magic-success), 0.4);
+    background-color: rgba(var(--toast-magic-success-rgb), var(--toast-item-before-opacity, 0.4));
+    animation: toastProgressReverse 3s linear forwards;
 }
 
 .toast-item.toast-success::after {
@@ -222,7 +253,7 @@
     inset-inline-end: 0;
     width: 0%;
     height: 4px;
-    background-color: var(--toast-magic-success);
+    background-color: rgba(var(--toast-magic-success-rgb), var(--toast-item-after-opacity, 1));
     transform-origin: right;
     animation: toastProgress 3s linear forwards;
 }
@@ -234,7 +265,8 @@
     inset-inline-start: 0;
     width: 100%;
     height: 4px;
-    background-color: rgba(var(--toast-magic-danger), 0.4);
+    background-color: rgba(var(--toast-magic-danger-rgb), var(--toast-item-before-opacity, 0.4));
+    animation: toastProgressReverse 3s linear forwards;
 }
 
 .toast-item.toast-danger::after {
@@ -244,7 +276,7 @@
     inset-inline-end: 0;
     width: 0%;
     height: 4px;
-    background-color: var(--toast-magic-danger);
+    background-color: rgba(var(--toast-magic-danger-rgb), var(--toast-item-after-opacity, 1));
     transform-origin: right;
     animation: toastProgress 3s linear forwards;
 }
@@ -256,7 +288,8 @@
     inset-inline-start: 0;
     width: 100%;
     height: 4px;
-    background-color: rgba(var(--toast-magic-warning), 0.4);
+    background-color: rgba(var(--toast-magic-warning-rgb), var(--toast-item-before-opacity, 0.4));
+    animation: toastProgressReverse 3s linear forwards;
 }
 
 .toast-item.toast-warning::after {
@@ -266,7 +299,7 @@
     inset-inline-end: 0;
     width: 0%;
     height: 4px;
-    background-color: var(--toast-magic-warning);
+    background-color: rgba(var(--toast-magic-warning-rgb), var(--toast-item-after-opacity, 1));
     transform-origin: right;
     animation: toastProgress 3s linear forwards;
 }
@@ -278,7 +311,8 @@
     inset-inline-start: 0;
     width: 100%;
     height: 4px;
-    background-color: rgba(var(--toast-magic-info), 0.4);
+    background-color: rgba(var(--toast-magic-info-rgb), var(--toast-item-before-opacity, 0.4));
+    animation: toastProgressReverse 3s linear forwards;
 }
 
 .toast-item.toast-info::after {
@@ -288,7 +322,7 @@
     inset-inline-end: 0;
     width: 0%;
     height: 4px;
-    background-color: var(--toast-magic-info);
+    background-color: rgba(var(--toast-magic-info-rgb), var(--toast-item-after-opacity, 1));
     transform-origin: right;
     animation: toastProgress 3s linear forwards;
 }
@@ -310,10 +344,20 @@
 
 @keyframes toastProgress {
     from {
-        width: 0%;
+        width: var(--toast-progress-start, 0%);
     }
 
     to {
-        width: 100%;
+        width: var(--toast-progress-end, 100%);
+    }
+}
+
+@keyframes toastProgressReverse {
+    from {
+        width: var(--toast-progress-end, 100%);
+    }
+
+    to {
+        width: var(--toast-progress-start, 0%);
     }
 }
