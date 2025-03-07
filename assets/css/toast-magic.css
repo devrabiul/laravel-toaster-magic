@@ -10,7 +10,7 @@
     --toast-item-bg: #fff;
     --toast-item-color: #000;
     --toast-magic-box-shadow: -5px 0px 30px 0px rgba(0, 0, 0, 0.1);
-    --toast-close-btn-color: #4a4a4a;
+    --toast-close-btn-color: #000;
     --toast-custom-btn-color: #000;
 }
 
@@ -26,7 +26,7 @@ body[theme="dark"] {
     --toast-item-bg: #000;
     --toast-item-color: #FFF;
     --toast-magic-box-shadow: -5px 0px 30px 0px rgba(255, 255, 255, 0.1);
-    --toast-close-btn-color: #adadad;
+    --toast-close-btn-color: #FFF;
     --toast-custom-btn-color: rgba(255, 255, 255, .8);
 }
 
@@ -163,6 +163,11 @@ body[theme="dark"] {
     display: flex;
 }
 
+.toast-item-content-center .toast-body-title {
+    display: flex;
+    justify-content: start;
+}
+
 .toast-item-content-center .toast-body h4 {
     font-size: 0.875rem;
     font-weight: 500;
@@ -182,7 +187,7 @@ body[theme="dark"] {
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-end;
-    gap: .25rem;
+    gap: .65rem;
 }
 
 .toast-close-btn {
@@ -191,9 +196,16 @@ body[theme="dark"] {
     font-size: 1rem;
     color: var(--toast-close-btn-color);
     width: 1.25rem;
-    height: 1.25rem;
     cursor: pointer;
     z-index: 99999;
+    display: flex;
+    align-items: start;
+    opacity: .65;
+    transition: opacity .25s ease-in-out;
+}
+
+.toast-close-btn:hover {
+    opacity: 1;
 }
 
 .toast-custom-btn {
@@ -204,7 +216,7 @@ body[theme="dark"] {
     background-color: rgba(var(--toast-custom-btn-bg-rgb), 0.2);
     color: var(--toast-custom-btn-color);
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    padding: 0.5rem 0.675rem;
+    padding: 0.35rem 0.675rem;
     max-width: 100px;
     display: block;
     overflow: hidden;
@@ -213,6 +225,11 @@ body[theme="dark"] {
     text-decoration: none;
     border-radius: .275rem;
     font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.toast-custom-btn:hover {
+    border: 1px solid rgba(var(--toast-custom-btn-bg-rgb), 1);
 }
 
 .toast-btn-bg-success {
