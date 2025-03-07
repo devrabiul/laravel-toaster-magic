@@ -153,8 +153,8 @@ body[theme="dark"] {
 }
 
 .toast-item-content-center .toast-body-icon-container {
-    inline-size: 20px;
-    block-size: 20px;
+    inline-size: 22px;
+    block-size: 22px;
     padding: 0.125rem;
     font-size: 18px;
     border-radius: 0.3125rem;

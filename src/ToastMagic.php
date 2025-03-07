@@ -43,9 +43,7 @@ class ToastMagic
 
     public function styles(): string
     {
-        $style = '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/webfonts/uicons-regular-rounded.css') . '">';
-        $style .= '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/webfonts/uicons-solid-rounded.css') . '">';
-        $style .= '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/css/toast-magic.css') . '">';
+        $style = '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/css/toast-magic.css') . '">';
         return $style;
     }
 
