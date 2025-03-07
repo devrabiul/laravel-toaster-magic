@@ -78,7 +78,14 @@ class ToastMagic {
         this.toastContainer.classList.add("toast-container", this.toastMagicPosition);
     }
 
-    show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "" }) {
+    show({
+             type,
+             heading,
+             description = "",
+             showCloseBtn = this.toastMagicCloseButton,
+             customBtnText = "",
+             customBtnLink = ""
+         }) {
         let toastClass, toastClassBasic;
         switch (type) {
             case "success":
@@ -118,30 +125,30 @@ class ToastMagic {
                         </span>
                         <div class="toast-body-container">
                             ${
-                                heading
-                                ? `<div class="toast-body-title">
+            heading
+                ? `<div class="toast-body-title">
                                     <h4>${heading}</h4>
                                 </div>`
-                                : ''
-                            }
+                : ''
+        }
                             ${
-                                description
-                                ? `<p class="fs-12">${description}</p>`
-                                : ""
-                            }
+            description
+                ? `<p class="fs-12">${description}</p>`
+                : ""
+        }
                         </div>
                     </div>
                     <div class="toast-body-end">
                         ${
-                            showCloseBtn
-                            ? `<button type="button" class="toast-close-btn">${getToasterIcon('close')}</button>`
-                            : ""
-                        }
+            showCloseBtn
+                ? `<button type="button" class="toast-close-btn">${getToasterIcon('close')}</button>`
+                : ""
+        }
                         ${
-                            customBtnText && customBtnLink
-                            ? `<a href="${customBtnLink}" class="toast-custom-btn toast-btn-bg-${toastClassBasic}">${customBtnText}</a>`
-                            : ""
-                        }
+            customBtnText && customBtnLink
+                ? `<a href="${customBtnLink}" class="toast-custom-btn toast-btn-bg-${toastClassBasic}">${customBtnText}</a>`
+                : ""
+        }
                     </div>
                 </div>
             </div>
@@ -149,8 +156,14 @@ class ToastMagic {
 
         const toastMagicConfig = window.toastMagicConfig || {};
         const toastMagicPosition = toastMagicConfig.positionClass || "toast-top-end";
+        const toastMagicShowDuration = toastMagicConfig?.showDuration || 100;
+        const toastMagicHideDuration = toastMagicConfig?.hideDuration || 1000;
+        const toastMagicTimeOut = toastMagicConfig?.timeOut || 5000;
 
-        if (toastMagicPosition == 'toast-bottom-end' || toastMagicPosition == 'toast-bottom-start') {
+        if (
+            toastMagicPosition == 'toast-bottom-end' || toastMagicPosition == 'toast-bottom-start' ||
+            toastMagicPosition == 'toast-top-center'
+        ) {
             this.toastContainer.append(toast);
         } else {
             this.toastContainer.prepend(toast);
@@ -158,28 +171,28 @@ class ToastMagic {
 
         setTimeout(() => {
             toast.classList.add("show");
-        }, 100);
+        }, toastMagicShowDuration);
 
         // Auto close the toast after 3 seconds
         setTimeout(() => {
-            // closeToastMagicItem(toast);
-        }, 5000);
+            closeToastMagicItem(toast);
+        }, toastMagicTimeOut);
     }
 
     success(heading = "Success!", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "") {
-        this.show({ type: "success", heading, description, showCloseBtn, customBtnText, customBtnLink });
+        this.show({type: "success", heading, description, showCloseBtn, customBtnText, customBtnLink});
     }
 
     error(heading = "Error!", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "") {
-        this.show({ type: "error", heading, description, showCloseBtn, customBtnText, customBtnLink });
+        this.show({type: "error", heading, description, showCloseBtn, customBtnText, customBtnLink});
     }
 
     warning(heading = "Warning!", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "") {
-        this.show({ type: "warning", heading, description, showCloseBtn, customBtnText, customBtnLink });
+        this.show({type: "warning", heading, description, showCloseBtn, customBtnText, customBtnLink});
     }
 
     info(heading = "Info!", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "") {
-        this.show({ type: "info", heading, description, showCloseBtn, customBtnText, customBtnLink });
+        this.show({type: "info", heading, description, showCloseBtn, customBtnText, customBtnLink});
     }
 }
 

@@ -85,9 +85,19 @@ body[theme="dark"] {
 }
 
 .toast-container.toast-bottom-start,
-.toast-container.toast-top-end {
+.toast-container.toast-bottom-end {
     inset-block-start: auto;
     inset-block-end: 65px;
+}
+
+.toast-container.toast-bottom-start {
+    inset-inline-start: 20px;
+    inset-inline-end: auto;
+}
+
+.toast-container.toast-bottom-end {
+    inset-inline-start: auto;
+    inset-inline-end: 20px;
 }
 
 .toast-container.toast-top-start,
@@ -96,7 +106,19 @@ body[theme="dark"] {
     inset-inline-start: 20px;
 }
 
-.toast-item {
+.toast-container.toast-top-center {
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.toast-container.toast-bottom-center {
+    left: 50%;
+    transform: translate(-50%, 0);
+    inset-block-end: 65px;
+    inset-block-start: auto;
+}
+
+.toast-container .toast-item {
     --tm-toast-max-width: 370px;
     position: relative;
     overflow: hidden;
@@ -120,6 +142,14 @@ body[theme="dark"] {
 .toast-container.toast-top-start .toast-item,
 .toast-container.toast-bottom-start .toast-item {
     transform: translateX(-110%);
+}
+
+.toast-container.toast-top-center .toast-item {
+    transform: translateY(-110%);
+}
+
+.toast-container.toast-bottom-center .toast-item {
+    transform: translateY(110%);
 }
 
 .toast-container .toast-item.show {
