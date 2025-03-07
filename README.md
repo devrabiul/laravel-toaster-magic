@@ -13,7 +13,7 @@ A powerful and flexible Toaster package for Laravel applications.
 First, install the package via Composer:
 
 ```bash
-composer require devrabiul/toast-magic
+composer require devrabiul/laravel-toaster-magic
 ```
 
 ## Usage

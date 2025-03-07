@@ -17,7 +17,7 @@ class ToastMagicServiceProvider extends ServiceProvider
     {
         $this->updateProcessingAssetRoutes();
         $this->publishes([
-            __DIR__ . '/config/toast-magic.php' => config_path('toast-magic.php'),
+            __DIR__ . '/config/laravel-toaster-magic.php' => config_path('laravel-toaster-magic.php'),
             ], 'config');
     }
 
@@ -29,10 +29,10 @@ class ToastMagicServiceProvider extends ServiceProvider
     public function register(): void
     {
 
-        $configPath = config_path('toast-magic.php');
+        $configPath = config_path('laravel-toaster-magic.php');
 
         if (!file_exists($configPath)) {
-            config(['toast-magic' => require __DIR__ . '/config/toast-magic.php']);
+            config(['laravel-toaster-magic' => require __DIR__ . '/config/laravel-toaster-magic.php']);
         }
 
         $this->app->singleton('ToastMagic', function ($app) {
@@ -52,7 +52,7 @@ class ToastMagicServiceProvider extends ServiceProvider
 
     private function updateProcessingAssetRoutes(): void
     {
-        Route::get('/vendor/toast-magic/assets/{path}', function ($path) {
+        Route::get('/vendor/laravel-toaster-magic/assets/{path}', function ($path) {
             $file = __DIR__ . '/../assets/' . $path;
 
             if (file_exists($file)) {

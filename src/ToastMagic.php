@@ -43,19 +43,19 @@ class ToastMagic
 
     public function styles(): string
     {
-        $style = '<link rel="stylesheet" href="' . url('vendor/toast-magic/assets/css/toast-magic.css') . '">';
+        $style = '<link rel="stylesheet" href="' . url('vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
         return $style;
     }
 
     public function scripts(): string
     {
-        $messages = $this->session->get('toast-magic::messages');
+        $messages = $this->session->get('laravel-toaster-magic::messages');
 
         if (!$messages) $messages = [];
 
-        $config = (array)$this->config->get('toast-magic.options');
+        $config = (array)$this->config->get('laravel-toaster-magic.options');
 
-        $script = '<script src="' . url('vendor/toast-magic/assets/js/toast-magic.js') . '"></script>';
+        $script = '<script src="' . url('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
         $script .= '<script type="' . $this->jsType . '">';
 
         // Output the config as a global JS object
@@ -120,7 +120,7 @@ class ToastMagic
             'options' => $options,
         ];
 
-        $this->session->flash('toast-magic::messages', $this->messages);
+        $this->session->flash('laravel-toaster-magic::messages', $this->messages);
     }
 
     /**
