@@ -60,7 +60,7 @@ body[theme="dark"] {
 .toast-container {
     --tm-toast-z-index: 99990;
     position: fixed;
-    inset-block-start: 65px;
+    inset-block-start: 30px;
     inset-inline-end: 20px;
     display: flex;
     flex-direction: column;
@@ -87,7 +87,7 @@ body[theme="dark"] {
 .toast-container.toast-bottom-start,
 .toast-container.toast-bottom-end {
     inset-block-start: auto;
-    inset-block-end: 65px;
+    inset-block-end: 30px;
 }
 
 .toast-container.toast-bottom-start {
@@ -114,7 +114,7 @@ body[theme="dark"] {
 .toast-container.toast-bottom-center {
     left: 50%;
     transform: translate(-50%, 0);
-    inset-block-end: 65px;
+    inset-block-end: 30px;
     inset-block-start: auto;
 }
 
