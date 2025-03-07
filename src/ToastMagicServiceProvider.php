@@ -11,20 +11,43 @@ class ToastMagicServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
+     * This method is called after all other service providers have been registered.
+     * It is used to perform any actions required to bootstrap the application services.
+     *
      * @return void
+     * @throws \Exception If there is an error during bootstrapping.
      */
     public function boot(): void
     {
         $this->updateProcessingAssetRoutes();
+        if ($this->app->runningInConsole()) {
+            $this->registerPublishing();
+        }
+    }
+
+    /**
+     * Register the publishing of configuration files.
+     *
+     * This method registers the configuration file for publishing to the application's config directory.
+     *
+     * @return void
+     * @throws \Exception If there is an error during publishing.
+     */
+    private function registerPublishing(): void
+    {
         $this->publishes([
             __DIR__ . '/config/laravel-toaster-magic.php' => config_path('laravel-toaster-magic.php'),
-            ], 'config');
+        ]);
     }
 
     /**
      * Register the application services.
      *
+     * This method is called to bind services into the service container.
+     * It is used to register the ToastMagic service and load the configuration.
+     *
      * @return void
+     * @throws \Exception If the configuration file cannot be loaded.
      */
     public function register(): void
     {
@@ -41,15 +64,27 @@ class ToastMagicServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get the services provider by the provider
+     * Get the services provided by the provider.
+     *
+     * This method returns an array of services that this provider offers.
      *
      * @return array
+     * @throws \Exception If there is an error retrieving the services.
      */
     public function provides(): array
     {
         return ['ToastMagic'];
     }
 
+    /**
+     * Update the routes for processing asset requests.
+     *
+     * This method defines a route that serves asset files from the package.
+     * It handles the retrieval of files based on the provided path and sets the appropriate MIME type.
+     *
+     * @return void
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException If the file does not exist.
+     */
     private function updateProcessingAssetRoutes(): void
     {
         Route::get('/vendor/laravel-toaster-magic/assets/{path}', function ($path) {

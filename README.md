@@ -1,38 +1,50 @@
 # ToastMagic - Laravel Toaster
 
-A powerful and flexible Toaster package for Laravel applications.
+A powerful and flexible Toaster package for Laravel applications, designed to enhance user experience with customizable toast notifications.
 
 ## Features
 
-- 🔥 Easy-to-Use Toaster Package – Simple and intuitive file management for Laravel.
-- 🌍 RTL Support – Fully compatible with right-to-left (RTL) languages.
-- 🌙 Dark Mode Support – Seamless dark mode for a better user experience.
+- 🔥 **Easy-to-Use Toaster Package** – Simple and intuitive file management for Laravel.
+- 🌍 **RTL Support** – Fully compatible with right-to-left (RTL) languages.
+- 🌙 **Dark Mode Support** – Seamless dark mode for a better user experience.
+- 📦 **Customizable Notifications** – Tailor toast messages to fit your application's needs.
 
 ## Installation
 
-First, install the package via Composer:
+To get started with ToastMagic, follow these simple steps:
 
-```bash
-composer require devrabiul/laravel-toaster-magic
-```
+1. Install the package via Composer:
+
+    ```bash
+    composer require devrabiul/laravel-toaster-magic
+    ```
+
+2. Publish the package resources by running:
+
+    ```bash
+    php artisan vendor:publish --provider="Devrabiul\ToastMagic\ToastMagicServiceProvider"
+    ```
 
 ## Usage
 
 ### 1. Basic Setup
 
-Add the following includes to your blade template:
+Integrate ToastMagic into your blade template by adding the following includes:
 
 1. Add the styles in your `<head>` section:
-```php
-{!! ToastMagic::styles() !!}
-```
 
-2. Add the scripts before ends your `<body>` tags end section:
-```php
-{!! ToastMagic::scripts() !!}
-```
+    ```php
+    {!! ToastMagic::styles() !!}
+    ```
 
-### Usage Example:
+2. Add the scripts before the closing `<body>` tag:
+
+    ```php
+    {!! ToastMagic::scripts() !!}
+    ```
+
+### Usage Example: (Optional - If needed in any AJAX function)
+
 ```js
 const toastMagic = new ToastMagic();
 
@@ -47,7 +59,6 @@ toastMagic.warning("Warning!", "Please check your input.", true);
 
 // Show an info toast with a custom button
 toastMagic.info("Info!", "Click below for more details.", false, "Learn More", "https://example.com");
-
 ```
 
 ## Toast Position Options
@@ -63,6 +74,14 @@ You can configure the position of the toast notifications using the following op
 | `toast-top-center`   | Displays toast at the top center.          |
 | `toast-bottom-center`| Displays toast at the bottom center.       |
 
+## Contributing
+
+We welcome contributions to ToastMagic! If you would like to contribute, please fork the repository and submit a pull request. For any issues or feature requests, please open an issue on GitHub.
+
 ## License
 
 This package is open-sourced software licensed under the [MIT license](LICENSE.md).
+
+## Contact
+
+For support or inquiries, please reach out to us at [devrabiul@gmail.com](mailto:devrabiul@gmail.com).

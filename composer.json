@@ -1,21 +1,21 @@
 {
     "name": "devrabiul/laravel-toaster-magic",
-    "description": "Practice",
+    "type": "library",
+    "description": "Laravel Toaster Magic is a powerful, lightweight, and flexible toast notification library designed for modern web applications. It supports real-time notifications, customizable themes, smooth animations, and seamless integration with Laravel projects.",
+    "keywords": ["laravel", "toaster", "magic", "notifications"],
+    "homepage": "https://github.com/devrabiul/laravel-toaster-magic",
     "license": "MIT",
+    "authors": [
+        {
+        "name": "Muhammad Rabiul",
+        "email": "devrabiul@gmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Devrabiul\\ToastMagic\\": "src/"
-        },
-        "files": [
-            "helpers.php"
-        ]
-    },
-    "authors": [
-        {
-            "name": "Muhammad Rabiul",
-            "email": "devrabiul@gmail.com"
         }
-    ],
+    },
     "extra": {
         "laravel" :{
             "providers" : [

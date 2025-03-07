@@ -58,7 +58,7 @@ body[theme="dark"] {
 
 /* Toaster */
 .toast-container {
-    --tm-toast-z-index: 1090;
+    --tm-toast-z-index: 99990;
     position: fixed;
     inset-block-start: 65px;
     inset-inline-end: 20px;
