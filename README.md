@@ -74,6 +74,13 @@ You can configure the position of the toast notifications using the following op
 | `toast-top-center`   | Displays toast at the top center.          |
 | `toast-bottom-center`| Displays toast at the bottom center.       |
 
+### 🎯 Get Started Today!
+Experience the magic of ToastMagic and enhance your Laravel applications with elegant toast notifications.
+
+🔗 **GitHub:** [Laravel Toaster Magic](https://github.com/devrabiul/laravel-toaster-magic)
+🔗 **Website:** [laravel-toaster-magic.rixetbd.com](https://laravel-toaster-magic.rixetbd.com)
+🔗 **Packagist:** [https://packagist.org/packages/devrabiul/laravel-toaster-magic](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+
 ## Contributing
 
 We welcome contributions to ToastMagic! If you would like to contribute, please fork the repository and submit a pull request. For any issues or feature requests, please open an issue on GitHub.
