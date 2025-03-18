@@ -29,7 +29,7 @@ To get started with ToastMagic, follow these simple steps:
 
 ### 1. Basic Setup
 
-Integrate ToastMagic into your blade template by adding the following includes:
+Integrate ToastMagic into your Blade template by adding the following includes:
 
 1. Add the styles in your `<head>` section:
 
@@ -43,7 +43,25 @@ Integrate ToastMagic into your blade template by adding the following includes:
     {!! ToastMagic::scripts() !!}
     ```
 
-### Usage Example: (Optional - If needed in any AJAX function)
+### 2. Usage in Controller
+
+You can trigger toast notifications from your Laravel controller using the `ToastMagic` facade.
+
+```php
+use Devrabiul\ToastMagic\Facades\ToastMagic;
+
+class LanguageController extends Controller
+{
+    public function add()
+    {
+        // Your logic
+        ToastMagic::success('Successfully Updated');
+        return back();
+    }
+}
+```
+
+### 3. Usage in JavaScript (Optional - For AJAX calls)
 
 ```js
 const toastMagic = new ToastMagic();
@@ -73,6 +91,13 @@ You can configure the position of the toast notifications using the following op
 | `toast-bottom-end` | Displays toast in the bottom right corner. |
 | `toast-top-center`   | Displays toast at the top center.          |
 | `toast-bottom-center`| Displays toast at the bottom center.       |
+
+### 🎯 Get Started Today!
+Experience the magic of ToastMagic and enhance your Laravel applications with elegant toast notifications.
+
+🔗 **GitHub:** [Laravel Toaster Magic](https://github.com/devrabiul/laravel-toaster-magic)  
+🔗 **Website:** [laravel-toaster-magic.rixetbd.com](https://laravel-toaster-magic.rixetbd.com)  
+🔗 **Packagist:** [https://packagist.org/packages/devrabiul/laravel-toaster-magic](https://packagist.org/packages/devrabiul/laravel-toaster-magic)  
 
 ## Contributing
 
