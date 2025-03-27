@@ -42,6 +42,25 @@ Integrate ToastMagic into your Blade template by adding the following includes:
     ```php
     {!! ToastMagic::scripts() !!}
     ```
+3. Example:
+    
+    ```php
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Page</title>
+    
+        {!! ToastMagic::styles() !!}
+    </head>
+    <body>
+        // Your Content
+    
+        {!! ToastMagic::scripts() !!}
+    </body>
+    </html>
+    ```
 
 ### 2. Usage in Controller
 
