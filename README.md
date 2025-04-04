@@ -124,7 +124,7 @@ We welcome contributions to ToastMagic! If you would like to contribute, please 
 
 ## License
 
-This package is open-sourced software licensed under the [MIT license](LICENSE.md).
+This package is open-sourced software licensed under the [MIT license](LICENSE).
 
 ## Contact
 
