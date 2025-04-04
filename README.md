@@ -128,4 +128,4 @@ This package is open-sourced software licensed under the [MIT license](LICENSE.m
 
 ## Contact
 
-For support or inquiries, please reach out to us at [devrabiul@gmail.com](mailto:devrabiul@gmail.com).
+For support or inquiries, please reach out to us at [Send Mail](mailto:devrabiul@gmail.com).
