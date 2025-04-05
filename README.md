@@ -2,6 +2,11 @@
 
 A powerful and flexible Toaster package for Laravel applications, designed to enhance user experience with customizable toast notifications.
 
+[![Latest Stable Version](https://poser.pugx.org/devrabiul/laravel-toaster-magic/v/stable)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+[![Total Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/downloads)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+![GitHub license](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)
+![GitHub Repo stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)
+
 ## Features
 
 - 🔥 **Easy-to-Use Toaster Package** – Simple and intuitive file management for Laravel.
