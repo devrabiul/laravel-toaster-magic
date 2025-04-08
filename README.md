@@ -2,6 +2,11 @@
 
 A powerful and flexible Toaster package for Laravel applications, designed to enhance user experience with customizable toast notifications.
 
+[![Latest Stable Version](https://poser.pugx.org/devrabiul/laravel-toaster-magic/v/stable)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+[![Total Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/downloads)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+![GitHub license](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)
+![GitHub Repo stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)
+
 ## Features
 
 - 🔥 **Easy-to-Use Toaster Package** – Simple and intuitive file management for Laravel.
@@ -41,6 +46,25 @@ Integrate ToastMagic into your Blade template by adding the following includes:
 
     ```php
     {!! ToastMagic::scripts() !!}
+    ```
+3. Example:
+    
+    ```php
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Page</title>
+    
+        {!! ToastMagic::styles() !!}
+    </head>
+    <body>
+        // Your Content
+    
+        {!! ToastMagic::scripts() !!}
+    </body>
+    </html>
     ```
 
 ### 2. Usage in Controller
@@ -105,8 +129,8 @@ We welcome contributions to ToastMagic! If you would like to contribute, please 
 
 ## License
 
-This package is open-sourced software licensed under the [MIT license](LICENSE.md).
+This package is open-sourced software licensed under the [MIT license](LICENSE).
 
 ## Contact
 
-For support or inquiries, please reach out to us at [devrabiul@gmail.com](mailto:devrabiul@gmail.com).
+For support or inquiries, please reach out to us at [Send Mail](mailto:devrabiul@gmail.com).
