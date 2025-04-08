@@ -189,13 +189,16 @@ body[theme="dark"] {
     font-size: 18px;
     border-radius: 0.3125rem;
     line-height: 1;
-    justify-content: center;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .toast-item-content-center .toast-body-title {
     display: flex;
     justify-content: start;
+    align-items: center;
+    min-height: 22px;
 }
 
 .toast-item-content-center .toast-body h4 {
