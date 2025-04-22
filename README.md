@@ -9,7 +9,7 @@ A powerful and flexible Toaster package for Laravel applications, designed to en
 
 ## Features
 
-- 🔥 **Easy-to-Use Toaster Package** – Simple and intuitive file management for Laravel.
+- 🔥 **Easy-to-Use Toaster Package** – Simple and intuitive toast notificaiton for Laravel.
 - 🌍 **RTL Support** – Fully compatible with right-to-left (RTL) languages.
 - 🌙 **Dark Mode Support** – Seamless dark mode for a better user experience.
 - 📦 **Customizable Notifications** – Tailor toast messages to fit your application's needs.
