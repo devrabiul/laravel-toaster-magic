@@ -7,6 +7,10 @@ A powerful and flexible Toaster package for Laravel applications, designed to en
 ![GitHub license](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)
 ![GitHub Repo stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)
 
+## Live Demo
+
+👉 [Check out the live demo](https://laravel-toaster-magic.rixetbd.com/)
+
 ## Features
 
 - 🔥 **Easy-to-Use Toaster Package** – Simple and intuitive toast notificaiton for Laravel.
