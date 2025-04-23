@@ -30,12 +30,6 @@ body[theme="dark"] {
     --toast-custom-btn-color: rgba(255, 255, 255, .8);
 }
 
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
 .toast-text-success {
     color: var(--toast-magic-success);
 }
