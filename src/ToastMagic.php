@@ -95,10 +95,6 @@ class ToastMagic
                 $config = array_merge($config, $message['options']);
             }
 
-//            if ($config) {
-//                $script .= 'toast.options = ' . json_encode($config) . ';';
-//            }
-
             $description = addslashes($message['description']) ?: null;
 
             // Add a delay for each message
