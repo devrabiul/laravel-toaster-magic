@@ -229,6 +229,8 @@ body[theme="dark"] {
     align-items: start;
     opacity: .65;
     transition: opacity .25s ease-in-out;
+    padding: 0;
+    margin: 0;
 }
 
 .toast-close-btn:hover {
