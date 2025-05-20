@@ -63,13 +63,13 @@ class ToastMagic
      */
     public function styles(): string
     {
-        $path = public_path('vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css');
+        $path = public_path('vendor/laravel-toaster-magic/css/laravel-toaster-magic.css');
 
         if (File::exists($path)) {
             if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
-                return '<link rel="stylesheet" href="' . url('vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
+                return '<link rel="stylesheet" href="' . url('vendor/laravel-toaster-magic/css/laravel-toaster-magic.css') . '">';
             } else {
-                return '<link rel="stylesheet" href="' . url('public/vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
+                return '<link rel="stylesheet" href="' . url('public/vendor/laravel-toaster-magic/css/laravel-toaster-magic.css') . '">';
             }
         }
         
@@ -83,13 +83,13 @@ class ToastMagic
      */
     public function scriptsPath(): string
     {
-        $path = public_path('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js');
+        $path = public_path('vendor/laravel-toaster-magic/js/laravel-toaster-magic.js');
 
         if (File::exists($path)) {
             if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
-                return '<script src="' . url('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
+                return '<script src="' . url('vendor/laravel-toaster-magic/js/laravel-toaster-magic.js') . '"></script>';
             } else {
-                return '<script src="' . url('public/vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
+                return '<script src="' . url('public/vendor/laravel-toaster-magic/js/laravel-toaster-magic.js') . '"></script>';
             }
         }
         
