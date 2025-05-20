@@ -62,8 +62,37 @@ class ToastMagic
      */
     public function styles(): string
     {
-        $style = '<link rel="stylesheet" href="' . url('vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
-        return $style;
+        $path = public_path('vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css');
+
+        if (File::exists($path)) {
+            if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
+                return '<link rel="stylesheet" href="' . url('vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
+            } else {
+                return '<link rel="stylesheet" href="' . url('public/vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
+            }
+        }
+        
+        return '<link rel="stylesheet" href="' . url('vendor/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
+    }
+
+    /**
+     * Generate the HTML for the required scripts.
+     *
+     * @return string The HTML link tag for the scripts.
+     */
+    public function scriptsPath(): string
+    {
+        $path = public_path('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js');
+
+        if (File::exists($path)) {
+            if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
+                return '<script src="' . url('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
+            } else {
+                return '<script src="' . url('public/vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
+            }
+        }
+        
+        return '<script src="' . url('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
     }
 
     /**
@@ -79,7 +108,7 @@ class ToastMagic
 
         $config = (array)$this->config->get('laravel-toaster-magic.options');
 
-        $script = '<script src="' . url('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
+        $script = $this->scriptsPath();
         $script .= '<script type="' . $this->jsType . '">';
 
         // Output the config as a global JS object

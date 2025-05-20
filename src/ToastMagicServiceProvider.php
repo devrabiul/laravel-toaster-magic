@@ -5,6 +5,7 @@ namespace Devrabiul\ToastMagic;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
 
 class ToastMagicServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class ToastMagicServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->updateProcessingDirectoryConfig();
         $this->updateProcessingAssetRoutes();
         if ($this->app->runningInConsole()) {
             $this->registerPublishing();
@@ -37,6 +39,17 @@ class ToastMagicServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/config/laravel-toaster-magic.php' => config_path('laravel-toaster-magic.php'),
+        ]);
+
+        $assetsPath = public_path('vendor/laravel-toaster-magic');
+
+        // Delete existing assets folder if it exists
+        if (File::exists($assetsPath)) {
+            File::deleteDirectory($assetsPath);
+        }
+        
+        $this->publishes([
+            __DIR__ . '/../assets' => public_path('vendor/laravel-toaster-magic'),
         ]);
     }
 
@@ -123,5 +136,27 @@ class ToastMagicServiceProvider extends ServiceProvider
 
             abort(404);
         })->where('path', '.*');
+    }
+
+    private function updateProcessingDirectoryConfig(): void
+    {
+        // Get the current script's directory
+        $scriptPath = realpath(dirname($_SERVER['SCRIPT_FILENAME']));
+
+        // Get Laravel base and public paths
+        $basePath = realpath(base_path());
+        $publicPath = realpath(public_path());
+
+        // Determine where the script is running from
+        if ($scriptPath === $publicPath) {
+            $systemProcessingDirectory = 'public';
+        } elseif ($scriptPath === $basePath) {
+            $systemProcessingDirectory = 'root';
+        } else {
+            $systemProcessingDirectory = 'unknown';
+        }
+
+        // Update the configuration
+        config(['laravel-toaster-magic.system_processing_directory' => $systemProcessingDirectory]);
     }
 }
