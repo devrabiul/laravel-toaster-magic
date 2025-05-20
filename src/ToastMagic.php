@@ -5,6 +5,7 @@ namespace Devrabiul\ToastMagic;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\File;
 
 /**
  * Class ToastMagic
