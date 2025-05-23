@@ -83,18 +83,40 @@ class ToastMagic
      */
     public function scriptsPath(): string
     {
-        $path = public_path('vendor/laravel-toaster-magic/js/laravel-toaster-magic.js');
+        $config = (array)$this->config->get('laravel-toaster-magic');
+        $usePublicPrefix = config('laravel-toaster-magic.system_processing_directory') !== 'public';
+        $prefix = $usePublicPrefix ? 'public/' : '';
+        $scripts = [];
 
-        if (File::exists($path)) {
-            if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
-                return '<script src="' . url('vendor/laravel-toaster-magic/js/laravel-toaster-magic.js') . '"></script>';
+        if (!empty($config['livewire_enabled'])) {
+            $file1 = public_path('vendor/laravel-toaster-magic/js/livewire-v3/laravel-toaster-magic.js');
+            $file2 = public_path('vendor/laravel-toaster-magic/js/livewire-v3/livewire-toaster-magic-v3.js');
+
+            if (File::exists($file1) && File::exists($file2)) {
+                $scripts[] = $this->scriptTag($prefix . 'vendor/laravel-toaster-magic/js/livewire-v3/laravel-toaster-magic.js');
+                $scripts[] = $this->scriptTag($prefix . 'vendor/laravel-toaster-magic/js/livewire-v3/livewire-toaster-magic-v3.js');
             } else {
-                return '<script src="' . url('public/vendor/laravel-toaster-magic/js/laravel-toaster-magic.js') . '"></script>';
+                $scripts[] = $this->scriptTag('vendor/laravel-toaster-magic/assets/js/livewire-v3/laravel-toaster-magic.js');
+                $scripts[] = $this->scriptTag('vendor/laravel-toaster-magic/assets/js/livewire-v3/livewire-toaster-magic-v3.js');
             }
+
+            return implode('', $scripts);
         }
-        
-        return '<script src="' . url('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js') . '"></script>';
+
+        $defaultJsPath = 'vendor/laravel-toaster-magic/js/laravel-toaster-magic.js';
+
+        if (File::exists(public_path($defaultJsPath))) {
+            return $this->scriptTag($prefix . $defaultJsPath);
+        }
+
+        return $this->scriptTag('vendor/laravel-toaster-magic/assets/js/laravel-toaster-magic.js');
     }
+
+    private function scriptTag(string $src): string
+    {
+        return '<script src="' . url($src) . '"></script>';
+    }
+
 
     /**
      * Generate the HTML for the required scripts and initialize toast messages.

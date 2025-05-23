@@ -1,4 +1,4 @@
-# ToastMagic - Laravel Toaster
+# ToastMagic - Laravel Toaster (With Livewire v3 Support)
 
 A powerful and flexible Toaster package for Laravel applications, designed to enhance user experience with customizable toast notifications.
 
@@ -11,12 +11,16 @@ A powerful and flexible Toaster package for Laravel applications, designed to en
 
 👉 [Check out the live demo](https://laravel-toaster-magic.rixetbd.com/)
 
+![Live Demo Thumbnail](https://laravel-toaster-magic.rixetbd.com/public/assets/img/thumbnail.png)
+
+
 ## Features
 
 - 🔥 **Easy-to-Use Toaster Package** – Simple and intuitive toast notificaiton for Laravel.
 - 🌍 **RTL Support** – Fully compatible with right-to-left (RTL) languages.
 - 🌙 **Dark Mode Support** – Seamless dark mode for a better user experience.
 - 📦 **Customizable Notifications** – Tailor toast messages to fit your application's needs.
+- ⚡ **Livewire v3 Support** – Dispatch toast notifications directly from Livewire components.
 
 ## Installation
 
@@ -51,8 +55,9 @@ Integrate ToastMagic into your Blade template by adding the following includes:
     ```php
     {!! ToastMagic::scripts() !!}
     ```
+
 3. Example:
-    
+
     ```php
     <!DOCTYPE html>
     <html lang="en">
@@ -60,12 +65,12 @@ Integrate ToastMagic into your Blade template by adding the following includes:
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Page</title>
-    
+
         {!! ToastMagic::styles() !!}
     </head>
     <body>
-        // Your Content
-    
+        <!-- Your Content -->
+
         {!! ToastMagic::scripts() !!}
     </body>
     </html>
@@ -87,7 +92,7 @@ class LanguageController extends Controller
         return back();
     }
 }
-```
+````
 
 ### 3. Usage in JavaScript (Optional - For AJAX calls)
 
@@ -107,20 +112,66 @@ toastMagic.warning("Warning!", "Please check your input.", true);
 toastMagic.info("Info!", "Click below for more details.", false, "Learn More", "https://example.com");
 ```
 
+### 4. ✅ Livewire v3 Support
+
+To enable Livewire support in ToastMagic, update your configuration file (`config/laravel-toaster-magic.php`) as follows:
+
+```php
+<?php
+
+return [
+    'options' => [
+        // your existing toast options...
+    ],
+    'livewire_enabled' => true,
+    'livewire_version' => 'v3',
+];
+```
+
+* Set `'livewire_enabled' => true` to activate Livewire integration.
+* Set `'livewire_version' => 'v3'` to specify the Livewire version.
+
+---
+
+### Dispatching Toasts from Livewire Components
+
+ToastMagic allows you to dispatch toast notifications directly from your Livewire components using the `$this->dispatch` method:
+
+```php
+$this->dispatch('toastMagic',
+    status: 'success',
+    title: 'User Created',
+    message: 'The user has been successfully created.'
+);
+
+$this->dispatch('toastMagic',
+    status: 'info',
+    title: 'User Created 2',
+    message: 'The user has been successfully created.'
+);
+```
+
+Supported `status` values include:
+`success`, `info`, `warning`, `error`.
+
+These toasts work seamlessly with the JavaScript listeners loaded by ToastMagic when Livewire is enabled, providing smooth and reactive notifications in your application.
+
+
 ## Toast Position Options
 
 You can configure the position of the toast notifications using the following options:
 
-| Position          | Description                          |
-|------------------|----------------------------------|
+| Position              | Description                                |
+| --------------------- | ------------------------------------------ |
 | `toast-top-start`     | Displays toast in the top left corner.     |
-| `toast-top-end`    | Displays toast in the top right corner.    |
+| `toast-top-end`       | Displays toast in the top right corner.    |
 | `toast-bottom-start`  | Displays toast in the bottom left corner.  |
-| `toast-bottom-end` | Displays toast in the bottom right corner. |
-| `toast-top-center`   | Displays toast at the top center.          |
-| `toast-bottom-center`| Displays toast at the bottom center.       |
+| `toast-bottom-end`    | Displays toast in the bottom right corner. |
+| `toast-top-center`    | Displays toast at the top center.          |
+| `toast-bottom-center` | Displays toast at the bottom center.       |
 
 ### 🎯 Get Started Today!
+
 Experience the magic of ToastMagic and enhance your Laravel applications with elegant toast notifications.
 
 🔗 **GitHub:** [Laravel Toaster Magic](https://github.com/devrabiul/laravel-toaster-magic)  
