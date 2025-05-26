@@ -141,7 +141,12 @@ ToastMagic allows you to dispatch toast notifications directly from your Livewir
 $this->dispatch('toastMagic',
     status: 'success',
     title: 'User Created',
-    message: 'The user has been successfully created.'
+    message: 'The user has been successfully created.',
+    options: [
+        'showCloseBtn' => true,
+        'customBtnText' => 'Link Text',
+        'customBtnLink' => 'https:/demo.com',
+    ],
 );
 
 $this->dispatch('toastMagic',
