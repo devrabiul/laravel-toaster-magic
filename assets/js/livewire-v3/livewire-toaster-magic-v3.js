@@ -8,10 +8,12 @@ if (!window._toastMagicBound) {
             return;
         }
 
-        const { status, title, message } = window._toastQueue.shift();
+        const toast = window._toastQueue.shift();
+
+        const { status, title, message, showCloseBtn, customBtnText, customBtnLink } = toast;
 
         if (typeof toastMagic[status] === 'function') {
-            toastMagic[status](title, message);
+            toastMagic[status](title, message, showCloseBtn, customBtnText, customBtnLink);
         } else {
             console.warn(`Unknown toast status: ${status}, defaulting to success.`);
             toastMagic.success(title, message);
@@ -25,8 +27,11 @@ if (!window._toastMagicBound) {
         const status = detail.status ?? 'success';
         const title = detail.title ?? 'Success!';
         const message = detail.message ?? 'Your data has been saved!';
+        const showCloseBtn = detail?.options?.showCloseBtn ?? false;
+        const customBtnText = detail?.options?.customBtnText ?? '';
+        const customBtnLink = detail?.options?.customBtnLink ?? 'javascript:';
 
-        window._toastQueue.push({ status, title, message });
+        window._toastQueue.push({ status, title, message, showCloseBtn, customBtnText, customBtnLink });
 
         if (!window._toastProcessing) {
             window._toastProcessing = true;
