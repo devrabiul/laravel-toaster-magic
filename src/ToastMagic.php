@@ -2,6 +2,7 @@
 
 namespace Devrabiul\ToastMagic;
 
+use Devrabiul\ToasterMagic\ToastMagicDispatcher;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Support\MessageBag;
@@ -288,6 +289,19 @@ class ToastMagic
         } else {
             $this->add('error', $message, $description, $options);
         }
+    }
+
+    /**
+     * Get a dispatcher instance for fluent toast creation.
+     *
+     * This allows for dynamic and chainable toast dispatching, e.g.:
+     * ToastMagic::dispatch()->success('Title', 'Message', [...]);
+     *
+     * @return ToastMagicDispatcher
+     */
+    public function dispatch(): ToastMagicDispatcher
+    {
+        return new ToastMagicDispatcher($this);
     }
 
     /**
