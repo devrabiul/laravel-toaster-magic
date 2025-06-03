@@ -44,8 +44,7 @@ class ToastMagicServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->updateProcessingDirectoryConfig();
-        $this->updateProcessingAssetRoutes();
-        $this->handleVersionedPublishing();
+        $this->app->register(AssetsServiceProvider::class);
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishing();
@@ -68,7 +67,7 @@ class ToastMagicServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/config/laravel-toaster-magic.php' => config_path('laravel-toaster-magic.php'),
-        ], 'toastmagic-config');
+        ]);
 
         $sourceAssets = __DIR__ . '/../assets';
         $publicAssets = public_path('vendor/devrabiul/laravel-toaster-magic');
@@ -122,56 +121,6 @@ class ToastMagicServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define a route to serve package asset files for development or fallback.
-     *
-     * This route handles requests to '/vendor/laravel-toaster-magic/assets/{path}'
-     * and attempts to serve the matching asset from the package's internal assets directory.
-     *
-     * It determines the proper MIME type for common asset extensions
-     * and adds CORS headers allowing access from any origin.
-     *
-     * If the requested asset file does not exist, a 404 HTTP response is returned.
-     *
-     * @return void
-     */
-    private function updateProcessingAssetRoutes(): void
-    {
-        Route::get('/vendor/laravel-toaster-magic/assets/{path}', function ($path) {
-            $file = __DIR__ . '/../assets/' . $path;
-
-            if (!file_exists($file)) {
-                abort(404);
-            }
-
-            $extension = pathinfo($file, PATHINFO_EXTENSION);
-
-            $mimeTypes = [
-                'css'   => 'text/css',
-                'js'    => 'application/javascript',
-                'png'   => 'image/png',
-                'jpg'   => 'image/jpeg',
-                'jpeg'  => 'image/jpeg',
-                'gif'   => 'image/gif',
-                'svg'   => 'image/svg+xml',
-                'woff'  => 'font/woff',
-                'woff2' => 'font/woff2',
-                'ttf'   => 'font/ttf',
-                'otf'   => 'font/otf',
-                'eot'   => 'application/vnd.ms-fontobject',
-                'json'  => 'application/json',
-                'ico'   => 'image/x-icon',
-            ];
-
-            $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
-
-            return Response::file($file, [
-                'Content-Type' => $mimeType,
-                'Access-Control-Allow-Origin' => '*',
-            ]);
-        })->where('path', '.*');
-    }
-
-    /**
      * Determine and set the 'system_processing_directory' configuration value.
      *
      * This detects if the current PHP script is being executed from the public directory
@@ -202,98 +151,4 @@ class ToastMagicServiceProvider extends ServiceProvider
         config(['laravel-toaster-magic.system_processing_directory' => $systemProcessingDirectory]);
     }
 
-    /**
-     * Get the current installed version of the package from composer.lock.
-     *
-     * Reads and parses the composer.lock file located at the project root,
-     * searches for the package 'devrabiul/laravel-toaster-magic',
-     * and returns the version string if found.
-     *
-     * Returns null if:
-     * - composer.lock does not exist
-     * - package is not found in composer.lock
-     *
-     * @return string|null Version string of the installed package, e.g. "1.0.1" or null if unavailable.
-     */
-    private function getCurrentVersion(): ?string
-    {
-        $lockFile = base_path('composer.lock');
-        if (!file_exists($lockFile)) {
-            return null;
-        }
-
-        $lockData = json_decode(file_get_contents($lockFile), true);
-        $packages = $lockData['packages'] ?? [];
-
-        foreach ($packages as $package) {
-            if ($package['name'] === 'devrabiul/laravel-toaster-magic') {
-                return $package['version'];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the version recorded in the published version.php file.
-     *
-     * This file is expected to be located at:
-     * `public/vendor/devrabiul/laravel-toaster-magic/version.php`
-     *
-     * If the file exists and returns an array with a 'version' key,
-     * that version string is returned.
-     *
-     * Returns null if the file does not exist or does not contain a version.
-     *
-     * @return string|null Previously published version string or null if none found.
-     */
-    private function getPublishedVersion(): ?string
-    {
-        $versionFile = public_path('vendor/devrabiul/laravel-toaster-magic/version.php');
-
-        if (!File::exists($versionFile)) {
-            return null;
-        }
-
-        $versionData = include $versionFile;
-
-        return $versionData['version'] ?? null;
-    }
-
-    /**
-     * Publish the assets if the current package version differs from the published version.
-     *
-     * This method performs the following steps:
-     * - Retrieves the current installed package version.
-     * - Retrieves the previously published version from the public directory.
-     * - If versions differ (or no published version exists), deletes the existing assets folder.
-     * - Copies the new assets from the package's `assets` directory to the public vendor folder.
-     * - Writes/updates the version.php file in the public folder with the current version.
-     *
-     * This ensures the public assets are always in sync with the installed package version.
-     *
-     * @return void
-     */
-    private function handleVersionedPublishing(): void
-    {
-        $currentVersion = $this->getCurrentVersion();
-        $publishedVersion = $this->getPublishedVersion();
-
-        if ($currentVersion && $currentVersion !== $publishedVersion) {
-            $assetsPath = public_path('vendor/devrabiul/laravel-toaster-magic');
-            $sourceAssets = __DIR__ . '/../assets';
-
-            // Remove old assets if they exist
-            if (File::exists($assetsPath)) {
-                File::deleteDirectory($assetsPath);
-            }
-
-            // Copy new assets from package directory to public directory
-            File::copyDirectory($sourceAssets, $assetsPath);
-
-            // Write new version.php file with the current version
-            $versionPhpContent = "<?php\n\nreturn [\n    'version' => '{$currentVersion}',\n];\n";
-            File::put($assetsPath . '/version.php', $versionPhpContent);
-        }
-    }
 }
