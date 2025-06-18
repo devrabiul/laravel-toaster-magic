@@ -65,7 +65,7 @@ class ToastMagic
     public function styles(): string
     {
         $path = public_path('vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css');
-        
+
         if (File::exists($path)) {
             if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
                 return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css') . '">';
