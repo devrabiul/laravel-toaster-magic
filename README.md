@@ -114,6 +114,16 @@ public function store()
 {
     // Your logic
     ToastMagic::success('Successfully Created');
+    
+    // Another Way - message and description
+    ToastMagic::success("Success!", "Your data has been saved!");
+    
+    // Another Way - message and description
+    ToastMagic::success("Success!", "Your data has been saved!", [
+        'showCloseBtn' => true,
+        'customBtnText' => 'Link Text',
+        'customBtnLink' => 'https:/demo.com',
+    ]);
     return back();
 }
 ```

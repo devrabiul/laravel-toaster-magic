@@ -4,14 +4,15 @@ namespace Devrabiul\ToastMagic\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+
 /**
- * @method static message():string
- * @method static add($type, $message, $description = null, $options = []):void
- * @method static info($message, $description = null, $options = []):void
- * @method static success($message, $description = null, $options = []):void
- * @method static warning($message, $description = null, $options = []):void
- * @method static error($message, $description = null, $options = []):void
- * @method static clear($message, $description = null, $options = []):void
+ * @method static string message()
+ * @method static void add(string $type, string $message, string|null $description = null, array $options = [])
+ * @method static void info(string $message, string|null $description = null, array $options = [])
+ * @method static void success(string $message, string|null $description = null, array $options = [])
+ * @method static void warning(string $message, string|null $description = null, array $options = [])
+ * @method static void error(string $message, string|null $description = null, array $options = [])
+ * @method static void clear(): void
  */
 class ToastMagic extends Facade
 {

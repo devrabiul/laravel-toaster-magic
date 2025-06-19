@@ -63,16 +63,15 @@ class ToastMagic
      */
     public function styles(): string
     {
-        $path = public_path('vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css');
-
-        if (File::exists($path)) {
+        $stylePath = 'vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css';
+        if (File::exists(public_path($stylePath))) {
             if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
-                return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css') . '">';
+                $path = url($stylePath);
             } else {
-                return '<link rel="stylesheet" href="' . url('public/vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css') . '">';
+                $path = url('public/'.$stylePath);
             }
+            return '<link rel="stylesheet" href="' . $path . '">';
         }
-        
         return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
     }
 
@@ -84,8 +83,7 @@ class ToastMagic
     public function scriptsPath(): string
     {
         $config = (array)$this->config->get('laravel-toaster-magic');
-        $usePublicPrefix = config('laravel-toaster-magic.system_processing_directory') !== 'public';
-        $prefix = $usePublicPrefix ? 'public/' : '';
+        $prefix = config('laravel-toaster-magic.system_processing_directory') !== 'public' ? 'public/' : '';
         $scripts = [];
 
         if (!empty($config['livewire_enabled'])) {
@@ -116,7 +114,6 @@ class ToastMagic
     {
         return '<script src="' . url($src) . '"></script>';
     }
-
 
     /**
      * Generate the HTML for the required scripts and initialize toast messages.

@@ -240,7 +240,6 @@ body[theme="dark"] {
 .toast-custom-btn {
     --toast-custom-btn-bg-rgb: var(--toast-magic-success-rgb);
     font-size: 0.75rem;
-    border: 0;
     white-space: nowrap;
     background-color: rgba(var(--toast-custom-btn-bg-rgb), 0.2);
     color: var(--toast-custom-btn-color);
@@ -250,7 +249,6 @@ body[theme="dark"] {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
     text-decoration: none;
     border-radius: .275rem;
     font-weight: 600;
