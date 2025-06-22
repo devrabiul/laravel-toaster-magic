@@ -136,6 +136,14 @@ class ToastMagic
 
         $script .= 'document.addEventListener("DOMContentLoaded", function() {';
 
+        if ($config['theme'] != 'default') {
+            $script .= 'var toastContainer = document.querySelector(".toast-container");';
+            $script .= 'if (toastContainer) {';
+            $script .= 'toastContainer.classList.remove("theme-default");';
+            $script .= 'toastContainer.classList.add("theme-' . $config['theme'] . '");';
+            $script .= '}';
+        }
+
         $delay = 0; // Initial delay of 0ms
 
         foreach ($messages as $message) {
