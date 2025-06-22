@@ -123,12 +123,15 @@ class AssetsServiceProvider extends ServiceProvider
      */
     private function handleVersionedPublishing(?string $name): void
     {
-        $currentVersion = $this->getCurrentVersion(name: $name);
-        $publishedVersion = $this->getPublishedVersion(name: $name);
+        $currentVersionRaw = $this->getCurrentVersion(name: $name);
+        $publishedVersionRaw = $this->getPublishedVersion(name: $name);
+
+        $currentVersion = $this->normalizeVersion($currentVersionRaw);
+        $publishedVersion = $this->normalizeVersion($publishedVersionRaw);
 
         if ($currentVersion && $currentVersion !== $publishedVersion) {
-            $assetsPath = public_path('vendor/'.$name);
-            $sourceAssets = base_path('vendor/'.$name.'/assets');
+            $assetsPath = public_path('vendor/' . $name);
+            $sourceAssets = base_path('vendor/' . $name . '/assets');
 
             // Ensure source assets exist before proceeding
             if (!File::exists($sourceAssets)) {
@@ -145,7 +148,28 @@ class AssetsServiceProvider extends ServiceProvider
 
             // Create version.php file with the current version
             $versionPhpContent = "<?php\n\nreturn [\n    'version' => '{$currentVersion}',\n];\n";
-            File::put(public_path('vendor/'.$name.'/version.php'), $versionPhpContent);
+            File::put(public_path('vendor/' . $name . '/version.php'), $versionPhpContent);
         }
     }
+
+    /**
+     * Normalize version to numeric-only format (e.g., strip ^, v, ~).
+     *
+     * @param string|null $version
+     * @return string|null
+     */
+    private function normalizeVersion(?string $version): ?string
+    {
+        if (!$version) {
+            return null;
+        }
+
+        // Match numeric versions like 1.0.0, 1.1, 2.3.4-beta1 etc.
+        if (preg_match('/\d+\.\d+(?:\.\d+)?/', $version, $matches)) {
+            return $matches[0];
+        }
+
+        return null;
+    }
+
 }
