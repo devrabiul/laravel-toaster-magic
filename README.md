@@ -1,9 +1,11 @@
 # 🍞 ToastMagic - Laravel Toaster (With Livewire v3 Support)
 
-A powerful and flexible toaster package for Laravel applications, designed to enhance user experience with elegant, customizable toast notifications.
+Laravel Toaster Magic is a lightweight and flexible toast notification package for Laravel applications — built with zero dependencies on jQuery, Bootstrap, or Tailwind.
+It’s fully compatible with Livewire, supports custom events, and now features a Material-inspired design for a modern UX out of the box.
 
 [![Latest Stable Version](https://poser.pugx.org/devrabiul/laravel-toaster-magic/v/stable)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 [![Total Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/downloads)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+[![Monthly Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/d/monthly)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 ![GitHub license](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)
 ![GitHub Repo stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)
 
