@@ -9,7 +9,7 @@
     --toast-magic-warning-rgb: 255, 193, 7;
     --toast-item-bg: #fff;
     --toast-item-color: #000;
-    --toast-magic-box-shadow: -5px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    --toast-magic-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
     --toast-close-btn-color: #000;
     --toast-custom-btn-color: #000;
 }
@@ -133,6 +133,11 @@ body[theme="dark"] {
     align-items: center !important;
 }
 
+.toast-container.theme-material .toast-item {
+    border-radius: 0;
+    --toast-magic-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
 .toast-container.toast-top-start .toast-item,
 .toast-container.toast-bottom-start .toast-item {
     transform: translateX(-110%);
@@ -193,6 +198,7 @@ body[theme="dark"] {
     justify-content: start;
     align-items: center;
     min-height: 22px;
+    line-height: 1;
 }
 
 .toast-item-content-center .toast-body h4 {
@@ -237,7 +243,7 @@ body[theme="dark"] {
     opacity: 1;
 }
 
-.toast-custom-btn {
+.toast-container .toast-custom-btn {
     --toast-custom-btn-bg-rgb: var(--toast-magic-success-rgb);
     font-size: 0.75rem;
     white-space: nowrap;
@@ -255,7 +261,11 @@ body[theme="dark"] {
     border: 1px solid transparent;
 }
 
-.toast-custom-btn:hover {
+.toast-container.theme-material .toast-custom-btn {
+    border-radius: 0;
+}
+
+.toast-container .toast-custom-btn:hover {
     border: 1px solid rgba(var(--toast-custom-btn-bg-rgb), 1);
 }
 
