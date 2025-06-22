@@ -192,6 +192,24 @@ $this->dispatch('toastMagic',
 
 ---
 
+### 5. ✅ Themes
+
+Change Theme by updating your config file:
+
+```php
+// config/laravel-toaster-magic.php
+
+return [
+    'options' => [
+        // your toast options..
+        "theme" => "material", // "default, material".
+    ],
+    // your toast options..
+];
+```
+
+---
+
 ## 🧩 Alternative Syntax & Fluent API
 
 ToastMagic provides both simple and advanced APIs to suit your style.
