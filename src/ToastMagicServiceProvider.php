@@ -68,19 +68,6 @@ class ToastMagicServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/laravel-toaster-magic.php' => config_path('laravel-toaster-magic.php'),
         ]);
-
-        $sourceAssets = __DIR__ . '/../assets';
-        $publicAssets = public_path('vendor/devrabiul/laravel-toaster-magic');
-
-        if (File::exists($publicAssets)) {
-            File::deleteDirectory($publicAssets);
-            Log::info("[ToastMagic] Old assets deleted.");
-        }
-
-        if (File::exists($sourceAssets)) {
-            File::copyDirectory($sourceAssets, $publicAssets);
-            Log::info("[ToastMagic] Assets copied successfully.");
-        }
     }
 
     /**
