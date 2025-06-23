@@ -2,6 +2,8 @@
 
 namespace Devrabiul\ToastMagic;
 
+use Exception;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Support\MessageBag;
@@ -26,7 +28,7 @@ class ToastMagic
     /**
      * The Config Handler.
      *
-     * @var \Illuminate\Contracts\Config\Repository
+     * @var Repository
      */
     protected $config;
 
@@ -68,7 +70,7 @@ class ToastMagic
             if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
                 $path = url($stylePath);
             } else {
-                $path = url('public/'.$stylePath);
+                $path = url('public/' . $stylePath);
             }
             return '<link rel="stylesheet" href="' . $path . '">';
         }
@@ -136,7 +138,7 @@ class ToastMagic
 
         $script .= 'document.addEventListener("DOMContentLoaded", function() {';
 
-        if ($config['theme'] != 'default') {
+        if (isset($config['theme']) && $config['theme'] != 'default') {
             $script .= 'var toastContainer = document.querySelector(".toast-container");';
             $script .= 'if (toastContainer) {';
             $script .= 'toastContainer.classList.remove("theme-default");';
@@ -156,7 +158,7 @@ class ToastMagic
 
             // Add a delay for each message
             $script .= 'setTimeout(function() {
-                toastMagic.' . $message['type'] . '("' . addslashes($message['message']) . '", "' . $description . '", '. (isset($config['closeButton']) && $config['closeButton'] ? 'true' : 'false') .', "'. ($config['customBtnText'] ?? '') .'", "'. ($config['customBtnLink'] ?? '') .'");
+                toastMagic.' . $message['type'] . '("' . addslashes($message['message']) . '", "' . $description . '", ' . (isset($config['closeButton']) && $config['closeButton'] ? 'true' : 'false') . ', "' . ($config['customBtnText'] ?? '') . '", "' . ($config['customBtnLink'] ?? '') . '");
             }, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)
@@ -180,6 +182,7 @@ class ToastMagic
      * @param array $options Optional custom options for the message.
      *
      * @return void
+     * @throws Exception
      */
     public function add(string $type, string $message, string|null $description = null, array $options = []): void
     {
@@ -207,6 +210,7 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
+     * @throws Exception
      */
     public function info(string $message, string|null $description = null, array $options = []): void
     {
@@ -231,6 +235,7 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
+     * @throws Exception
      */
     public function success(string $message, string|null $description = null, array $options = []): void
     {
@@ -255,6 +260,7 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
+     * @throws Exception
      */
     public function warning(string $message, string|null $description = null, array $options = []): void
     {
@@ -279,6 +285,7 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
+     * @throws Exception
      */
     public function error(string $message, string|null $description = null, array $options = []): void
     {

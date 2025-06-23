@@ -2,13 +2,7 @@
 
 namespace Devrabiul\ToastMagic;
 
-use Exception;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class ToastMagicServiceProvider
