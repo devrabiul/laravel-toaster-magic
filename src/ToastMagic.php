@@ -67,12 +67,7 @@ class ToastMagic
     {
         $stylePath = 'vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css';
         if (File::exists(public_path($stylePath))) {
-            if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
-                $path = url($stylePath);
-            } else {
-                $path = url('public/' . $stylePath);
-            }
-            return '<link rel="stylesheet" href="' . $path . '">';
+            return '<link rel="stylesheet" href="' . $this->getDynamicAsset($stylePath) . '">';
         }
         return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
     }
@@ -85,28 +80,21 @@ class ToastMagic
     public function scriptsPath(): string
     {
         $config = (array)$this->config->get('laravel-toaster-magic');
-        $prefix = config('laravel-toaster-magic.system_processing_directory') !== 'public' ? 'public/' : '';
         $scripts = [];
 
         if (!empty($config['livewire_enabled'])) {
-            $file1 = public_path('vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/laravel-toaster-magic.js');
-            $file2 = public_path('vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/livewire-toaster-magic-v3.js');
-
-            if (File::exists($file1) && File::exists($file2)) {
-                $scripts[] = $this->scriptTag($prefix . 'vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/laravel-toaster-magic.js');
-                $scripts[] = $this->scriptTag($prefix . 'vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/livewire-toaster-magic-v3.js');
-            } else {
-                $scripts[] = $this->scriptTag('vendor/devrabiul/laravel-toaster-magic/assets/js/livewire-v3/laravel-toaster-magic.js');
-                $scripts[] = $this->scriptTag('vendor/devrabiul/laravel-toaster-magic/assets/js/livewire-v3/livewire-toaster-magic-v3.js');
+            $file1 = 'vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/laravel-toaster-magic.js';
+            $file2 = 'vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/livewire-toaster-magic-v3.js';
+            if (File::exists(public_path($file1)) && File::exists(public_path($file2))) {
+                $scripts[] = $this->scriptTag($file1);
+                $scripts[] = $this->scriptTag($file2);
             }
-
             return implode('', $scripts);
         }
 
         $defaultJsPath = 'vendor/devrabiul/laravel-toaster-magic/js/laravel-toaster-magic.js';
-
         if (File::exists(public_path($defaultJsPath))) {
-            return $this->scriptTag($prefix . $defaultJsPath);
+            return $this->scriptTag($defaultJsPath);
         }
 
         return $this->scriptTag('vendor/devrabiul/laravel-toaster-magic/assets/js/laravel-toaster-magic.js');
@@ -114,7 +102,22 @@ class ToastMagic
 
     private function scriptTag(string $src): string
     {
-        return '<script src="' . url($src) . '"></script>';
+        return '<script src="' . $this->getDynamicAsset($src) . '"></script>';
+    }
+
+    private function getDynamicAsset(string $path): string
+    {
+        if (config('laravel-toaster-magic.system_processing_directory') == 'public') {
+            $position = strpos($path, 'public/');
+            $result = $path;
+            if ($position === 0) {
+                $result = preg_replace('/public/', '', $path, 1);
+            }
+        } else {
+            $result = in_array(request()->ip(), ['127.0.0.1']) ? $path : 'public/' . $path;
+        }
+
+        return asset($result);
     }
 
     /**
