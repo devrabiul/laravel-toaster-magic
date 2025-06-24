@@ -7,7 +7,7 @@ It’s fully compatible with Livewire, supports custom events, and now features 
 [![Total Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/downloads)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 [![Monthly Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/d/monthly)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 ![GitHub license](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)
-[![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/https://github.com/devrabiul/laravel-toaster-magic)
+[![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/devrabiul/laravel-toaster-magic)
 ![GitHub Repo stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)
 
 ---
