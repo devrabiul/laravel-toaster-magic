@@ -140,14 +140,24 @@ class ToastMagic
         $script .= 'window.toastMagicConfig = ' . json_encode($config, JSON_UNESCAPED_SLASHES) . ';';
 
         $script .= 'document.addEventListener("DOMContentLoaded", function() {';
+        $script .= 'var toastContainer = document.querySelector(".toast-container");';
 
         if (isset($config['theme']) && $config['theme'] != 'default') {
-            $script .= 'var toastContainer = document.querySelector(".toast-container");';
             $script .= 'if (toastContainer) {';
             $script .= 'toastContainer.classList.remove("theme-default");';
             $script .= 'toastContainer.classList.add("theme-' . $config['theme'] . '");';
             $script .= '}';
         }
+
+        $script .= 'if (toastContainer) {';
+        $script .= 'toastContainer.classList.remove("toast-top-start");';
+        $script .= 'toastContainer.classList.remove("toast-top-end");';
+        $script .= 'toastContainer.classList.remove("toast-top-center");';
+        $script .= 'toastContainer.classList.remove("toast-bottom-start");';
+        $script .= 'toastContainer.classList.remove("toast-bottom-end");';
+        $script .= 'toastContainer.classList.remove("toast-bottom-center");';
+        $script .= 'toastContainer.classList.add("' . ($config['positionClass'] ?? "toast-top-end") . '");';
+        $script .= '}';
 
         $delay = 0; // Initial delay of 0ms
 
