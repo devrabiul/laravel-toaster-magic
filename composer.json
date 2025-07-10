@@ -7,8 +7,10 @@
     "license": "MIT",
     "authors": [
         {
-        "name": "Muhammad Rabiul",
-        "email": "devrabiul@gmail.com"
+            "name": "Muhammad Rabiul",
+            "email": "devrabiul@gmail.com",
+            "homepage": "https://rixetbd.com",
+            "role": "Software Engineer"
         }
     ],
     "autoload": {
