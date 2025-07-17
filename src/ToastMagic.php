@@ -234,9 +234,9 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('info', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('info', rtrim(__($messageString), "<br>"), __($description), $options);
         } else {
-            $this->add('info', $message, $description, $options);
+            $this->add('info', __($message), __($description), $options);
         }
     }
 
@@ -259,9 +259,9 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('success', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('success', rtrim(__($messageString), "<br>"), __($description), $options);
         } else {
-            $this->add('success', $message, $description, $options);
+            $this->add('success', __($message), __($description), $options);
         }
     }
 
@@ -284,9 +284,9 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('warning', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('warning', rtrim(__($messageString), "<br>"), __($description), $options);
         } else {
-            $this->add('warning', $message, $description, $options);
+            $this->add('warning', __($message), __($description), $options);
         }
     }
 
@@ -309,9 +309,9 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('error', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('error', rtrim(__($messageString), "<br>"), __($description), $options);
         } else {
-            $this->add('error', $message, $description, $options);
+            $this->add('error', __($message), __($description), $options);
         }
     }
 
