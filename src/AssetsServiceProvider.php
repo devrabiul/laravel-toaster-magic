@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\File;
 
 /**
- * Class ToastMagicServiceProvider
+ * Class AssetsServiceProvider
  *
  * Service provider for the ToastMagic Laravel package.
  *
@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\File;
  * - Managing version-based asset publishing.
  * - Configuring processing directory detection.
  * - Registering package publishing commands.
- * - Registering the ToastMagic singleton.
  *
  * @package Devrabiul\ToastMagic
  */
@@ -129,7 +128,7 @@ class AssetsServiceProvider extends ServiceProvider
         $currentVersion = $this->normalizeVersion($currentVersionRaw);
         $publishedVersion = $this->normalizeVersion($publishedVersionRaw);
 
-        if ($currentVersion && $currentVersion !== $publishedVersion) {
+        if ((isNull($currentVersion) && isNull($publishedVersion)) || ($currentVersion && $currentVersion !== $publishedVersion)) {
             $assetsPath = public_path('vendor/' . $name);
             $sourceAssets = base_path('vendor/' . $name . '/assets');
 
