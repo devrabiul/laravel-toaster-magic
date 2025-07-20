@@ -128,7 +128,7 @@ class AssetsServiceProvider extends ServiceProvider
         $currentVersion = $this->normalizeVersion($currentVersionRaw);
         $publishedVersion = $this->normalizeVersion($publishedVersionRaw);
 
-        if ((isNull($currentVersion) && isNull($publishedVersion)) || ($currentVersion && $currentVersion !== $publishedVersion)) {
+        if ((is_null($currentVersion) && is_null($publishedVersion)) || ($currentVersion && $currentVersion !== $publishedVersion)) {
             $assetsPath = public_path('vendor/' . $name);
             $sourceAssets = base_path('vendor/' . $name . '/assets');
 
