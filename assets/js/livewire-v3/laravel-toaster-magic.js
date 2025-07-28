@@ -34,22 +34,29 @@
     if (typeof window.ToastMagic === "undefined") {
         window.ToastMagic = class ToastMagic {
             constructor() {
+                this.ensureContainer();
+            }
+
+            ensureContainer() {
                 const config = window.toastMagicConfig || {};
                 this.toastMagicPosition = config.positionClass || "toast-top-end";
                 this.toastMagicCloseButton = config.closeButton || false;
                 this.toastMagicTheme = config.theme || 'default';
 
                 this.toastContainer = document.querySelector(".toast-container");
+
                 if (!this.toastContainer) {
                     this.toastContainer = document.createElement("div");
                     this.toastContainer.classList.add("toast-container");
                     document.body.appendChild(this.toastContainer);
                 }
 
-                this.toastContainer.className = "toast-container " + this.toastMagicPosition + " theme-" + this.toastMagicTheme;
+                this.toastContainer.className = "toast-container" + " " + this.toastMagicPosition + " " + "theme-" + this.toastMagicTheme;
             }
 
             show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "" }) {
+                this.ensureContainer();
+
                 let toastClass, toastClassBasic;
                 switch (type) {
                     case "success":
