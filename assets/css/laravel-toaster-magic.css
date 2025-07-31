@@ -12,6 +12,11 @@
     --toast-magic-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
     --toast-close-btn-color: #000;
     --toast-custom-btn-color: #000;
+
+
+    --toast-color-mode-progress-bg: 0, 0, 0;
+
+
 }
 
 body[theme="dark"] {
@@ -28,6 +33,8 @@ body[theme="dark"] {
     --toast-magic-box-shadow: -5px 0px 30px 0px rgba(255, 255, 255, 0.1);
     --toast-close-btn-color: #FFF;
     --toast-custom-btn-color: rgba(255, 255, 255, .8);
+
+    --toast-color-mode-progress-bg: 255, 255, 255;
 }
 
 .toast-text-success {
@@ -310,6 +317,58 @@ body[theme="dark"] {
     background-color: rgba(var(--toast-magic-success-rgb), var(--toast-item-after-opacity, 1));
     transform-origin: right;
     animation: toastProgress 3s linear forwards;
+}
+
+.toast-container.toast-color-true .toast-item.toast-success {
+    background-color: rgba(var(--toast-magic-success-rgb), var(--toast-item-after-opacity, 1));
+}
+
+.toast-container.toast-color-true .toast-item.toast-info {
+    background-color: rgba(var(--toast-magic-info-rgb), var(--toast-item-after-opacity, 1));
+}
+
+.toast-container.toast-color-true .toast-item.toast-warning {
+    background-color: rgba(var(--toast-magic-warning-rgb), var(--toast-item-after-opacity, 1));
+}
+
+.toast-container.toast-color-true .toast-item.toast-danger {
+    background-color: rgba(var(--toast-magic-danger-rgb), var(--toast-item-after-opacity, 1));
+}
+
+.toast-container.toast-color-true .toast-item.toast-success::before, 
+.toast-container.toast-color-true .toast-item.toast-info::before,
+.toast-container.toast-color-true .toast-item.toast-warning::before,
+.toast-container.toast-color-true .toast-item.toast-danger::before {
+    background-color: rgba(var(--toast-color-mode-progress-bg), var(--toast-item-before-opacity, 0.4));
+}
+
+.toast-container.toast-color-true .toast-item.toast-success::after, 
+.toast-container.toast-color-true .toast-item.toast-info::after,
+.toast-container.toast-color-true .toast-item.toast-warning::after,
+.toast-container.toast-color-true .toast-item.toast-danger::after {
+    background-color: rgba(var(--toast-color-mode-progress-bg), var(--toast-item-after-opacity, 1));
+}
+
+.toast-container.toast-color-true .toast-body-icon-container,
+.toast-container.toast-color-true .toast-close-btn,
+.toast-container.toast-color-true .toast-item {
+    --toast-item-color: #FFFFFF;
+    --toast-close-btn-color: #FFFFFF;
+    color: var(--toast-item-color);
+}
+
+.toast-container.toast-color-true .toast-custom-btn {
+    background-color: #FFF;
+    color: #000;
+}
+
+.toast-container.toast-color-true .toast-custom-btn:hover {
+    border: 1px solid rgba(var(--toast-color-mode-progress-bg), var(--toast-item-before-opacity, 0.4));
+}
+
+.toast-container.toast-color-true .toast-item-content-center .toast-body h4,
+.toast-container.toast-color-true .toast-item-content-center .toast-body p {
+    letter-spacing: 1px;
 }
 
 .toast-item.toast-danger::before {

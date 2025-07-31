@@ -213,6 +213,25 @@ return [
 
 ---
 
+### 6. 🎨 Enabling Color Mode
+
+ToastMagic supports a **color mode** that dynamically applies toast colors based on the toast type (`success`, `error`, `warning`, `info`). This makes your notifications visually consistent and meaningful without manually specifying colors or themes.
+
+Enable color mode in your configuration file `config/laravel-toaster-magic.php`:
+
+```php
+return [
+    'options' => [
+        // other options...
+        'color_mode' => true, // Automatically apply colors based on toast type
+    ],
+    'livewire_enabled' => false,
+    'livewire_version' => 'v3',
+];
+```
+
+---
+
 ## 🧩 Alternative Syntax & Fluent API
 
 ToastMagic provides both simple and advanced APIs to suit your style.
@@ -255,6 +274,16 @@ Customize toast display position using any of the following:
 | `toast-bottom-center` | Bottom center              |
 
 ---
+
+
+## 🌙 Enable Dark Mode
+
+Add `theme="dark"` to your `<body>` tag to automatically enable dark mode.
+
+```html
+<body theme="dark">
+```
+
 
 ## 🎯 Get Started Today!
 

@@ -34,22 +34,36 @@
     if (typeof window.ToastMagic === "undefined") {
         window.ToastMagic = class ToastMagic {
             constructor() {
+                this.setupConfig();
+                this.initToastContainer();
+            }
+
+            setupConfig() {
                 const config = window.toastMagicConfig || {};
                 this.toastMagicPosition = config.positionClass || "toast-top-end";
                 this.toastMagicCloseButton = config.closeButton || false;
-                this.toastMagicTheme = config.theme || 'default';
+                this.toastMagicTheme = config.theme || "default";
+            }
 
+            initToastContainer() {
                 this.toastContainer = document.querySelector(".toast-container");
+
                 if (!this.toastContainer) {
                     this.toastContainer = document.createElement("div");
                     this.toastContainer.classList.add("toast-container");
                     document.body.appendChild(this.toastContainer);
                 }
 
-                this.toastContainer.className = "toast-container " + this.toastMagicPosition + " theme-" + this.toastMagicTheme;
+                const classList = `toast-container ${this.toastMagicPosition} theme-${this.toastMagicTheme}`;
+                if (this.toastContainer.className !== classList) {
+                    this.toastContainer.className = classList;
+                }
             }
 
             show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "" }) {
+                this.setupConfig();
+                this.initToastContainer();
+
                 let toastClass, toastClassBasic;
                 switch (type) {
                     case "success":
