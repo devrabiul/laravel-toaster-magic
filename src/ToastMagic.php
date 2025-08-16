@@ -171,7 +171,7 @@ class ToastMagic
 
             // Add a delay for each message
             $script .= 'setTimeout(function() {
-                toastMagic.' . $message['type'] . '("' . addslashes($message['message']) . '", "' . $description . '", ' . (isset($config['closeButton']) && $config['closeButton'] ? 'true' : 'false') . ', "' . ($config['customBtnText'] ?? '') . '", "' . ($config['customBtnLink'] ?? '') . '");
+                toastMagic.' . $message['type'] . '(`' . addslashes($message['message']) . '`, `' . $description . '`, ' . (isset($config['closeButton']) && $config['closeButton'] ? 'true' : 'false') . ', "' . ($config['customBtnText'] ?? '') . '", "' . ($config['customBtnLink'] ?? '') . '");
             }, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)
