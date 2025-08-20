@@ -135,9 +135,34 @@ body[theme="dark"] {
     background-clip: padding-box;
     border: 1px solid transparent;
     box-shadow: var(--toast-magic-box-shadow);
-    border-radius: 10px;
+    border-radius: .5rem;
     padding: 1.25rem !important;
     align-items: center !important;
+}
+
+.toast-container.theme-default.toast-gradient-enable .toast-item,
+.toast-container.theme-material.toast-gradient-enable .toast-item {
+    --toast-item-gradient-opacity: .1;
+}
+
+.toast-container.theme-default.toast-gradient-enable .toast-item.toast-success,
+.toast-container.theme-material.toast-gradient-enable .toast-item.toast-success {
+    background-image: linear-gradient(to bottom, rgba(var(--toast-magic-success-rgb), var(--toast-item-gradient-opacity, .1)), #fff);
+}
+
+.toast-container.theme-default.toast-gradient-enable .toast-item.toast-info,
+.toast-container.theme-material.toast-gradient-enable .toast-item.toast-info {
+    background-image: linear-gradient(to bottom, rgba(var(--toast-magic-info-rgb), var(--toast-item-gradient-opacity, .1)), #fff);
+}
+
+.toast-container.theme-default.toast-gradient-enable .toast-item.toast-warning,
+.toast-container.theme-material.toast-gradient-enable .toast-item.toast-warning {
+    background-image: linear-gradient(to bottom, rgba(var(--toast-magic-warning-rgb), var(--toast-item-gradient-opacity, .1)), #fff);
+}
+
+.toast-container.theme-default.toast-gradient-enable .toast-item.toast-danger,
+.toast-container.theme-material.toast-gradient-enable .toast-item.toast-danger {
+    background-image: linear-gradient(to bottom, rgba(var(--toast-magic-danger-rgb), var(--toast-item-gradient-opacity, .1)), #fff);
 }
 
 .toast-container.theme-material .toast-item {
@@ -212,6 +237,7 @@ body[theme="dark"] {
     font-size: 0.875rem;
     font-weight: 500;
     margin: 0;
+    line-height: 1.15rem;
 }
 
 .toast-item-content-center .toast-body p {
@@ -219,6 +245,7 @@ body[theme="dark"] {
     font-weight: 400;
     margin: 0;
     padding: 0;
+    white-space: pre-line;
 }
 
 .toast-item-content-center .toast-body-end {

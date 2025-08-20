@@ -65,7 +65,7 @@ class ToastMagic
      */
     public function styles(): string
     {
-        $stylePath = 'vendor/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css';
+        $stylePath = 'packages/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css';
         if (File::exists(public_path($stylePath))) {
             return '<link rel="stylesheet" href="' . $this->getDynamicAsset($stylePath) . '">';
         }
@@ -83,8 +83,8 @@ class ToastMagic
         $scripts = [];
 
         if (!empty($config['livewire_enabled'])) {
-            $file1 = 'vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/laravel-toaster-magic.js';
-            $file2 = 'vendor/devrabiul/laravel-toaster-magic/js/livewire-v3/livewire-toaster-magic-v3.js';
+            $file1 = 'packages/devrabiul/laravel-toaster-magic/js/livewire-v3/laravel-toaster-magic.js';
+            $file2 = 'packages/devrabiul/laravel-toaster-magic/js/livewire-v3/livewire-toaster-magic-v3.js';
             if (File::exists(public_path($file1)) && File::exists(public_path($file2))) {
                 $scripts[] = $this->scriptTag($file1);
                 $scripts[] = $this->scriptTag($file2);
@@ -92,7 +92,7 @@ class ToastMagic
             return implode('', $scripts);
         }
 
-        $defaultJsPath = 'vendor/devrabiul/laravel-toaster-magic/js/laravel-toaster-magic.js';
+        $defaultJsPath = 'packages/devrabiul/laravel-toaster-magic/js/laravel-toaster-magic.js';
         if (File::exists(public_path($defaultJsPath))) {
             return $this->scriptTag($defaultJsPath);
         }
@@ -149,6 +149,18 @@ class ToastMagic
             $script .= '}';
         }
 
+        if (isset($config['gradient_enable']) && $config['gradient_enable']) {
+            $script .= 'if (toastContainer) {';
+            $script .= 'toastContainer.classList.add("toast-gradient-enable");';
+            $script .= '}';
+        }
+
+        if (isset($config['color_mode']) && $config['color_mode']) {
+            $script .= 'if (toastContainer) {';
+            $script .= 'toastContainer.classList.add("toast-color-true");';
+            $script .= '}';
+        }
+
         $script .= 'if (toastContainer) {';
         $script .= 'toastContainer.classList.remove("toast-top-start");';
         $script .= 'toastContainer.classList.remove("toast-top-end");';
@@ -167,12 +179,29 @@ class ToastMagic
                 $config = array_merge($config, $message['options']);
             }
 
-            $description = addslashes($message['description']) ?: null;
-
             // Add a delay for each message
-            $script .= 'setTimeout(function() {
-                toastMagic.' . $message['type'] . '("' . addslashes($message['message']) . '", "' . $description . '", ' . (isset($config['closeButton']) && $config['closeButton'] ? 'true' : 'false') . ', "' . ($config['customBtnText'] ?? '') . '", "' . ($config['customBtnLink'] ?? '') . '");
-            }, ' . $delay . ');';
+            $messageText = $message['message'] ?? '';
+            $descriptionText = $message['description'] ?? '';
+
+
+            // Replace 2 or more consecutive newlines with a single newline
+            $messageText = preg_replace("/(\r\n|\r|\n){2,}/", "\n", $messageText);
+            $descriptionText = preg_replace("/(\r\n|\r|\n){2,}/", "\n", $descriptionText);
+
+            // Then convert remaining single newlines to <br>
+            $messageText = str_replace(["\r\n", "\r", "\n"], '<br>', $messageText);
+            $descriptionText = str_replace(["\r\n", "\r", "\n"], '<br>', $descriptionText);
+            $descriptionText = str_replace('\n', '<br>', $descriptionText);
+
+            // json_encode safely escapes quotes for JS
+            $script .= 'setTimeout(function() {';
+            $script .= 'toastMagic.' . $message['type'] . '('
+                . json_encode($messageText) . ', '
+                . json_encode($descriptionText) . ', '
+                . (!empty($config['closeButton']) ? 'true' : 'false') . ', '
+                . json_encode($config['customBtnText'] ?? '') . ', '
+                . json_encode($config['customBtnLink'] ?? '') . ');';
+            $script .= '}, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)
             $delay += 1000;

@@ -50,7 +50,7 @@ class ToastMagicServiceProvider extends ServiceProvider
      *
      * This method registers:
      * - Configuration file publishing to the application's config directory.
-     * - Asset publishing to the public vendor directory, replacing old assets if found.
+     * - Asset publishing to the public packages directory, replacing old assets if found.
      *
      * It is typically called when the application is running in console mode
      * to enable artisan vendor:publish commands.
