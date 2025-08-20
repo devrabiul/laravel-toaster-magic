@@ -113,6 +113,12 @@ class ToastMagic
             if ($position === 0) {
                 $result = preg_replace('/public/', '', $path, 1);
             }
+        } else if (
+            (str_contains(realpath(public_path()), 'public\public') ||
+            str_contains(realpath(public_path()), 'public/public')) &&
+            PHP_OS_FAMILY === 'Windows'
+        ) {
+            $result = 'public/' . $path;
         } else {
             $result = in_array(request()->ip(), ['127.0.0.1']) ? $path : 'public/' . $path;
         }
