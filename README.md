@@ -230,6 +230,25 @@ return [
 ];
 ```
 
+### 7. 🎨 Enabling Gradient Mode
+
+Laravel Toaster Magic now supports a **gradient mode**, which dynamically applies toast colors based on the toast type (`success`, `error`, `warning`, `info`). This ensures that your notifications are visually consistent and meaningful **without manually specifying colors or themes**.
+
+To enable gradient mode, update your configuration file `config/laravel-toaster-magic.php`:
+
+```php
+return [
+    'options' => [
+        // other options...
+        "gradient_enable" => true, // Only available for default and material themes
+    ],
+    'livewire_enabled' => false,
+    'livewire_version' => 'v3',
+];
+```
+
+> **Note:** Gradient mode works only with the **default** and **material** themes.
+
 ---
 
 ## 🧩 Alternative Syntax & Fluent API
