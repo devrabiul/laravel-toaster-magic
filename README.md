@@ -12,30 +12,11 @@ It’s fully compatible with Livewire, supports custom events, and now features 
 
 ---
 
-## 📚 Table of Contents
-
-- [Live Demo](#live-demo)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [1. Basic Setup](#1-basic-setup)
-  - [2. Usage in Controller](#2-usage-in-controller)
-  - [3. Usage in JavaScript (Optional)](#3-usage-in-javascript-optional)
-  - [4. Livewire v3 Support](#4-livewire-v3-support)
-- [Alternative Syntax & Fluent API](#alternative-syntax--fluent-api)
-- [Toast Position Options](#toast-position-options)
-- [Get Started Today](#-get-started-today)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
----
-
 ## 🚀 Live Demo
 
-👉 [Check out the live demo](https://laravel-toaster-magic.rixetbd.com)
+👉 [Try the Live Demo](https://packages.rixetbd.com/devrabiul/laravel-toaster-magic)
 
-![Live Demo Thumbnail](https://laravel-toaster-magic.rixetbd.com/public/assets/img/thumbnail.png)
+![Live Demo Thumbnail](https://packages.rixetbd.com/storage/app/public/package/devrabiul/laravel-toaster-magic.webp)
 
 ---
 
