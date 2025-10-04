@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Devrabiul\\LaravelPhpInspector\\' => array($baseDir . '/src'),
+    'Devrabiul\\ToastMagic\\' => array($baseDir . '/src'),
 );

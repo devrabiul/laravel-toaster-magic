@@ -1,6 +1,6 @@
 <?php
 
-namespace Devrabiul\LaravelPhpInspector;
+namespace Devrabiul\ToastMagic;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\File;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 /**
  * Class AssetsServiceProvider
  *
- * Service provider for the LaravelPhpInspector Laravel package.
+ * Service provider for the ToastMagic Laravel package.
  *
  * Handles bootstrapping of the package including
  * - Setting up asset routes for package resources.
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\File;
  * - Configuring processing directory detection.
  * - Registering package publishing commands.
  *
- * @package Devrabiul\LaravelPhpInspector
+ * @package Devrabiul\ToastMagic
  */
 class AssetsServiceProvider extends ServiceProvider
 {
@@ -37,7 +37,7 @@ class AssetsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->handleVersionedPublishing(name: 'devrabiul/laravel-php-inspector');
+        $this->handleVersionedPublishing(name: 'devrabiul/laravel-toaster-magic');
     }
 
     /**
@@ -45,9 +45,9 @@ class AssetsServiceProvider extends ServiceProvider
      *
      * This method:
      * - Loads the package config file if not already loaded.
-     * - Registers a singleton instance of the LaravelPhpInspector class in the Laravel service container.
+     * - Registers a singleton instance of the ToastMagic class in the Laravel service container.
      *
-     * This allows other parts of the application to resolve the 'LaravelPhpInspector' service.
+     * This allows other parts of the application to resolve the 'ToastMagic' service.
      *
      * @return void
      */
