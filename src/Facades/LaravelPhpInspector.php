@@ -1,6 +1,6 @@
 <?php
 
-namespace Devrabiul\ToastMagic\Facades;
+namespace Devrabiul\LaravelPhpInspector\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Facade;
  * @method static void error(string $message, string|null $description = null, array $options = [])
  * @method static void clear(): void
  */
-class ToastMagic extends Facade
+class LaravelPhpInspector extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'ToastMagic';
+        return 'LaravelPhpInspector';
     }
 }

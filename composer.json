@@ -1,32 +1,51 @@
 {
-    "name": "devrabiul/laravel-toaster-magic",
+    "name": "devrabiul/laravel-php-inspector",
     "type": "library",
-    "description": "Laravel Toaster Magic is a lightweight, flexible toast library for Laravel projects, with no jQuery, Bootstrap, or Tailwind dependency.",
-    "keywords": ["laravel", "toaster", "magic", "notifications", "toastr", "flash-notifications", "dynamic-notifications", "laravel-toastr", "php", "livewire", "livewire-toaster"],
-    "homepage": "https://github.com/devrabiul/laravel-toaster-magic",
+    "description": "A Laravel package to inspect PHP code for version compatibility using PHPCompatibility and PHP_CodeSniffer.",
+    "keywords": [
+        "laravel",
+        "php",
+        "compatibility",
+        "phpcs",
+        "php-inspector",
+        "code-quality",
+        "php-version"
+    ],
+    "homepage": "https://github.com/devrabiul/laravel-php-inspector",
     "license": "MIT",
     "authors": [
         {
             "name": "Muhammad Rabiul",
             "email": "devrabiul@gmail.com",
             "homepage": "https://rixetbd.com",
-            "role": "Software Engineer"
+            "role": "Developer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/devrabiul/laravel-php-inspector/issues",
+        "source": "https://github.com/devrabiul/laravel-php-inspector"
+    },
     "autoload": {
         "psr-4": {
-            "Devrabiul\\ToastMagic\\": "src/"
+            "Devrabiul\\LaravelPhpInspector\\": "src/"
         }
     },
     "extra": {
-        "laravel" :{
-            "providers" : [
-                "Devrabiul\\ToastMagic\\ToastMagicServiceProvider"
+        "laravel": {
+            "providers": [
+                "Devrabiul\\LaravelPhpInspector\\LaravelPhpInspectorServiceProvider"
             ],
             "aliases": {
-                "ToastMagic": "Devrabiul\\ToastMagic\\Facades\\ToastMagic"
+                "LaravelPhpInspector": "Devrabiul\\LaravelPhpInspector\\Facades\\LaravelPhpInspector"
             }
         }
     },
-    "require": {}
+    "require": {
+        "php": ">=8.0",
+        "squizlabs/php_codesniffer": "^3.13",
+        "phpcompatibility/php-compatibility": "^9.3"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
+

@@ -1,24 +1,25 @@
 <?php
 
-namespace Devrabiul\ToastMagic;
+namespace Devrabiul\LaravelPhpInspector;
 
 use Illuminate\Support\ServiceProvider;
+use Devrabiul\LaravelPhpInspector\Commands\CheckCompatibilityCommand;
 
 /**
- * Class ToastMagicServiceProvider
+ * Class LaravelPhpInspectorServiceProvider
  *
- * Service provider for the ToastMagic Laravel package.
+ * Service provider for the LaravelPhpInspector Laravel package.
  *
  * Handles bootstrapping of the package including:
  * - Setting up asset routes for package resources.
  * - Managing version-based asset publishing.
  * - Configuring processing directory detection.
  * - Registering package publishing commands.
- * - Registering the ToastMagic singleton.
+ * - Registering the LaravelPhpInspector singleton.
  *
- * @package Devrabiul\ToastMagic
+ * @package Devrabiul\LaravelPhpInspector
  */
-class ToastMagicServiceProvider extends ServiceProvider
+class LaravelPhpInspectorServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any package services.
@@ -43,6 +44,17 @@ class ToastMagicServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->registerPublishing();
         }
+        $this->registerCommands();
+    }
+
+    /**
+     * Register commands in the format of Command::class
+     */
+    protected function registerCommands(): void
+    {
+         $this->commands([
+             CheckCompatibilityCommand::class,
+         ]);
     }
 
     /**
@@ -60,7 +72,7 @@ class ToastMagicServiceProvider extends ServiceProvider
     private function registerPublishing(): void
     {
         $this->publishes([
-            __DIR__ . '/config/laravel-toaster-magic.php' => config_path('laravel-toaster-magic.php'),
+            __DIR__ . '/config/laravel-php-inspector.php' => config_path('laravel-php-inspector.php'),
         ]);
     }
 
@@ -69,22 +81,22 @@ class ToastMagicServiceProvider extends ServiceProvider
      *
      * This method:
      * - Loads the package config file if not already loaded.
-     * - Registers a singleton instance of the ToastMagic class in the Laravel service container.
+     * - Registers a singleton instance of the LaravelPhpInspector class in the Laravel service container.
      *
-     * This allows other parts of the application to resolve the 'ToastMagic' service.
+     * This allows other parts of the application to resolve the 'LaravelPhpInspector' service.
      *
      * @return void
      */
     public function register(): void
     {
-        $configPath = config_path('laravel-toaster-magic.php');
+        $configPath = config_path('laravel-php-inspector.php');
 
         if (!file_exists($configPath)) {
-            config(['laravel-toaster-magic' => require __DIR__ . '/config/laravel-toaster-magic.php']);
+            config(['laravel-php-inspector' => require __DIR__ . '/config/laravel-php-inspector.php']);
         }
 
-        $this->app->singleton('ToastMagic', function ($app) {
-            return new ToastMagic($app['session'], $app['config']);
+        $this->app->singleton('LaravelPhpInspector', function ($app) {
+            return new LaravelPhpInspector($app['session'], $app['config']);
         });
     }
 
@@ -98,7 +110,7 @@ class ToastMagicServiceProvider extends ServiceProvider
      */
     public function provides(): array
     {
-        return ['ToastMagic'];
+        return ['LaravelPhpInspector'];
     }
 
     /**
@@ -129,7 +141,7 @@ class ToastMagicServiceProvider extends ServiceProvider
             $systemProcessingDirectory = 'unknown';
         }
 
-        config(['laravel-toaster-magic.system_processing_directory' => $systemProcessingDirectory]);
+        config(['laravel-php-inspector.system_processing_directory' => $systemProcessingDirectory]);
     }
 
 }
