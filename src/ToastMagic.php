@@ -230,14 +230,13 @@ class ToastMagic
      * @param array $options Optional custom options for the message.
      *
      * @return void
-     * @throws Exception
      */
     public function add(string $type, string $message, string|null $description = null, array $options = []): void
     {
         $types = ['error', 'info', 'success', 'warning'];
 
         if (!in_array($type, $types)) {
-            throw new Exception("The $type remind message is not valid.");
+            $type = 'info'; // fallback 
         }
 
         $this->messages[] = [
@@ -258,7 +257,6 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
-     * @throws Exception
      */
     public function info(string $message, string|null $description = null, array $options = []): void
     {
@@ -283,7 +281,6 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
-     * @throws Exception
      */
     public function success(string $message, string|null $description = null, array $options = []): void
     {
@@ -308,7 +305,6 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
-     * @throws Exception
      */
     public function warning(string $message, string|null $description = null, array $options = []): void
     {
@@ -333,7 +329,6 @@ class ToastMagic
      * @param array $options The custom options.
      *
      * @return void
-     * @throws Exception
      */
     public function error(string $message, string|null $description = null, array $options = []): void
     {
