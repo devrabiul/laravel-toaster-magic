@@ -90,7 +90,10 @@
                 toast.setAttribute("aria-live", "assertive");
                 toast.setAttribute("aria-atomic", "true");
 
+                console.log(this.toastMagicTheme?.toString() == 'ios');
+
                 toast.innerHTML = `
+                <div class="theme-ios-toast-item-border"></div>
                     <div class="position-relative">
                         <div class="toast-item-content-center">
                             <div class="toast-body">

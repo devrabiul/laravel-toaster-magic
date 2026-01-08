@@ -48,13 +48,13 @@
             }
 
             show({
-                     type,
-                     heading,
-                     description = "",
-                     showCloseBtn = this.toastMagicCloseButton,
-                     customBtnText = "",
-                     customBtnLink = ""
-                 }) {
+                type,
+                heading,
+                description = "",
+                showCloseBtn = this.toastMagicCloseButton,
+                customBtnText = "",
+                customBtnLink = ""
+            }) {
                 let toastClass, toastClassBasic;
                 switch (type) {
                     case "success":
@@ -81,7 +81,12 @@
                 toast.setAttribute("aria-live", "assertive");
                 toast.setAttribute("aria-atomic", "true");
 
+                console.log(this.toastMagicTheme);
+                
+                console.log(this.toastMagicTheme?.toString() == 'ios');
+
                 toast.innerHTML = `
+                <div class="theme-ios-toast-item-border"></div>
                     <div class="position-relative">
                         <div class="toast-item-content-center">
                             <div class="toast-body">
@@ -120,24 +125,24 @@
             }
 
             success(...args) {
-                this.show({type: "success", ...this._parseArgs(args)});
+                this.show({ type: "success", ...this._parseArgs(args) });
             }
 
             error(...args) {
-                this.show({type: "error", ...this._parseArgs(args)});
+                this.show({ type: "error", ...this._parseArgs(args) });
             }
 
             warning(...args) {
-                this.show({type: "warning", ...this._parseArgs(args)});
+                this.show({ type: "warning", ...this._parseArgs(args) });
             }
 
             info(...args) {
-                this.show({type: "info", ...this._parseArgs(args)});
+                this.show({ type: "info", ...this._parseArgs(args) });
             }
 
             _parseArgs(args) {
                 const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = ""] = args;
-                return {heading, description, showCloseBtn, customBtnText, customBtnLink};
+                return { heading, description, showCloseBtn, customBtnText, customBtnLink };
             }
         };
     }
