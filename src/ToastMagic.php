@@ -120,7 +120,7 @@ class ToastMagic
         ) {
             $result = 'public/' . $path;
         } else {
-            $result = in_array(request()->ip(), ['127.0.0.1']) ? $path : 'public/' . $path;
+            $result = in_array(request()->ip(), ['127.0.0.1']) && (config('laravel-toaster-magic.system_processing_directory') != 'root') ? $path : 'public/' . $path;
         }
 
         return asset($result);
