@@ -82,7 +82,7 @@
                 toast.setAttribute("aria-atomic", "true");
 
                 console.log(this.toastMagicTheme);
-                
+
                 console.log(this.toastMagicTheme?.toString() == 'ios');
 
                 toast.innerHTML = `
@@ -111,9 +111,7 @@
                 const toastMagicTimeOut = cfg?.timeOut || 5000;
 
                 if (
-                    toastMagicPosition === 'toast-bottom-end' ||
-                    toastMagicPosition === 'toast-bottom-start' ||
-                    toastMagicPosition === 'toast-top-center'
+                    toastMagicPosition.includes('bottom')
                 ) {
                     this.toastContainer.append(toast);
                 } else {
