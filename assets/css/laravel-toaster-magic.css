@@ -92,10 +92,10 @@ body[theme="dark"] {
 
 .toast-container.toast-top-center {
     inset-block-start: 30px;
-    left: 50%;
-    transform: translateX(-50%);
     inset-block-end: auto;
     inset-inline-end: auto;
+    left: 50%;
+    transform: translateX(-50%);
     align-items: center;
 }
 
@@ -119,10 +119,10 @@ body[theme="dark"] {
 
 .toast-container.toast-bottom-center {
     inset-block-end: 30px;
-    left: 50%;
-    transform: translateX(-50%);
     inset-block-start: auto;
     inset-inline-end: auto;
+    left: 50%;
+    transform: translateX(-50%);
     align-items: center;
 }
 
@@ -147,7 +147,6 @@ body[theme="dark"] {
     padding: 1.25rem !important;
     align-items: center !important;
 }
-
 
 
 /* Progress Bars */
@@ -244,7 +243,6 @@ body[theme="dark"] {
 }
 
 /* Position Transforms */
-/* Position Transforms */
 .toast-container.toast-top-start .toast-item,
 .toast-container.toast-bottom-start .toast-item {
     transform: translateX(-110%);
@@ -256,16 +254,6 @@ body[theme="dark"] {
 
 .toast-container.toast-bottom-center .toast-item {
     transform: translateY(110%);
-}
-
-.toast-container .toast-item.show {
-    transform: translate(0, 0);
-    opacity: 1;
-}
-
-.toast-container .toast-item.hide {
-    transform: translateX(100%);
-    opacity: 0;
 }
 
 /* THEME: Default */
@@ -906,6 +894,17 @@ body[theme="dark"] {
     left: 0 !important;
 }
 
+/* RTL: Flip Start/End Transforms */
+[dir="rtl"] .toast-container.toast-top-start .toast-item,
+[dir="rtl"] .toast-container.toast-bottom-start .toast-item {
+    transform: translateX(110%);
+}
+
+[dir="rtl"] .toast-container.toast-top-end .toast-item,
+[dir="rtl"] .toast-container.toast-bottom-end .toast-item {
+    transform: translateX(-110%);
+}
+
 /* Responsive */
 @media (max-width: 575px) {
     .toast-container {
@@ -922,6 +921,19 @@ body[theme="dark"] {
     to {
         width: var(--toast-progress-end, 100%);
     }
+}
+
+/* State Modifiers - Must be at the end for cascading precedence */
+.toast-container .toast-item.show,
+[dir="rtl"] .toast-container .toast-item.show {
+    transform: translate(0, 0);
+    opacity: 1;
+}
+
+.toast-container .toast-item.hide,
+[dir="rtl"] .toast-container .toast-item.hide {
+    transform: translateX(100%);
+    opacity: 0;
 }
 
 @keyframes toastProgressReverse {
