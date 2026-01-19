@@ -580,11 +580,8 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 10px 30px -10px rgba(0, 0, 0, 0.5);
     color: #e4e4e7;
-    font-family: 'Courier New', Courier, monospace;
-    /* Tech/Code feel */
     position: relative;
     overflow: visible;
-    /* Allow glow to spill */
 }
 
 /* Neon Borders & Glows */
@@ -641,7 +638,6 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
 /* Icons - Glowing Symbols */
 .toast-container.theme-neon .toast-body-icon-container {
     background: transparent;
-    filter: drop-shadow(0 0 5px currentColor);
 }
 
 .toast-container.theme-neon .toast-item.toast-success .toast-body-icon-container {
@@ -666,8 +662,6 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
     border: 1px solid currentColor;
     border-radius: 2px;
     font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     padding: 6px 12px;
     transition: all 0.2s ease;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0);
@@ -690,14 +684,11 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
 }
 
 .toast-container.theme-neon .toast-custom-btn:hover {
-    background: currentColor;
-    color: #000 !important;
-    /* Invert for contrast */
     box-shadow: 0 0 15px currentColor;
 }
 
 .toast-container.theme-neon .toast-close-btn {
-    color: #52525b;
+    color: #ffffff;
     transition: color 0.2s;
 }
 
@@ -751,48 +742,31 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
     background: #e0e5ec;
     border-radius: 1rem;
     border: none;
-    box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
-}
-
-.toast-container.theme-neumorphism .toast-item.toast-success {
-    box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(var(--toast-magic-success-rgb), 0.2);
 }
 
 .toast-container.theme-neumorphism .toast-item.toast-success::after {
     background-color: var(--toast-magic-success);
-    box-shadow: 0 2px 4px rgba(var(--toast-magic-success-rgb), 0.4);
-}
-
-.toast-container.theme-neumorphism .toast-item.toast-danger {
-    box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(var(--toast-magic-danger-rgb), 0.2);
+    box-shadow: 0 1px 2px rgba(var(--toast-magic-success-rgb), 0.1);
 }
 
 .toast-container.theme-neumorphism .toast-item.toast-danger::after {
     background-color: var(--toast-magic-danger);
-    box-shadow: 0 2px 4px rgba(var(--toast-magic-danger-rgb), 0.4);
-}
-
-.toast-container.theme-neumorphism .toast-item.toast-warning {
-    box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(var(--toast-magic-warning-rgb), 0.2);
+    box-shadow: 0 1px 2px rgba(var(--toast-magic-danger-rgb), 0.1);
 }
 
 .toast-container.theme-neumorphism .toast-item.toast-warning::after {
     background-color: var(--toast-magic-warning);
-    box-shadow: 0 2px 4px rgba(var(--toast-magic-warning-rgb), 0.4);
-}
-
-.toast-container.theme-neumorphism .toast-item.toast-info {
-    box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5), inset 0 -2px 4px rgba(var(--toast-magic-info-rgb), 0.2);
+    box-shadow: 0 1px 2px rgba(var(--toast-magic-warning-rgb), 0.1);
 }
 
 .toast-container.theme-neumorphism .toast-item.toast-info::after {
     background-color: var(--toast-magic-info);
-    box-shadow: 0 2px 4px rgba(var(--toast-magic-info-rgb), 0.4);
+    box-shadow: 0 1px 2px rgba(var(--toast-magic-info-rgb), 0.1);
 }
 
 .toast-container.theme-neumorphism .toast-custom-btn {
     background: #e0e5ec;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 0.5rem;
     box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5);
 }
@@ -876,9 +850,9 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
 }
 
 .toast-item-content-center .toast-body-icon-container {
-    inline-size: 22px;
-    block-size: 22px;
-    padding: 0;
+    inline-size: 25px;
+    block-size: 25px;
+    padding: 2px;
     font-size: 18px;
     border-radius: 0.3125rem;
     line-height: 1;
