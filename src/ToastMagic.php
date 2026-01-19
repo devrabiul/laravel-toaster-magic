@@ -65,11 +65,11 @@ class ToastMagic
      */
     public function styles(): string
     {
-        $stylePath = 'packages/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css';
+        $stylePath = 'packages/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.min.css';
         if (File::exists(public_path($stylePath))) {
             return '<link rel="stylesheet" href="' . $this->getDynamicAsset($stylePath) . '">';
         }
-        return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
+        return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/assets/css/laravel-toaster-magic.min.css') . '">';
     }
 
     /**
@@ -181,14 +181,14 @@ class ToastMagic
 
         foreach ($messages as $message) {
 
-            if (count($message['options'])) {
-                $config = array_merge($config, $message['options']);
+            $messageOptions = (array)($message['options'] ?? []);
+            if (count($messageOptions) == 0 || !array_key_exists('closeButton', $messageOptions)) {
+                $messageOptions['closeButton'] = $message['options']['closeButton'] ?? ($config['closeButton'] ?? false);
             }
 
             // Add a delay for each message
             $messageText = $message['message'] ?? '';
             $descriptionText = $message['description'] ?? '';
-
 
             // Replace 2 or more consecutive newlines with a single newline
             $messageText = preg_replace("/(\r\n|\r|\n){2,}/", "\n", $messageText);
@@ -204,9 +204,9 @@ class ToastMagic
             $script .= 'toastMagic.' . $message['type'] . '('
                 . json_encode($messageText) . ', '
                 . json_encode($descriptionText) . ', '
-                . (!empty($config['closeButton']) ? 'true' : 'false') . ', '
-                . json_encode($config['customBtnText'] ?? '') . ', '
-                . json_encode($config['customBtnLink'] ?? '') . ');';
+                . (!empty($messageOptions['closeButton']) ? 'true' : 'false') . ', '
+                . json_encode($messageOptions['customBtnText'] ?? '') . ', '
+                . json_encode($messageOptions['customBtnLink'] ?? '') . ');';
             $script .= '}, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)

@@ -1,7 +1,7 @@
-# 🍞 ToastMagic - Laravel Toaster (With Livewire v3 Support)
+# 🍞 ToastMagic - Laravel Toaster (v2.0 - With Livewire v3 & v4 Support)
 
 Laravel Toaster Magic is a lightweight and flexible toast notification package for Laravel applications — built with zero dependencies on jQuery, Bootstrap, or Tailwind.
-It’s fully compatible with Livewire, supports custom events, and now features a Material-inspired design for a modern UX out of the box.
+It’s fully compatible with Livewire (v3 & v4), supports custom events, and now features multiple modern themes like iOS, Glassmorphism, and Neon for a premium UX out of the box.
 
 [![Latest Stable Version](https://poser.pugx.org/devrabiul/laravel-toaster-magic/v/stable)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 [![Total Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/downloads)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
@@ -25,8 +25,8 @@ It’s fully compatible with Livewire, supports custom events, and now features 
 - 🔥 **Easy-to-Use** – Simple and intuitive toast notifications for Laravel.
 - 🌍 **RTL Support** – Full compatibility with right-to-left (RTL) languages.
 - 🌙 **Dark Mode** – Seamless dark mode integration.
-- 🎨 **Customizable** – Tailor toasts with various styles, buttons, and positions.
-- ⚡ **Livewire v3 Ready** – Fully supports Livewire v3 with event-based dispatching.
+- 🎨 **Themeable** – Choose from 7+ stunning themes including iOS, Neon, and Glassmorphism.
+- ⚡ **Livewire v3 & v4 Ready** – Fully supports Livewire v3 & v4 with event-based dispatching.
 
 ---
 
@@ -36,7 +36,7 @@ Install the package via Composer:
 
 ```bash
 composer require devrabiul/laravel-toaster-magic
-````
+```
 
 Then publish the package assets:
 
@@ -130,7 +130,7 @@ toastMagic.info("Info!", "Click for details.", false, "Learn More", "https://exa
 
 ---
 
-### 4. ✅ Livewire v3 Support
+### 4. ✅ Livewire Support (v3 & v4)
 
 Enable Livewire support by updating your config file:
 
@@ -142,7 +142,7 @@ return [
         // your toast options...
     ],
     'livewire_enabled' => true,
-    'livewire_version' => 'v3',
+    'livewire_version' => 'v3', // Supports 'v3' or 'v4'
 ];
 ```
 
@@ -176,19 +176,33 @@ $this->dispatch('toastMagic',
 
 ---
 
-### 5. ✅ Themes
+### 5. 🎨 Themes (New in v2.0)
 
-Change Theme by updating your config file:
+ToastMagic v2.0 introduces a powerful theming system. You can switch themes globally via the config file.
+
+**Available Themes:**
+
+*   **`default`**: The classic, clean look.
+*   **`material`**: Material Design inspired, flat and bold.
+*   **`ios`**: Apple-style notifications with blur/backdrop effects (Glassmorphism lite).
+*   **`glassmorphism`**: Heavy blur, semi-transparent backgrounds, modern aesthetic.
+*   **`neon`**: Dark, glowing borders and vibrant colors—perfect for dark mode apps.
+*   **`minimal`**: Clean, borderline design with colored left accents.
+*   **`neumorphism`**: Soft UI shadows and extruded plastic look.
+
+**How to Change Theme:**
+
+Update your `config/laravel-toaster-magic.php` file:
 
 ```php
 // config/laravel-toaster-magic.php
 
 return [
     'options' => [
-        // your toast options..
-        "theme" => "material", // "default, material".
+        // other options..
+        "theme" => "default", // Options: "default", "material", "ios", "glassmorphism", "neon", "minimal", "neumorphism"
     ],
-    // your toast options..
+    // other settings..
 ];
 ```
 
@@ -221,14 +235,14 @@ To enable gradient mode, update your configuration file `config/laravel-toaster-
 return [
     'options' => [
         // other options...
-        "gradient_enable" => true, // Only available for default and material themes
+        "gradient_enable" => true, // Adds subtle gradients to backgrounds
     ],
     'livewire_enabled' => false,
     'livewire_version' => 'v3',
 ];
 ```
 
-> **Note:** Gradient mode works only with the **default** and **material** themes.
+> **Note:** Gradient mode works best with the **default**, **material**, and **neon** themes.
 
 ---
 
