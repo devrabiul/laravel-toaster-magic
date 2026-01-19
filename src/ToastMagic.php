@@ -65,11 +65,11 @@ class ToastMagic
      */
     public function styles(): string
     {
-        $stylePath = 'packages/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.css';
+        $stylePath = 'packages/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.min.css';
         if (File::exists(public_path($stylePath))) {
             return '<link rel="stylesheet" href="' . $this->getDynamicAsset($stylePath) . '">';
         }
-        return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/assets/css/laravel-toaster-magic.css') . '">';
+        return '<link rel="stylesheet" href="' . url('vendor/devrabiul/laravel-toaster-magic/assets/css/laravel-toaster-magic.min.css') . '">';
     }
 
     /**

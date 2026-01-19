@@ -1,318 +1,113 @@
-# Laravel Toaster Magic - Theme Guide
+# 🎉 Release Notes v2.0 - The Theme Revolution
 
-## Available Themes
+We are thrilled to announce **Laravel Toaster Magic v2.0**! 🚀
 
-Laravel Toaster Magic comes with **7 beautifully crafted themes** that you can use to match your application's design aesthetic.
-
-### 1. **Default Theme** (`theme-default`)
-Clean and professional design with subtle styling.
-- Rounded corners (0.5rem)
-- Minimal shadows
-- Perfect for corporate applications
-- Supports gradient mode
-
-```php
-'theme' => 'default'
-```
+This major release focuses on **Design & Extensibility**, bringing **7 stunning new themes**, full **Livewire v3/v4 support**, and modern UI enhancements like **Gradient Mode** and **Color Mode**. 
 
 ---
 
-### 2. **Material Theme** (`theme-material`)
-Google Material Design inspired theme.
-- Sharp edges (no border-radius)
-- Material-style shadows
-- Flat design aesthetic
-- Supports gradient mode
+## 🚀 What's New?
 
-```php
-'theme' => 'material'
-```
+### 1. 🎨 7 Beautiful New Themes
+We have completely redesigned the visual experience. You can now switch between 7 distinct themes by simply updating your config.
 
----
+| Theme | Config Value | Description |
+| :--- | :--- | :--- |
+| **Default** | `'default'` | Clean, professional, and perfect for corporate apps. |
+| **Material** | `'material'` | Google Material Design inspired. Flat and bold. |
+| **iOS** | `'ios'` | **(Fan Favorite)** Apple-style notifications with backdrop blur and smooth bounce animations. |
+| **Glassmorphism** | `'glassmorphism'` | Trendy frosted glass effect with vibrant borders and semi-transparent backgrounds. |
+| **Neon** | `'neon'` | **(Dark Mode Best)** Cyberpunk-inspired with glowing neon borders and dark gradients. |
+| **Minimal** | `'minimal'` | Ultra-clean, distraction-free design with simple left-border accents. |
+| **Neumorphism** | `'neumorphism'` | Soft UI design with 3D embossed/debossed plastic-like shadows. |
 
-### 3. **iOS Theme** (`theme-ios`)
-Apple iOS-inspired modern design with smooth animations.
-- Rounded corners (1.25rem)
-- Backdrop blur effect
-- Smooth bounce animation
-- Left border accent color
-- Elegant hover effects
-- Supports gradient mode
-
-```php
-'theme' => 'ios'
-```
-
-**Special Features:**
-- Uses `backdrop-filter: blur(20px)` for glass effect
-- Cubic bezier animation: `cubic-bezier(0.34, 1.56, 0.64, 1)`
-- Hover state with enhanced shadows
-
----
-
-### 4. **Glassmorphism Theme** (`theme-glassmorphism`)
-Modern frosted glass effect with vibrant colors.
-- Heavy blur effects
-- Semi-transparent backgrounds
-- Gradient borders
-- Inset shadows for depth
-- Supports gradient mode
-
-```php
-'theme' => 'glassmorphism'
-```
-
-**Special Features:**
-- `backdrop-filter: blur(20px) saturate(180%)`
-- Color-specific glass effects per toast type
-- Layered shadow effects
-
----
-
-### 5. **Neon Theme** (`theme-neon`)
-Dark mode cyberpunk-inspired design with glowing effects.
-- Dark gradient background
-- Neon glow effects
-- Border glow matching toast type
-- White text for dark backgrounds
-- Supports gradient mode
-
-```php
-'theme' => 'neon'
-```
-
-**Special Features:**
-- Best for dark-themed applications
-- Glowing progress bar with `box-shadow`
-- Animated neon line at top
-- Semi-transparent dark backgrounds
-
----
-
-### 6. **Minimal Theme** (`theme-minimal`)
-Ultra-clean, distraction-free design.
-- Minimal styling
-- Left colored border accent
-- No progress bars
-- Subtle shadows
-- Smaller padding
-
-```php
-'theme' => 'minimal'
-```
-
-**Special Features:**
-- Progress bars are hidden
-- 4px left border for toast type indication
-- Perfect for content-focused applications
-
----
-
-### 7. **Neumorphism Theme** (`theme-neumorphism`)
-Soft UI (neumorphism) design with 3D-like shadows.
-- Soft embossed/debossed effects
-- Light background (#e0e5ec)
-- Dual-directional shadows
-- No borders
-- Smooth, tactile feel
-
-```php
-'theme' => 'neumorphism'
-```
-
-**Special Features:**
-- Dual shadows: `9px 9px 16px` and `-9px -9px 16px`
-- Inset colored shadows for toast types
-- Best for light-themed applications
-- Soft, subtle progress bars
-
----
-
-## Configuration
-
-### Basic Setup
-
-In your `config/laravel-toaster-magic.php`:
-
-```php
-return [
-    'options' => [
-        "theme" => "default", // Change to: ios, material, glassmorphism, neon, minimal, neumorphism
-        "gradient_enable" => false, // Works with: default, material, ios, glassmorphism, neon
-        "color_mode" => false // Full color backgrounds
-    ]
-];
-```
-
-### Enable Gradient Mode
-
-Gradient mode adds a subtle color wash to toasts based on their type (success, error, warning, info).
-
-```php
-'gradient_enable' => true
-```
-
-**Supported Themes:**
-- ✅ default
-- ✅ material
-- ✅ ios
-- ✅ glassmorphism
-- ✅ neon
-- ❌ minimal (intentionally disabled)
-- ❌ neumorphism (uses shadow coloring instead)
-
----
-
-## Theme Comparison Table
-
-| Feature | Default | Material | iOS | Glassmorphism | Neon | Minimal | Neumorphism |
-|---------|---------|----------|-----|---------------|------|---------|-------------|
-| Border Radius | 0.5rem | 0 | 1.25rem | 1rem | 0.625rem | 0.375rem | 1rem |
-| Backdrop Blur | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Progress Bar | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-| Gradient Support | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Dark Mode Ready | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| Best For | Corporate | Modern Apps | Apple-like | Trendy Sites | Dark Theme Apps | Clean UI | Light Theme Apps |
-
----
-
-## Usage Examples
-
-### Example 1: iOS Theme with Gradient
+👉 **How to use:**
 ```php
 // config/laravel-toaster-magic.php
-return [
-    'options' => [
-        "theme" => "ios",
-        "gradient_enable" => true,
-        "positionClass" => "toast-top-end",
-        "timeOut" => "5000",
-    ]
-];
-```
-
-### Example 2: Neon Theme for Dark Apps
-```php
-return [
-    'options' => [
-        "theme" => "neon",
-        "gradient_enable" => true,
-        "positionClass" => "toast-bottom-end",
-    ]
-];
-```
-
-### Example 3: Minimal Theme
-```php
-return [
-    'options' => [
-        "theme" => "minimal",
-        "closeButton" => true,
-    ]
-];
+'theme' => 'neon', 
 ```
 
 ---
 
-## Browser Support
-
-All themes use modern CSS features:
-- CSS Custom Properties (CSS Variables)
-- `backdrop-filter` (iOS, Glassmorphism, Neon)
-- CSS Animations
-- Flexbox
-
-**Recommended Browsers:**
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
----
-
-## Customization
-
-You can override any theme's styles in your own CSS:
-
-```css
-/* Override iOS theme border radius */
-.toast-container.theme-ios .toast-item {
-    border-radius: 2rem !important;
-}
-
-/* Change Neon theme colors */
-.toast-container.theme-neon .toast-item.toast-success {
-    border-color: #00ff00 !important;
-}
-```
-
----
-
-## CSS Structure
-
-The CSS is now organized with a clean, maintainable structure:
-
-```
-├── CSS Variables
-├── Utility Classes
-├── Toast Container Base
-│   ├── Position Variants
-│   ├── Toast Item Base
-│   ├── Progress Bars
-│   └── Position Transforms
-├── Themes
-│   ├── theme-default
-│   ├── theme-material
-│   ├── theme-ios
-│   ├── theme-glassmorphism
-│   ├── theme-neon
-│   ├── theme-minimal
-│   └── theme-neumorphism
-├── Color Mode Overrides
-├── Content Structure
-├── Buttons
-├── RTL Support
-├── Responsive
-└── Animations
-```
-
----
-
-## Notes
-
-1. **Backdrop Blur Performance**: iOS, Glassmorphism, and Neon themes use `backdrop-filter` which may impact performance on lower-end devices.
-
-2. **Neumorphism Light Mode**: Neumorphism theme uses a fixed light background (#e0e5ec) and works best in light-themed applications.
-
-3. **Neon Theme**: Designed specifically for dark-themed applications with automatic white text.
-
-4. **Progress Bar Heights**: Different themes use different progress bar heights (3px for iOS, 4px for others).
-
----
-
-## Migration from Old Themes
-
-If you were using the old theme structure:
+### 2. ⚡ Full Livewire v3 & v4 Support
+We've rewritten the Javascript core to support **Livewire v3 & v4** natively.
+- No more custom event listeners required manually.
+- Uses `Livewire.on` (v3) or standard event dispatching.
+- Works seamlessly with SPA mode and `wire:navigate`.
 
 ```php
-// Old
-'theme' => 'material'
-
-// New (same, but more themes available!)
-'theme' => 'material'
-// Or try: 'ios', 'glassmorphism', 'neon', 'minimal', 'neumorphism'
+// Dispatch from component
+$this->dispatch('toastMagic', 
+    status: 'success', 
+    message: 'User Saved!', 
+    title: 'Great Job'
+);
 ```
 
-All existing themes are backward compatible!
+---
+
+### 3. 🌈 Gradient Mode
+Want your toasts to pop without changing the entire theme? Enable **Gradient Mode** to add a subtle "glow-from-within" gradient based on the toast type (Success, Error, etc.).
+
+```php
+// config/laravel-toaster-magic.php
+'gradient_enable' => true
+```
+*Works best with Default, Material, Neon, and Glassmorphism themes.*
 
 ---
 
-## Support
+### 4. 🎨 Color Mode
+Don't want themes? Just want solid colors? **Color Mode** forces the background of the toast to match its type (Green for Success, Red for Error, etc.), overriding theme backgrounds for high-visibility alerts.
 
-For issues or questions:
-- GitHub Issues: [devrabiul/laravel-toaster-magic](https://github.com/devrabiul/laravel-toaster-magic)
-- Documentation: See main README.md
+```php
+// config/laravel-toaster-magic.php
+'color_mode' => true
+```
 
 ---
 
-**Enjoy your beautiful toast notifications!** 🎉
+### 5. 🛠 Refactored CSS Architecture
+We have completely modularized the CSS.
+- **CSS Variables**: All colors and values are now CSS variables, making runtime customization instant.
+- **Scoped Styles**: Themes are namespaced (`.theme-neon`, `.theme-ios`) to prevent conflicts.
+- **Dark Mode**: Native dark mode support via `body[theme="dark"]`.
+
+---
+
+## 📋 Upgrade Guide
+
+Upgrading from **v1.x** to **v2.0**?
+
+1. **Update Composer**:
+   ```bash
+   composer require devrabiul/laravel-toaster-magic "^2.0"
+   ```
+
+2. **Republish Assets** (Critical for new CSS/JS):
+   ```bash
+   php artisan vendor:publish --tag=toast-magic-assets --force
+   ```
+
+3. **Check Config**:
+   If you have a published config file, add the new options:
+   ```php
+   'options' => [
+       'theme' => 'default',
+       'gradient_enable' => false,
+       'color_mode' => false,
+   ],
+   'livewire_version' => 'v3',
+   ```
+
+---
+
+## 🏁 Conclusion
+
+v2.0 transforms **Laravel Toaster Magic** from a simple notification library into a UI-first experience. Whether you're building a sleek SaaS (use **iOS**), a gaming platform (use **Neon**), or an admin dashboard (use **Material**), we probably have a theme for you.
+
+**Enjoy the magic!** 🍞✨
+
+---
+* Released: Jan 2026
+* [GitHub Repository](https://github.com/devrabiul/laravel-toaster-magic)
