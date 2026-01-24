@@ -14,9 +14,9 @@ It’s fully compatible with Livewire (v3 & v4), supports custom events, and now
 
 ## 🚀 Live Demo
 
-👉 [Try the Live Demo](https://packages.rixetbd.com/devrabiul/laravel-toaster-magic)
+👉 [Try the Live Demo](https://rixetbd.com/devrabiul/laravel-toaster-magic?vendor=devrabiul)
 
-![Live Demo Thumbnail](https://packages.rixetbd.com/storage/app/public/package/devrabiul/laravel-toaster-magic.webp)
+![Live Demo Thumbnail](https://rixetbd.com/storage/app/public/package/devrabiul/laravel-toaster-magic.webp)
 
 ---
 
