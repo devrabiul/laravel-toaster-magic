@@ -119,8 +119,8 @@ class ToastMagicServiceProvider extends ServiceProvider
     private function updateProcessingDirectoryConfig(): void
     {
         $script = $_SERVER['SCRIPT_FILENAME'] ?? getcwd() ?? '';
-        $cacheKey = 'SYSTEM_DOMAIN_POINTED_DIRECTORY_' . md5($script);
-        $systemProcessingDirectory = Cache::rememberForever($cacheKey, function () use ($script) {
+
+        $compute = function () use ($script) {
             $scriptPath = realpath(dirname($script));
             $basePath   = realpath(base_path());
             $publicPath = realpath(public_path());
@@ -131,7 +131,15 @@ class ToastMagicServiceProvider extends ServiceProvider
                 return 'root';
             }
             return 'unknown';
-        });
+        };
+
+        try {
+            $cacheKey = 'SYSTEM_DOMAIN_POINTED_DIRECTORY_' . md5($script);
+            $systemProcessingDirectory = Cache::rememberForever($cacheKey, $compute);
+        } catch (\Throwable) {
+            // Cache unavailable (e.g. database cache driver before migrations run)
+            $systemProcessingDirectory = $compute();
+        }
 
         config(['laravel-toaster-magic.system_processing_directory' => $systemProcessingDirectory]);
     }
