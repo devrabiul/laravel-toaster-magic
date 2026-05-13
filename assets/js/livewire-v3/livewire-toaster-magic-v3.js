@@ -19,7 +19,7 @@ if (!window._toastMagicBound) {
             toastMagic.success(title, message);
         }
 
-        setTimeout(processToastQueue, 1000); // Wait 500ms before processing next
+        setTimeout(processToastQueue, 1000); // Wait 1000ms before processing next
     };
 
     window.addEventListener('toastMagic', event => {
@@ -27,9 +27,9 @@ if (!window._toastMagicBound) {
         const status = detail.status ?? 'success';
         const title = detail.title ?? 'Success!';
         const message = detail.message ?? 'Your data has been saved!';
-        const showCloseBtn = detail?.options?.showCloseBtn ?? false;
+        const showCloseBtn = detail?.options?.showCloseBtn ?? detail?.options?.closeButton ?? false;
         const customBtnText = detail?.options?.customBtnText ?? '';
-        const customBtnLink = detail?.options?.customBtnLink ?? 'javascript:';
+        const customBtnLink = detail?.options?.customBtnLink ?? '';
 
         window._toastQueue.push({ status, title, message, showCloseBtn, customBtnText, customBtnLink });
 

@@ -1,20 +1,21 @@
-# 🍞 ToastMagic - Laravel Toaster (v2.0 - With Livewire v3 & v4 Support)
+# 🍞 Laravel Toaster Magic — v2.1
 
-Laravel Toaster Magic is a lightweight and flexible toast notification package for Laravel applications — built with zero dependencies on jQuery, Bootstrap, or Tailwind.
-It’s fully compatible with Livewire (v3 & v4), supports custom events, and now features multiple modern themes like iOS, Glassmorphism, and Neon for a premium UX out of the box.
+Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
+
+Laravel Toaster Magic provides elegant, fully customizable toast notifications for Laravel applications — with **zero dependency** on jQuery, Bootstrap, or Tailwind CSS. It works out of the box with Livewire, supports multiple modern themes, and is simple enough to drop into any project in minutes.
 
 [![Latest Stable Version](https://poser.pugx.org/devrabiul/laravel-toaster-magic/v/stable)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 [![Total Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/downloads)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 [![Monthly Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/d/monthly)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
-![GitHub license](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)
+[![GitHub License](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)](LICENSE)
 [![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/devrabiul/laravel-toaster-magic)
-![GitHub Repo stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)
+[![GitHub Stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)](https://github.com/devrabiul/laravel-toaster-magic)
 
 ---
 
 ## 🚀 Live Demo
 
-👉 [Try the Live Demo](https://rixetbd.com/docs?package=laravel-cookie-consent)
+👉 [Try the Live Demo](https://laravel-toaster-magic.rixetbd.com)
 
 ![Live Demo Thumbnail](https://rixetbd.com/storage/app/public/package/devrabiul/laravel-toaster-magic.webp)
 
@@ -22,11 +23,13 @@ It’s fully compatible with Livewire (v3 & v4), supports custom events, and now
 
 ## ✨ Features
 
-- 🔥 **Easy-to-Use** – Simple and intuitive toast notifications for Laravel.
-- 🌍 **RTL Support** – Full compatibility with right-to-left (RTL) languages.
-- 🌙 **Dark Mode** – Seamless dark mode integration.
-- 🎨 **Themeable** – Choose from 7+ stunning themes including iOS, Neon, and Glassmorphism.
-- ⚡ **Livewire v3 & v4 Ready** – Fully supports Livewire v3 & v4 with event-based dispatching.
+- 🔥 **Easy to Use** — Simple, intuitive API with support for both static and fluent syntax.
+- 🌍 **RTL Support** — Full compatibility with right-to-left languages.
+- 🌙 **Dark Mode** — Built-in dark mode support via a single HTML attribute.
+- 🎨 **7+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, and Default.
+- ⚡ **Livewire Ready** — First-class support for Livewire v3 & v4 with event-based dispatching.
+- 🔒 **XSS Safe** — Custom button URLs are sanitized before rendering into the DOM.
+- ✅ **Zero Dependencies** — No jQuery, Bootstrap, or Tailwind required.
 
 ---
 
@@ -38,33 +41,19 @@ Install the package via Composer:
 composer require devrabiul/laravel-toaster-magic
 ```
 
-Then publish the package assets:
+Publish the package assets:
 
 ```bash
 php artisan vendor:publish --provider="Devrabiul\ToastMagic\ToastMagicServiceProvider"
 ```
 
+> **Note:** Assets are also auto-published on the first page load and automatically refreshed whenever the package is updated.
+
 ---
 
-## ⚙️ Usage
+## ⚙️ Basic Setup
 
-### 1. Basic Setup
-
-Include the necessary assets in your layout Blade template:
-
-**In the `<head>` section:**
-
-```php
-{!! ToastMagic::styles() !!}
-```
-
-**Before the closing `</body>` tag:**
-
-```php
-{!! ToastMagic::scripts() !!}
-```
-
-**Example:**
+Add the stylesheet inside your `<head>` tag and the scripts just before the closing `</body>` tag:
 
 ```blade
 <!DOCTYPE html>
@@ -72,7 +61,7 @@ Include the necessary assets in your layout Blade template:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page</title>
+    <title>Page Title</title>
 
     {!! ToastMagic::styles() !!}
 </head>
@@ -87,7 +76,9 @@ Include the necessary assets in your layout Blade template:
 
 ---
 
-### 2. Usage in Controller
+## 🧑‍💻 Usage
+
+### 1. Controller Usage
 
 Trigger toast notifications from your controllers using the `ToastMagic` facade:
 
@@ -96,43 +87,47 @@ use Devrabiul\ToastMagic\Facades\ToastMagic;
 
 public function store()
 {
-    // Your logic
+    // Simple message
     ToastMagic::success('Successfully Created');
-    
-    // Another Way - message and description
-    ToastMagic::success("Success!", "Your data has been saved!");
-    
-    // Another Way - message and description
-    ToastMagic::success("Success!", "Your data has been saved!", [
+
+    // Message with description
+    ToastMagic::success('Success!', 'Your data has been saved!');
+
+    // With custom options
+    ToastMagic::success('Success!', 'Your data has been saved!', [
         'showCloseBtn' => true,
-        'customBtnText' => 'Link Text',
-        'customBtnLink' => 'https:/demo.com',
+        'customBtnText' => 'View Record',
+        'customBtnLink' => 'https://example.com',
     ]);
+
     return back();
 }
 ```
 
+**Available toast types:** `success`, `info`, `warning`, `error`
+
 ---
 
-### 3. Usage in JavaScript (Optional)
+### 2. JavaScript Usage
 
-Use ToastMagic directly in JavaScript (for AJAX responses, etc.):
+Use ToastMagic directly in JavaScript for AJAX responses or client-side events:
 
 ```js
 const toastMagic = new ToastMagic();
 
-// Basic notifications
-toastMagic.success("Success!", "Your data has been saved!");
-toastMagic.error("Error!", "Something went wrong.");
-toastMagic.warning("Warning!", "Check your input.", true);
-toastMagic.info("Info!", "Click for details.", false, "Learn More", "https://example.com");
+toastMagic.success('Success!', 'Your data has been saved!');
+toastMagic.error('Error!', 'Something went wrong.');
+toastMagic.warning('Warning!', 'Check your input.', true);
+toastMagic.info('Info!', 'Click for details.', false, 'Learn More', 'https://example.com');
 ```
+
+**Signature:** `toastMagic.{type}(heading, description, showCloseBtn, customBtnText, customBtnLink)`
 
 ---
 
-### 4. ✅ Livewire Support (v3 & v4)
+### 3. Livewire Support (v3 & v4)
 
-Enable Livewire support by updating your config file:
+Enable Livewire support in your config file:
 
 ```php
 // config/laravel-toaster-magic.php
@@ -142,115 +137,44 @@ return [
         // your toast options...
     ],
     'livewire_enabled' => true,
-    'livewire_version' => 'v3', // Supports 'v3' or 'v4'
+    'livewire_version' => 'v3', // 'v3' or 'v4'
 ];
 ```
 
-* Set `'livewire_enabled' => true` to activate Livewire integration.
-* Set `'livewire_version' => 'v3'` to specify the Livewire version.
-
----
-
-**Dispatch toast notifications from Livewire components:**
+Dispatch toast notifications from any Livewire component:
 
 ```php
+// With full options
 $this->dispatch('toastMagic',
     status: 'success',
     title: 'User Created',
     message: 'The user has been successfully created.',
     options: [
         'showCloseBtn' => true,
-        'customBtnText' => 'Link Text',
-        'customBtnLink' => 'https:/demo.com',
+        'customBtnText' => 'View Profile',
+        'customBtnLink' => 'https://example.com',
     ],
 );
 
+// Simple dispatch
 $this->dispatch('toastMagic',
     status: 'info',
-    title: 'User Created 2',
-    message: 'The user has been successfully created.'
+    title: 'Heads Up',
+    message: 'Your session will expire soon.'
 );
 ```
 
-**Supported status types:** `success`, `info`, `warning`, `error`
+**Supported status values:** `success`, `info`, `warning`, `error`
+
+> **Backward Compatibility:** Both `showCloseBtn` and `closeButton` option keys are supported in Livewire events. If both are provided, `showCloseBtn` takes priority.
 
 ---
 
-### 5. 🎨 Themes (New in v2.0)
+### 4. Alternative & Fluent Syntax
 
-ToastMagic v2.0 introduces a powerful theming system. You can switch themes globally via the config file.
+ToastMagic supports both a quick static method and a fluent dispatch style.
 
-**Available Themes:**
-
-*   **`default`**: The classic, clean look.
-*   **`material`**: Material Design inspired, flat and bold.
-*   **`ios`**: Apple-style notifications with blur/backdrop effects (Glassmorphism lite).
-*   **`glassmorphism`**: Heavy blur, semi-transparent backgrounds, modern aesthetic.
-*   **`neon`**: Dark, glowing borders and vibrant colors—perfect for dark mode apps.
-*   **`minimal`**: Clean, borderline design with colored left accents.
-*   **`neumorphism`**: Soft UI shadows and extruded plastic look.
-
-**How to Change Theme:**
-
-Update your `config/laravel-toaster-magic.php` file:
-
-```php
-// config/laravel-toaster-magic.php
-
-return [
-    'options' => [
-        // other options..
-        "theme" => "default", // Options: "default", "material", "ios", "glassmorphism", "neon", "minimal", "neumorphism"
-    ],
-    // other settings..
-];
-```
-
----
-
-### 6. 🎨 Enabling Color Mode
-
-ToastMagic supports a **color mode** that dynamically applies toast colors based on the toast type (`success`, `error`, `warning`, `info`). This makes your notifications visually consistent and meaningful without manually specifying colors or themes.
-
-Enable color mode in your configuration file `config/laravel-toaster-magic.php`:
-
-```php
-return [
-    'options' => [
-        // other options...
-        'color_mode' => true, // Automatically apply colors based on toast type
-    ],
-    'livewire_enabled' => false,
-    'livewire_version' => 'v3',
-];
-```
-
-### 7. 🎨 Enabling Gradient Mode
-
-Laravel Toaster Magic now supports a **gradient mode**, which dynamically applies toast colors based on the toast type (`success`, `error`, `warning`, `info`). This ensures that your notifications are visually consistent and meaningful **without manually specifying colors or themes**.
-
-To enable gradient mode, update your configuration file `config/laravel-toaster-magic.php`:
-
-```php
-return [
-    'options' => [
-        // other options...
-        "gradient_enable" => true, // Adds subtle gradients to backgrounds
-    ],
-    'livewire_enabled' => false,
-    'livewire_version' => 'v3',
-];
-```
-
-> **Note:** Gradient mode works best with the **default**, **material**, and **neon** themes.
-
----
-
-## 🧩 Alternative Syntax & Fluent API
-
-ToastMagic provides both simple and advanced APIs to suit your style.
-
-### 🔹 Static Method (Quick)
+**Static (Quick):**
 
 ```php
 use Devrabiul\ToastMagic\Facades\ToastMagic;
@@ -259,77 +183,154 @@ ToastMagic::success('Operation Successful');
 ToastMagic::error('Something went wrong');
 ```
 
-### 🔹 Fluent Syntax (Advanced)
+**Fluent (Advanced):**
 
 ```php
 ToastMagic::dispatch()->success(
     'User Created',
     'The user has been successfully created.',
     [
-        'showCloseBtn'    => true,
-        'customBtnText'   => 'View Profile',
-        'customBtnLink'   => 'https://demo.com',
+        'showCloseBtn'  => true,
+        'customBtnText' => 'View Profile',
+        'customBtnLink' => 'https://example.com',
     ]
 );
 ```
----
-
-## 📍 Toast Position Options
-
-Customize toast display position using any of the following:
-
-| Position              | Description                |
-| --------------------- | -------------------------- |
-| `toast-top-start`     | Top left corner            |
-| `toast-top-end`       | Top right corner (default) |
-| `toast-top-center`    | Top center                 |
-| `toast-bottom-start`  | Bottom left corner         |
-| `toast-bottom-end`    | Bottom right corner        |
-| `toast-bottom-center` | Bottom center              |
 
 ---
 
+## 📍 Position Options
 
-## 🌙 Enable Dark Mode
+Control where toasts appear on screen using the `positionClass` config option:
 
-Add `theme="dark"` to your `<body>` tag to automatically enable dark mode.
+| Value | Position |
+|----------------------|--------------------------|
+| `toast-top-start` | Top left |
+| `toast-top-end` | Top right *(default)* |
+| `toast-top-center` | Top center |
+| `toast-bottom-start` | Bottom left |
+| `toast-bottom-end` | Bottom right |
+| `toast-bottom-center` | Bottom center |
+
+---
+
+## 🎨 Themes
+
+ToastMagic includes 7 built-in themes. Set your preferred theme in `config/laravel-toaster-magic.php`:
+
+```php
+return [
+    'options' => [
+        "theme" => "default", // See options below
+    ],
+];
+```
+
+| Theme | Description |
+|-----------------|-----------------------------------------------------------|
+| `default` | Clean, classic look |
+| `material` | Material Design — flat and bold |
+| `ios` | Apple-style notifications with backdrop blur |
+| `glassmorphism` | Heavy blur, semi-transparent, modern aesthetic |
+| `neon` | Dark background with glowing borders — ideal for dark UIs |
+| `minimal` | Clean design with colored left-side accent |
+| `neumorphism` | Soft UI with extruded shadow styling |
+
+For a full theme preview, see [THEMES.md](THEMES.md).
+
+---
+
+## 🌈 Color Mode
+
+Enable color mode to apply toast-type colors automatically to backgrounds and accents:
+
+```php
+return [
+    'options' => [
+        'color_mode' => true,
+    ],
+];
+```
+
+---
+
+## 🌟 Gradient Mode
+
+Enable gradient mode to apply subtle gradients to toast backgrounds:
+
+```php
+return [
+    'options' => [
+        "gradient_enable" => true,
+    ],
+];
+```
+
+> **Note:** Gradient mode works best with the `default`, `material`, and `neon` themes.
+
+---
+
+## 🌙 Dark Mode
+
+Add `theme="dark"` to your `<body>` tag to enable dark mode globally:
 
 ```html
 <body theme="dark">
 ```
 
+---
 
-## 🎯 Get Started Today!
+## ⚙️ Full Configuration Reference
 
-Experience the magic of ToastMagic and enrich your Laravel application with modern, elegant toast notifications.
+```php
+// config/laravel-toaster-magic.php
 
-* 🔗 **GitHub:** [devrabiul/laravel-toaster-magic](https://github.com/devrabiul/laravel-toaster-magic)
-* 🔗 **Live Demo:** [laravel-toaster-magic.rixetbd.com](https://laravel-toaster-magic.rixetbd.com)
-* 🔗 **Packagist:** [packagist.org/packages/devrabiul/laravel-toaster-magic](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+return [
+    'options' => [
+        'closeButton'       => true,
+        'positionClass'     => 'toast-top-end',
+        'preventDuplicates' => false,
+        'showDuration'      => 300,
+        'timeOut'           => 5000,
+        'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism
+        'gradient_enable'   => false,
+        'color_mode'        => false,
+    ],
+    'livewire_enabled'  => false,
+    'livewire_version'  => 'v3',
+];
+```
+
+---
+
+## 🔒 Security
+
+Custom button links (`customBtnLink`) are validated before being rendered into `href` attributes. Only URLs starting with `http://`, `https://`, `/`, or `#` are allowed. All other values are safely replaced with `#` to prevent XSS attacks.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions!
-Please fork the repository, make your changes, and submit a pull request.
-For feature requests or issues, [open a GitHub issue](https://github.com/devrabiul/laravel-toaster-magic/issues).
+Contributions are welcome! Please fork the repository, make your changes, and open a pull request.
+For bug reports or feature requests, [open an issue on GitHub](https://github.com/devrabiul/laravel-toaster-magic/issues).
 
 ---
 
 ## 📄 License
 
-This package is open-source software licensed under the [MIT license](LICENSE).
+This package is open-source software licensed under the [MIT License](LICENSE).
 
 ---
 
 ## 🌱 Treeware
 
-This package is [Treeware](https://treeware.earth). If you use it in production, then we ask that you [**buy the world a tree**](https://plant.treeware.earth/devrabiul/laravel-toaster-magic) to thank us for our work. By contributing to the Treeware forest you’ll be creating employment for local families and restoring wildlife habitats.
+This package is [Treeware](https://treeware.earth). If you use it in production, we ask that you [**buy the world a tree**](https://plant.treeware.earth/devrabiul/laravel-toaster-magic) to thank us for our work. By contributing to the Treeware forest you'll be creating employment for local families and restoring wildlife habitats.
 
 ---
 
-## 📬 Contact
+## 📬 Contact & Links
 
-For support or inquiries, feel free to reach out:
-📧 [devrabiul@gmail.com](mailto:devrabiul@gmail.com)
+- 🔗 **GitHub:** [devrabiul/laravel-toaster-magic](https://github.com/devrabiul/laravel-toaster-magic)
+- 🔗 **Live Demo:** [laravel-toaster-magic.rixetbd.com](https://laravel-toaster-magic.rixetbd.com)
+- 🔗 **Packagist:** [packagist.org/packages/devrabiul/laravel-toaster-magic](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
+- 📧 **Email:** [devrabiul@gmail.com](mailto:devrabiul@gmail.com)

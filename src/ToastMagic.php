@@ -2,7 +2,6 @@
 
 namespace Devrabiul\ToastMagic;
 
-use Exception;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Config\Repository as Config;
@@ -197,7 +196,6 @@ class ToastMagic
             // Then convert remaining single newlines to <br>
             $messageText = str_replace(["\r\n", "\r", "\n"], '<br>', $messageText);
             $descriptionText = str_replace(["\r\n", "\r", "\n"], '<br>', $descriptionText);
-            $descriptionText = str_replace('\n', '<br>', $descriptionText);
 
             // json_encode safely escapes quotes for JS
             $script .= 'setTimeout(function() {';
@@ -267,7 +265,7 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('info', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('info', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
         } else {
             $this->add('info', $message, $description, $options);
         }
@@ -291,7 +289,7 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('success', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('success', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
         } else {
             $this->add('success', $message, $description, $options);
         }
@@ -315,7 +313,7 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('warning', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('warning', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
         } else {
             $this->add('warning', $message, $description, $options);
         }
@@ -339,7 +337,7 @@ class ToastMagic
                     $messageString .= $currentMessage . "<br>";
             }
 
-            $this->add('error', rtrim($messageString, "<br>"), $description, $options);
+            $this->add('error', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
         } else {
             $this->add('error', $message, $description, $options);
         }

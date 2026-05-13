@@ -1,5 +1,13 @@
 (function () {
     // ===============================
+    // Utility: URL sanitizer
+    // ===============================
+    function sanitizeUrl(url) {
+        if (!url || !/^(https?:\/\/|\/|#)/.test(url)) return '#';
+        return url;
+    }
+
+    // ===============================
     // Utility: Close toast function
     // ===============================
     function closeToastMagicItem(toast) {
@@ -108,7 +116,7 @@
                             </div>
                             <div class="toast-body-end">
                                 ${showCloseBtn ? `<button type="button" class="toast-close-btn">${getToasterIcon('close')}</button>` : ""}
-                                ${customBtnText && customBtnLink ? `<a href="${customBtnLink}" class="toast-custom-btn toast-btn-bg-${toastClassBasic}">${customBtnText}</a>` : ""}
+                                ${customBtnText && customBtnLink ? `<a href="${sanitizeUrl(customBtnLink)}" class="toast-custom-btn toast-btn-bg-${toastClassBasic}">${customBtnText}</a>` : ""}
                             </div>
                         </div>
                     </div>`;

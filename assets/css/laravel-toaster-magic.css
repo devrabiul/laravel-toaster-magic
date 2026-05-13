@@ -945,6 +945,11 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
 @media (max-width: 575px) {
     .toast-container {
         inset-inline-end: 12px;
+        max-width: calc(100% - 20px);
+    }
+
+    .toast-container.toast-top-end {
+        inset-inline-start: 10px;
     }
 }
 
