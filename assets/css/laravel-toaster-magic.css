@@ -951,6 +951,10 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
     .toast-container.toast-top-end {
         inset-inline-start: 10px;
     }
+
+    .toast-container .toast-item {
+        --tm-toast-max-width: calc(100vw - 24px);
+    }
 }
 
 @keyframes toastProgress {
