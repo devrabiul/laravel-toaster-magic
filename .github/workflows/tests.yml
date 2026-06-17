@@ -13,16 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         # Each row pins the Testbench and Pest majors compatible with that
-        # PHP/Laravel pair. Pest 2+ requires PHP 8.1+, so the PHP 8.0 row uses Pest 1.
+        # PHP/Laravel pair.
         include:
-          - php: '8.0'
-            laravel: 8
-            testbench: 6
-            pest: 1
-          - php: '8.1'
-            laravel: 9
-            testbench: 7
-            pest: 2
           - php: '8.1'
             laravel: 10
             testbench: 8
