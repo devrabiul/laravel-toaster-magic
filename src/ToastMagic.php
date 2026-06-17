@@ -198,13 +198,19 @@ class ToastMagic
             $descriptionText = str_replace(["\r\n", "\r", "\n"], '<br>', $descriptionText);
 
             // json_encode safely escapes quotes for JS
+            // Per-toast duration overrides; emit null so the JS falls back to the global config.
+            $timeOut = isset($messageOptions['timeOut']) ? (int)$messageOptions['timeOut'] : null;
+            $showDuration = isset($messageOptions['showDuration']) ? (int)$messageOptions['showDuration'] : null;
+
             $script .= 'setTimeout(function() {';
             $script .= 'toastMagic.' . $message['type'] . '('
                 . json_encode($messageText) . ', '
                 . json_encode($descriptionText) . ', '
                 . (!empty($messageOptions['closeButton']) ? 'true' : 'false') . ', '
                 . json_encode($messageOptions['customBtnText'] ?? '') . ', '
-                . json_encode($messageOptions['customBtnLink'] ?? '') . ');';
+                . json_encode($messageOptions['customBtnLink'] ?? '') . ', '
+                . ($timeOut === null ? 'null' : $timeOut) . ', '
+                . ($showDuration === null ? 'null' : $showDuration) . ');';
             $script .= '}, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)
@@ -218,6 +224,22 @@ class ToastMagic
         return $script;
     }
 
+
+    /**
+     * Entry point for the fluent dispatch syntax.
+     *
+     * Returns the ToastMagic instance so toast types can be chained, e.g.
+     * `ToastMagic::dispatch()->success('User Created', 'The user has been created.')`.
+     * This is functionally equivalent to calling the type method directly
+     * (`ToastMagic::success(...)`); it exists to support a more expressive,
+     * self-documenting call style.
+     *
+     * @return self
+     */
+    public function dispatch(): self
+    {
+        return $this;
+    }
 
     /**
      * Add a flash message to the session.
@@ -248,110 +270,96 @@ class ToastMagic
     }
 
     /**
+     * Normalize a message into a string.
+     *
+     * Accepts a plain string or a validation {@see MessageBag}. A MessageBag is
+     * flattened into a single string with each message separated by a <br> tag.
+     *
+     * @param string|MessageBag $message
+     * @return string
+     */
+    protected function normalizeMessage(string|MessageBag $message): string
+    {
+        if ($message instanceof MessageBag) {
+            $messageString = "";
+            foreach ($message->getMessages() as $messageArray) {
+                foreach ($messageArray as $currentMessage) {
+                    $messageString .= $currentMessage . "<br>";
+                }
+            }
+
+            return preg_replace('/(<br>)+$/', '', $messageString);
+        }
+
+        return $message;
+    }
+
+    /**
      * Add an info flash message to session.
      *
-     * @param string $message The flash message content.
+     * @param string|MessageBag $message The flash message content, or a validation MessageBag.
      * @param string|null $description
      * @param array $options The custom options.
      *
      * @return void
      */
-    public function info(string $message, string|null $description = null, array $options = []): void
+    public function info(string|MessageBag $message, string|null $description = null, array $options = []): void
     {
-        if ($message instanceof MessageBag) {
-            $messageString = "";
-            foreach ($message->getMessages() as $messageArray) {
-                foreach ($messageArray as $currentMessage)
-                    $messageString .= $currentMessage . "<br>";
-            }
-
-            $this->add('info', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
-        } else {
-            $this->add('info', $message, $description, $options);
-        }
+        $this->add('info', $this->normalizeMessage($message), $description, $options);
     }
 
     /**
      * Add a success flash message to session.
      *
-     * @param string $message The flash message content.
+     * @param string|MessageBag $message The flash message content, or a validation MessageBag.
      * @param string|null $description
      * @param array $options The custom options.
      *
      * @return void
      */
-    public function success(string $message, string|null $description = null, array $options = []): void
+    public function success(string|MessageBag $message, string|null $description = null, array $options = []): void
     {
-        if ($message instanceof MessageBag) {
-            $messageString = "";
-            foreach ($message->getMessages() as $messageArray) {
-                foreach ($messageArray as $currentMessage)
-                    $messageString .= $currentMessage . "<br>";
-            }
-
-            $this->add('success', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
-        } else {
-            $this->add('success', $message, $description, $options);
-        }
+        $this->add('success', $this->normalizeMessage($message), $description, $options);
     }
 
     /**
      * Add a warning flash message to session.
      *
-     * @param string $message The flash message content.
+     * @param string|MessageBag $message The flash message content, or a validation MessageBag.
      * @param string|null $description
      * @param array $options The custom options.
      *
      * @return void
      */
-    public function warning(string $message, string|null $description = null, array $options = []): void
+    public function warning(string|MessageBag $message, string|null $description = null, array $options = []): void
     {
-        if ($message instanceof MessageBag) {
-            $messageString = "";
-            foreach ($message->getMessages() as $messageArray) {
-                foreach ($messageArray as $currentMessage)
-                    $messageString .= $currentMessage . "<br>";
-            }
-
-            $this->add('warning', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
-        } else {
-            $this->add('warning', $message, $description, $options);
-        }
+        $this->add('warning', $this->normalizeMessage($message), $description, $options);
     }
 
     /**
      * Add an error flash message to session.
      *
-     * @param string $message The flash message content.
+     * @param string|MessageBag $message The flash message content, or a validation MessageBag.
      * @param string|null $description
      * @param array $options The custom options.
      *
      * @return void
      */
-    public function error(string $message, string|null $description = null, array $options = []): void
+    public function error(string|MessageBag $message, string|null $description = null, array $options = []): void
     {
-        if ($message instanceof MessageBag) {
-            $messageString = "";
-            foreach ($message->getMessages() as $messageArray) {
-                foreach ($messageArray as $currentMessage)
-                    $messageString .= $currentMessage . "<br>";
-            }
-
-            $this->add('error', preg_replace('/(<br>)+$/', '', $messageString), $description, $options);
-        } else {
-            $this->add('error', $message, $description, $options);
-        }
+        $this->add('error', $this->normalizeMessage($message), $description, $options);
     }
 
 
     /**
-     * Clear messages
+     * Clear all queued toast messages, both in memory and in the session.
      *
      * @return void
      */
     public function clear(): void
     {
         $this->messages = [];
+        $this->session->forget('laravel-toaster-magic::messages');
     }
 
     /**

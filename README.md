@@ -4,6 +4,7 @@ Laravel Toaster Magic is a lightweight, dependency-free toast notification packa
 
 Laravel Toaster Magic provides elegant, fully customizable toast notifications for Laravel applications — with **zero dependency** on jQuery, Bootstrap, or Tailwind CSS. It works out of the box with Livewire, supports multiple modern themes, and is simple enough to drop into any project in minutes.
 
+[![Tests](https://github.com/devrabiul/laravel-toaster-magic/actions/workflows/tests.yml/badge.svg)](https://github.com/devrabiul/laravel-toaster-magic/actions/workflows/tests.yml)
 [![Latest Stable Version](https://poser.pugx.org/devrabiul/laravel-toaster-magic/v/stable)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 [![Total Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/downloads)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
 [![Monthly Downloads](https://poser.pugx.org/devrabiul/laravel-toaster-magic/d/monthly)](https://packagist.org/packages/devrabiul/laravel-toaster-magic)
@@ -28,7 +29,7 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 - 🌙 **Dark Mode** — Built-in dark mode support via a single HTML attribute.
 - 🎨 **7+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, and Default.
 - ⚡ **Livewire Ready** — First-class support for Livewire v3 & v4 with event-based dispatching.
-- 🔒 **XSS Safe** — Custom button URLs are sanitized before rendering into the DOM.
+- 🔒 **Safe Button Links** — Custom button URLs are sanitized before being rendered into the DOM. See the [Security](#-security) section for how message content is handled.
 - ✅ **Zero Dependencies** — No jQuery, Bootstrap, or Tailwind required.
 
 ---
@@ -98,6 +99,8 @@ public function store()
         'showCloseBtn' => true,
         'customBtnText' => 'View Record',
         'customBtnLink' => 'https://example.com',
+        'timeOut' => 10000,    // Optional: override the auto-dismiss time (ms) for this toast only
+        'showDuration' => 300, // Optional: override the show animation delay (ms) for this toast only
     ]);
 
     return back();
@@ -105,6 +108,12 @@ public function store()
 ```
 
 **Available toast types:** `success`, `info`, `warning`, `error`
+
+You can also pass a validation `MessageBag` directly — its messages are flattened into a single toast, one per line:
+
+```php
+ToastMagic::error($validator->errors());
+```
 
 ---
 
@@ -119,9 +128,14 @@ toastMagic.success('Success!', 'Your data has been saved!');
 toastMagic.error('Error!', 'Something went wrong.');
 toastMagic.warning('Warning!', 'Check your input.', true);
 toastMagic.info('Info!', 'Click for details.', false, 'Learn More', 'https://example.com');
+
+// Programmatically dismiss all visible toasts
+toastMagic.clear();      // or toastMagic.dismissAll();
 ```
 
-**Signature:** `toastMagic.{type}(heading, description, showCloseBtn, customBtnText, customBtnLink)`
+**Signature:** `toastMagic.{type}(heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration)`
+
+> `timeOut` and `showDuration` are optional per-toast overrides (in milliseconds). When omitted, the global config values are used.
 
 ---
 
@@ -295,6 +309,7 @@ return [
         'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism
         'gradient_enable'   => false,
         'color_mode'        => false,
+        'pauseOnHover'      => true, // Pause the auto-dismiss timer while hovering a toast
     ],
     'livewire_enabled'  => false,
     'livewire_version'  => 'v3',
@@ -305,7 +320,21 @@ return [
 
 ## 🔒 Security
 
-Custom button links (`customBtnLink`) are validated before being rendered into `href` attributes. Only URLs starting with `http://`, `https://`, `/`, or `#` are allowed. All other values are safely replaced with `#` to prevent XSS attacks.
+**Custom button links** (`customBtnLink`) are validated before being rendered into `href` attributes. Only URLs starting with `http://`, `https://`, `/`, or `#` are allowed; all other values are safely replaced with `#`.
+
+**Message content is rendered as HTML.** The toast heading and description are inserted into the DOM as HTML — this is what enables multi-line messages (newlines become `<br>`). Because of this, **you should never pass unescaped, user-supplied input directly into a toast**, as it can introduce a cross-site scripting (XSS) vulnerability. If a value may contain user input, escape it first — for example with Laravel's `e()` helper or `strip_tags()`:
+
+```php
+ToastMagic::success('Welcome, ' . e($user->name) . '!');
+```
+
+> **Roadmap:** A future major release (v3.0.0) will escape message content by default, with an opt-in flag for cases where HTML is intentional.
+
+---
+
+## 📝 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a list of notable changes in each release.
 
 ---
 
