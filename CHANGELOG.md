@@ -5,6 +5,16 @@ All notable changes to `laravel-toaster-magic` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Avatar / notification-style toasts.** Pass an `avatar` image URL in the options array (or via
+  Livewire event options) to render an image in place of the type icon — ideal for "new message" /
+  "new follower" style notifications. The URL is sanitized before rendering.
+- **Entrance/exit animations.** A new `animation` config option (`default`, `slide`, `fade`, `pop`,
+  `bounce`) controls how toasts enter and leave the screen. `default` preserves the current behavior.
+
 ## [2.2.0] - 2026-06-17
 
 A **"Trust & Polish"** release: no change to the package's scope, focused on correctness,

@@ -210,7 +210,8 @@ class ToastMagic
                 . json_encode($messageOptions['customBtnText'] ?? '') . ', '
                 . json_encode($messageOptions['customBtnLink'] ?? '') . ', '
                 . ($timeOut === null ? 'null' : $timeOut) . ', '
-                . ($showDuration === null ? 'null' : $showDuration) . ');';
+                . ($showDuration === null ? 'null' : $showDuration) . ', '
+                . json_encode($messageOptions['avatar'] ?? '') . ');';
             $script .= '}, ' . $delay . ');';
 
             // Increase the delay for the next message (500ms for each)

@@ -71,7 +71,7 @@
                 }
             }
 
-            show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null }) {
+            show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null, avatar = "" }) {
                 this.setupConfig();
                 this.initToastContainer();
 
@@ -107,6 +107,11 @@
                 const toast = document.createElement("div");
                 toast.classList.add("toast-item", toastClass);
                 toast.dataset.toastKey = duplicateKey;
+                // Apply the configured entrance/exit animation (default keeps the current behavior).
+                const toastAnimation = (window.toastMagicConfig || {}).animation;
+                if (toastAnimation && toastAnimation !== "default") {
+                    toast.classList.add("toast-animate-" + toastAnimation);
+                }
                 toast.setAttribute("role", "alert");
                 toast.setAttribute("aria-live", "assertive");
                 toast.setAttribute("aria-atomic", "true");
@@ -117,7 +122,7 @@
                         <div class="toast-item-content-center">
                             <div class="toast-body">
                                 <span class="toast-body-icon-container toast-text-${toastClassBasic}">
-                                    ${getToasterIcon(type)}
+                                    ${avatar ? `<img src="${sanitizeUrl(avatar)}" alt="" class="toast-avatar">` : getToasterIcon(type)}
                                 </span>
                                 <div class="toast-body-container">
                                     ${heading ? `<div class="toast-body-title"><h4>${heading}</h4></div>` : ''}
@@ -195,8 +200,8 @@
             }
 
             _parseArgs(args) {
-                const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null] = args;
-                return { heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration };
+                const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null, avatar = ""] = args;
+                return { heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration, avatar };
             }
         };
     }

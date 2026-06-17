@@ -126,26 +126,41 @@ it('passes the custom button text and link into the toast call', function () {
         ->toContain('https:\/\/example.com');
 });
 
-it('emits null durations when no per-toast override is provided', function () {
+it('emits null durations and an empty avatar when no overrides are provided', function () {
     ToastMagic::success('Hi');
 
-    expect(ToastMagic::scripts())->toContain(', null, null);');
+    // Trailing positional args: timeOut, showDuration, avatar.
+    expect(ToastMagic::scripts())->toContain(', null, null, "");');
 });
 
 it('emits a per-toast timeOut override in the scripts output', function () {
     ToastMagic::success('Hi', null, ['timeOut' => 10000]);
 
-    expect(ToastMagic::scripts())->toContain(', 10000, null);');
+    expect(ToastMagic::scripts())->toContain(', 10000, null, "");');
 });
 
 it('emits a per-toast showDuration override in the scripts output', function () {
     ToastMagic::info('Hi', null, ['showDuration' => 50]);
 
-    expect(ToastMagic::scripts())->toContain(', null, 50);');
+    expect(ToastMagic::scripts())->toContain(', null, 50, "");');
 });
 
 it('exposes the pauseOnHover config to the front end', function () {
     ToastMagic::info('Hi');
 
     expect(ToastMagic::scripts())->toContain('"pauseOnHover":true');
+});
+
+it('exposes the animation config to the front end', function () {
+    ToastMagic::info('Hi');
+
+    expect(ToastMagic::scripts())->toContain('"animation":"default"');
+});
+
+it('emits the avatar URL in the toast call', function () {
+    ToastMagic::info('New message', 'Hello there', [
+        'avatar' => 'https://example.com/avatar.png',
+    ]);
+
+    expect(ToastMagic::scripts())->toContain('https:\/\/example.com\/avatar.png');
 });

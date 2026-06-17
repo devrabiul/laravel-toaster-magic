@@ -69,7 +69,8 @@
                 customBtnText = "",
                 customBtnLink = "",
                 timeOut = null,
-                showDuration = null
+                showDuration = null,
+                avatar = ""
             }) {
                 // Skip rendering if an identical toast is already visible and
                 // duplicate prevention is enabled in the config.
@@ -103,6 +104,11 @@
                 const toast = document.createElement("div");
                 toast.classList.add("toast-item", toastClass);
                 toast.dataset.toastKey = duplicateKey;
+                // Apply the configured entrance/exit animation (default keeps the current behavior).
+                const toastAnimation = (window.toastMagicConfig || {}).animation;
+                if (toastAnimation && toastAnimation !== "default") {
+                    toast.classList.add("toast-animate-" + toastAnimation);
+                }
                 toast.setAttribute("role", "alert");
                 toast.setAttribute("aria-live", "assertive");
                 toast.setAttribute("aria-atomic", "true");
@@ -111,9 +117,9 @@
                 <div class="theme-ios-toast-item-border"></div>
                     <div class="position-relative">
                         <div class="toast-item-content-center">
-                            <div class="toast-body">
+                            <div class="toast-body ${avatar ? `toast-body-avatar` : ``}">
                                 <span class="toast-body-icon-container toast-text-${toastClassBasic}">
-                                    ${getToasterIcon(type)}
+                                    ${avatar ? `<img src="${sanitizeUrl(avatar)}" alt="" class="toast-avatar">` : getToasterIcon(type)}
                                 </span>
                                 <div class="toast-body-container">
                                     ${heading ? `<div class="toast-body-title"><h4>${heading}</h4></div>` : ''}
@@ -192,8 +198,8 @@
             }
 
             _parseArgs(args) {
-                const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null] = args;
-                return { heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration };
+                const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null, avatar = ""] = args;
+                return { heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration, avatar };
             }
         };
     }
