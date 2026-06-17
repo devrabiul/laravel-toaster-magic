@@ -1,4 +1,4 @@
-# 🍞 Laravel Toaster Magic — v2.1
+# 🍞 Laravel Toaster Magic — v2.2
 
 Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
 
