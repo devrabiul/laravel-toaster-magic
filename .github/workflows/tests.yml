@@ -1,0 +1,73 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Each row pins the Testbench and Pest majors compatible with that
+        # PHP/Laravel pair.
+        include:
+          - php: '8.1'
+            laravel: 10
+            testbench: 8
+            pest: 2
+          - php: '8.2'
+            laravel: 11
+            testbench: 9
+            pest: 2
+          - php: '8.3'
+            laravel: 11
+            testbench: 9
+            pest: 2
+          - php: '8.3'
+            laravel: 12
+            testbench: 10
+            pest: 3
+          - php: '8.4'
+            laravel: 12
+            testbench: 10
+            pest: 3
+          - php: '8.4'
+            laravel: 13
+            testbench: 11
+            pest: 3
+          - php: '8.5'
+            laravel: 13
+            testbench: 11
+            pest: 3
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, json
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          # Don't block resolution on security advisories: testing against older
+          # Laravel lines is intentional and those releases aren't shipped by this
+          # package. The `|| true` keeps this a no-op on older Composer versions
+          # that predate the advisory-blocking feature (and its config key).
+          composer config --no-plugins policy.advisories.block false || true
+          composer require --dev --no-update --no-interaction \
+            "orchestra/testbench:^${{ matrix.testbench }}.0" \
+            "pestphp/pest:^${{ matrix.pest }}.0"
+          composer update --prefer-dist --prefer-stable --no-interaction
+
+      - name: Execute tests
+        run: vendor/bin/pest

@@ -10,10 +10,10 @@ if (!window._toastMagicBound) {
 
         const toast = window._toastQueue.shift();
 
-        const { status, title, message, showCloseBtn, customBtnText, customBtnLink } = toast;
+        const { status, title, message, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration } = toast;
 
         if (typeof toastMagic[status] === 'function') {
-            toastMagic[status](title, message, showCloseBtn, customBtnText, customBtnLink);
+            toastMagic[status](title, message, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration);
         } else {
             console.warn(`Unknown toast status: ${status}, defaulting to success.`);
             toastMagic.success(title, message);
@@ -30,8 +30,10 @@ if (!window._toastMagicBound) {
         const showCloseBtn = detail?.options?.showCloseBtn ?? detail?.options?.closeButton ?? false;
         const customBtnText = detail?.options?.customBtnText ?? '';
         const customBtnLink = detail?.options?.customBtnLink ?? '';
+        const timeOut = detail?.options?.timeOut ?? null;
+        const showDuration = detail?.options?.showDuration ?? null;
 
-        window._toastQueue.push({ status, title, message, showCloseBtn, customBtnText, customBtnLink });
+        window._toastQueue.push({ status, title, message, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration });
 
         if (!window._toastProcessing) {
             window._toastProcessing = true;

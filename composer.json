@@ -1,6 +1,6 @@
 {
     "name": "devrabiul/laravel-toaster-magic",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "type": "library",
     "description": "Laravel Toaster Magic is a lightweight, flexible toast library for Laravel projects, with no jQuery, Bootstrap, or Tailwind dependency.",
     "keywords": ["laravel", "toaster", "magic", "notifications", "toastr", "flash-notifications", "dynamic-notifications", "laravel-toastr", "php", "livewire", "livewire-toaster"],
@@ -19,6 +19,11 @@
             "Devrabiul\\ToastMagic\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Devrabiul\\ToastMagic\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "laravel" :{
             "providers" : [
@@ -29,5 +34,22 @@
             }
         }
     },
-    "require": {}
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.21 || ^2.0 || ^3.0",
+        "orchestra/testbench": "^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0"
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

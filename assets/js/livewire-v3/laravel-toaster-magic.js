@@ -71,9 +71,18 @@
                 }
             }
 
-            show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "" }) {
+            show({ type, heading, description = "", showCloseBtn = this.toastMagicCloseButton, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null }) {
                 this.setupConfig();
                 this.initToastContainer();
+
+                // Skip rendering if an identical toast is already visible and
+                // duplicate prevention is enabled in the config.
+                const duplicateKey = `${type}|${heading}|${description}`;
+                if ((window.toastMagicConfig || {}).preventDuplicates && this.toastContainer) {
+                    const isDuplicate = Array.from(this.toastContainer.querySelectorAll(".toast-item"))
+                        .some(el => el.dataset.toastKey === duplicateKey);
+                    if (isDuplicate) return;
+                }
 
                 let toastClass, toastClassBasic;
                 switch (type) {
@@ -97,6 +106,7 @@
 
                 const toast = document.createElement("div");
                 toast.classList.add("toast-item", toastClass);
+                toast.dataset.toastKey = duplicateKey;
                 toast.setAttribute("role", "alert");
                 toast.setAttribute("aria-live", "assertive");
                 toast.setAttribute("aria-atomic", "true");
@@ -123,8 +133,9 @@
 
                 const cfg = window.toastMagicConfig || {};
                 const toastMagicPosition = cfg.positionClass || "toast-top-end";
-                const toastMagicShowDuration = cfg?.showDuration || 100;
-                const toastMagicTimeOut = cfg?.timeOut || 5000;
+                // Per-toast overrides take precedence; otherwise fall back to the global config.
+                const toastMagicShowDuration = (typeof showDuration === "number") ? showDuration : (cfg?.showDuration || 100);
+                const toastMagicTimeOut = (typeof timeOut === "number") ? timeOut : (cfg?.timeOut || 5000);
 
                 if (
                     toastMagicPosition === 'toast-bottom-end' ||
@@ -137,7 +148,24 @@
                 }
 
                 setTimeout(() => toast.classList.add("show"), toastMagicShowDuration);
-                setTimeout(() => closeToastMagicItem(toast), toastMagicTimeOut);
+
+                // Auto-dismiss timer with optional pause-on-hover.
+                // Enabled by default; set `pauseOnHover: false` in the config to disable.
+                const pauseOnHover = (window.toastMagicConfig || {}).pauseOnHover !== false;
+                let remaining = toastMagicTimeOut;
+                let startedAt = Date.now();
+                let dismissTimer = setTimeout(() => closeToastMagicItem(toast), remaining);
+
+                if (pauseOnHover) {
+                    toast.addEventListener("mouseenter", () => {
+                        clearTimeout(dismissTimer);
+                        remaining -= Date.now() - startedAt;
+                    });
+                    toast.addEventListener("mouseleave", () => {
+                        startedAt = Date.now();
+                        dismissTimer = setTimeout(() => closeToastMagicItem(toast), Math.max(remaining, 0));
+                    });
+                }
             }
 
             success(...args) {
@@ -153,9 +181,22 @@
                 this.show({ type: "info", ...this._parseArgs(args) });
             }
 
+            // Programmatically dismiss every currently visible toast.
+            clear() {
+                if (!this.toastContainer) return;
+                this.toastContainer
+                    .querySelectorAll(".toast-item")
+                    .forEach(toast => closeToastMagicItem(toast));
+            }
+
+            // Alias for clear().
+            dismissAll() {
+                this.clear();
+            }
+
             _parseArgs(args) {
-                const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = ""] = args;
-                return { heading, description, showCloseBtn, customBtnText, customBtnLink };
+                const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null] = args;
+                return { heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration };
             }
         };
     }
