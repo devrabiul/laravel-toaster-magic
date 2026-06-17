@@ -59,6 +59,11 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # Don't block resolution on security advisories: testing against older
+          # Laravel lines is intentional and those releases aren't shipped by this
+          # package. The `|| true` keeps this a no-op on older Composer versions
+          # that predate the advisory-blocking feature (and its config key).
+          composer config --no-plugins policy.advisories.block false || true
           composer require --dev --no-update --no-interaction \
             "orchestra/testbench:^${{ matrix.testbench }}.0" \
             "pestphp/pest:^${{ matrix.pest }}.0"
