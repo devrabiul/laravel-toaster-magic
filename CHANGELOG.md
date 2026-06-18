@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   "new follower" style notifications. The URL is sanitized before rendering.
 - **Entrance/exit animations.** A new `animation` config option (`default`, `slide`, `fade`, `pop`,
   `bounce`) controls how toasts enter and leave the screen. `default` preserves the current behavior.
+- **Smooth stack reflow.** When a toast is added or dismissed, the remaining toasts now glide
+  smoothly into their new positions (FLIP technique) instead of jumping. Respects
+  `prefers-reduced-motion`.
 
 ## [2.2.0] - 2026-06-17
 

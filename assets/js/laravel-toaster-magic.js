@@ -11,10 +11,92 @@
     // Utility: Close toast function
     // ===============================
     function closeToastMagicItem(toast) {
+        if (toast.dataset.tmClosing) return; // guard against double-close
+        toast.dataset.tmClosing = "1";
+
+        const container = toast.closest(".toast-container");
+
+        // Pin the closing toast in place (out of flow) so the flex gap collapses
+        // immediately, then glide the remaining toasts up to fill the space — all
+        // while it slides/fades out. Keeps the stack moving smoothly and continuously.
+        flipReflow(container, () => {
+            const rect = toast.getBoundingClientRect();
+            toast.style.translate = "";   // drop any in-progress reflow offset
+            toast.style.position = "fixed";
+            toast.style.top = rect.top + "px";
+            toast.style.left = rect.left + "px";
+            toast.style.width = rect.width + "px";
+            toast.style.height = rect.height + "px";
+            toast.style.margin = "0";
+        });
+
         toast.classList.remove("show");
-        setTimeout(() => {
-            toast.remove();
-        }, 500);
+        setTimeout(() => toast.remove(), 500);
+    }
+
+    // ===============================
+    // Utility: Smooth stack reflow (FLIP)
+    // ===============================
+    // When a toast is added or removed, the others glide to their new positions
+    // instead of jumping. Reflow uses the independent `translate` CSS property so it
+    // never fights the entrance/exit animation, which uses `transform` — that means
+    // a toast can slide in AND reflow vertically at the same time without conflict.
+    function flipReflow(container, mutate) {
+        if (!container || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+            mutate();
+            return;
+        }
+
+        // Keep the entrance/exit (`transform`, `opacity`) animating while `translate` reflows.
+        const reflowTransition = "translate .5s cubic-bezier(0.22, 0.61, 0.36, 1), transform .5s ease-in-out, opacity .5s ease-in-out";
+
+        const snapshot = Array.from(container.querySelectorAll(".toast-item"))
+            .filter(el => !el.dataset.tmClosing)
+            .map(el => ({ el, top: el.getBoundingClientRect().top }));
+
+        mutate();
+
+        snapshot.forEach(({ el, top }) => {
+            if (!el.isConnected) return;
+
+            // Cancel any reflow still animating on this element so its stale
+            // transitionend cleanup can't wipe the new one mid-glide — that race
+            // is what made the stack teleport when entrances and exits overlapped.
+            if (el._tmReflowCleanup) {
+                el.removeEventListener("transitionend", el._tmReflowCleanup);
+                el._tmReflowCleanup = null;
+            }
+
+            // Measure the true post-mutate layout position with our own offset
+            // removed, so an in-progress glide isn't double-counted into delta.
+            el.style.transition = "none";
+            el.style.translate = "0px";
+            const delta = top - el.getBoundingClientRect().top;
+            if (!delta) {
+                el.style.transition = "";
+                el.style.translate = "";
+                return;
+            }
+
+            // Invert: offset to the old position instantly via the independent `translate`...
+            el.style.translate = `0 ${delta}px`;
+            void el.offsetHeight; // flush the inverted position before playing
+
+            // ...then play: glide to the new position without touching `transform`.
+            requestAnimationFrame(() => {
+                el.style.transition = reflowTransition;
+                el.style.translate = "0 0";
+                const cleanup = (event) => {
+                    if (event.propertyName !== "translate") return;
+                    el.style.transition = "";
+                    el.style.translate = "";
+                    el.removeEventListener("transitionend", cleanup);
+                    el._tmReflowCleanup = null;
+                };
+                el._tmReflowCleanup = cleanup;
+                el.addEventListener("transitionend", cleanup);
+            });
+        });
     }
 
     // ===============================
@@ -139,12 +221,17 @@
                 const toastMagicShowDuration = (typeof showDuration === "number") ? showDuration : (cfg?.showDuration || 100);
                 const toastMagicTimeOut = (typeof timeOut === "number") ? timeOut : (cfg?.timeOut || 5000);
 
+                // Newest toast always appears closest to its anchored corner: on top
+                // for top positions (older toasts move down), at the bottom for bottom
+                // positions (older toasts move up). flipReflow glides the existing toasts
+                // smoothly to their new spots instead of letting them jump, and removal
+                // reflows the stack to close the gap (see closeToastMagicItem).
                 if (
                     toastMagicPosition.includes('bottom')
                 ) {
-                    this.toastContainer.append(toast);
+                    flipReflow(this.toastContainer, () => this.toastContainer.append(toast));
                 } else {
-                    this.toastContainer.prepend(toast);
+                    flipReflow(this.toastContainer, () => this.toastContainer.prepend(toast));
                 }
 
                 setTimeout(() => toast.classList.add("show"), toastMagicShowDuration);
