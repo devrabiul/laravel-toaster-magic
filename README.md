@@ -1,4 +1,4 @@
-# 🍞 Laravel Toaster Magic — v2.2
+# 🍞 Laravel Toaster Magic — v2.3
 
 Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
 
@@ -28,6 +28,9 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 - 🌍 **RTL Support** — Full compatibility with right-to-left languages.
 - 🌙 **Dark Mode** — Built-in dark mode support via a single HTML attribute.
 - 🎨 **7+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, and Default.
+- 🎞️ **Entrance/Exit Animations** — Choose how toasts enter and leave: `slide`, `fade`, `pop`, or `bounce`.
+- 🪄 **Smooth Stack Reflow** — Remaining toasts glide into place (FLIP) when one is added or dismissed. Respects `prefers-reduced-motion`.
+- 🖼️ **Avatar Toasts** — Render an image in place of the type icon for notification-style toasts.
 - ⚡ **Livewire Ready** — First-class support for Livewire v3 & v4 with event-based dispatching.
 - 🔒 **Safe Button Links** — Custom button URLs are sanitized before being rendered into the DOM. See the [Security](#-security) section for how message content is handled.
 - ✅ **Zero Dependencies** — No jQuery, Bootstrap, or Tailwind required.
@@ -313,6 +316,8 @@ return [
 | `fade`    | Fade in/out with no movement |
 | `pop`     | Scale up from slightly smaller, with a soft overshoot |
 | `bounce`  | Slide in with a springy overshoot |
+
+> **Smooth stack reflow:** When a toast is added or dismissed, the remaining toasts glide smoothly into their new positions (using the FLIP technique) instead of jumping. This honors the user's `prefers-reduced-motion` setting and requires no configuration.
 
 ---
 
