@@ -115,6 +115,16 @@ You can also pass a validation `MessageBag` directly — its messages are flatte
 ToastMagic::error($validator->errors());
 ```
 
+#### 🖼️ Avatar / notification-style toasts
+
+Pass an `avatar` URL to render an image in place of the type icon — ideal for "new message" / "new follower" style notifications:
+
+```php
+ToastMagic::info('New message', 'Hey, are you free to chat?', [
+    'avatar' => $user->avatar_url,
+]);
+```
+
 ---
 
 ### 2. JavaScript Usage
@@ -133,9 +143,9 @@ toastMagic.info('Info!', 'Click for details.', false, 'Learn More', 'https://exa
 toastMagic.clear();      // or toastMagic.dismissAll();
 ```
 
-**Signature:** `toastMagic.{type}(heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration)`
+**Signature:** `toastMagic.{type}(heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration, avatar)`
 
-> `timeOut` and `showDuration` are optional per-toast overrides (in milliseconds). When omitted, the global config values are used.
+> `timeOut` and `showDuration` are optional per-toast overrides (in milliseconds). `avatar` is an optional image URL shown in place of the type icon. When omitted, the global config values are used.
 
 ---
 
@@ -284,6 +294,28 @@ return [
 
 ---
 
+## 🎞️ Animations
+
+Choose how toasts enter and leave the screen using the `animation` config option:
+
+```php
+return [
+    'options' => [
+        'animation' => 'slide', // default, slide, fade, pop, bounce
+    ],
+];
+```
+
+| Value | Effect |
+|-----------|------------------------------------------------|
+| `default` | Slide in from the toast's position *(default)* |
+| `slide`   | Same as default — explicit slide |
+| `fade`    | Fade in/out with no movement |
+| `pop`     | Scale up from slightly smaller, with a soft overshoot |
+| `bounce`  | Slide in with a springy overshoot |
+
+---
+
 ## 🌙 Dark Mode
 
 Add `theme="dark"` to your `<body>` tag to enable dark mode globally:
@@ -310,6 +342,7 @@ return [
         'gradient_enable'   => false,
         'color_mode'        => false,
         'pauseOnHover'      => true, // Pause the auto-dismiss timer while hovering a toast
+        'animation'         => 'default', // default, slide, fade, pop, bounce
     ],
     'livewire_enabled'  => false,
     'livewire_version'  => 'v3',
