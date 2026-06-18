@@ -1,6 +1,6 @@
 {
     "name": "devrabiul/laravel-toaster-magic",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "type": "library",
     "description": "Laravel Toaster Magic is a lightweight, flexible toast library for Laravel projects, with no jQuery, Bootstrap, or Tailwind dependency.",
     "keywords": ["laravel", "toaster", "magic", "notifications", "toastr", "flash-notifications", "dynamic-notifications", "laravel-toastr", "php", "livewire", "livewire-toaster"],
