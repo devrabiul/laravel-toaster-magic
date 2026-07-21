@@ -520,6 +520,10 @@ html.dark .page-meta__section {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
+  /* Clip the full-bleed hero aurora so it can't create horizontal scroll /
+     empty space on the right. `clip` (unlike `hidden`) doesn't start a scroll
+     container, so the sticky navbar/TOC keep working. */
+  overflow-x: clip;
 }
 .hero {
   position: relative;
@@ -538,6 +542,12 @@ html.dark .page-meta__section {
   align-items: center;
   padding: 72px 0 40px;
   isolation: isolate;
+}
+/* min-width:0 lets both grid columns shrink below their content size instead
+   of forcing the layout wider than the viewport. */
+.split-hero__copy,
+.split-hero__demo {
+  min-width: 0;
 }
 .split-hero__copy {
   text-align: left;
@@ -588,6 +598,7 @@ html.dark .page-meta__section {
 
 /* Right-hand "editor" card with a live Run button */
 .code-window {
+  min-width: 0;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   background: var(--bg-elevated);
@@ -598,6 +609,7 @@ html.dark .page-meta__section {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
   padding: 11px 14px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-subtle);
@@ -612,6 +624,11 @@ html.dark .page-meta__section {
 .code-window__dot--g { background: #28c840; }
 .code-window__file {
   margin-left: 8px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--text-faint);
