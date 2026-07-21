@@ -29,7 +29,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -40,6 +40,10 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # Create the Pages site automatically if it isn't enabled yet,
+          # so the first deploy doesn't require toggling it in the UI.
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
