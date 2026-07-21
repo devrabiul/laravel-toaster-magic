@@ -520,10 +520,6 @@ html.dark .page-meta__section {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
-  /* Clip the full-bleed hero aurora so it can't create horizontal scroll /
-     empty space on the right. `clip` (unlike `hidden`) doesn't start a scroll
-     container, so the sticky navbar/TOC keep working. */
-  overflow-x: clip;
 }
 .hero {
   position: relative;

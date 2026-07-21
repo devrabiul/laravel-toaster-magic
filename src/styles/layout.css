@@ -4,6 +4,11 @@
 
 .app-shell {
   min-height: 100vh;
+  /* Clip horizontal overflow at the viewport edge so full-bleed decoration
+     (the hero aurora) can span the whole width without causing a horizontal
+     scrollbar. `clip` on one axis leaves overflow-y visible and creates no
+     scroll container, so the sticky navbar and fixed search dialog keep working. */
+  overflow-x: clip;
 }
 
 /* ---- Navbar ---------------------------------------------------------------- */
