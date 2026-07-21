@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 
 const GitHubIcon = () => (
@@ -28,6 +28,7 @@ interface NavbarProps {
 
 export function Navbar({ onMenuClick, onSearchClick }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const isHome = useLocation().pathname === "/";
 
   // Add a subtle shadow once the page is scrolled, so the header lifts off the content.
   useEffect(() => {
@@ -38,7 +39,9 @@ export function Navbar({ onMenuClick, onSearchClick }: NavbarProps) {
   }, []);
 
   return (
-    <header className={`navbar${scrolled ? " navbar--scrolled" : ""}`}>
+    <header
+      className={`navbar${scrolled ? " navbar--scrolled" : ""}${isHome ? " navbar--home" : ""}`}
+    >
       <div className="navbar__inner">
       <button
         type="button"
@@ -50,7 +53,6 @@ export function Navbar({ onMenuClick, onSearchClick }: NavbarProps) {
       </button>
 
       <Link to="/" className="navbar__brand">
-        <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" className="navbar__logo" />
         <span className="navbar__brand-text">Laravel Toaster Magic</span>
         <span className="navbar__version">v2.3</span>
       </Link>
