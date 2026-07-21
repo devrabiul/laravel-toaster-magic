@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Toaster Magic</title>
+    <!--
+      Single Page Apps for GitHub Pages
+      https://github.com/rafgraph/spa-github-pages
+      Redirects deep links to index.html with the path encoded in the query
+      string, where index.html restores it via history.replaceState.
+      pathSegmentsToKeep = 1 keeps the "/toaster-magic" project base.
+    -->
+    <script>
+      (function (l) {
+        var pathSegmentsToKeep = 1;
+        var repo = l.pathname
+          .split("/")
+          .slice(0, 1 + pathSegmentsToKeep)
+          .join("/");
+        var rest = l.pathname.slice(1).split("/").slice(pathSegmentsToKeep).join("/");
+        l.replace(
+          l.protocol +
+            "//" +
+            l.hostname +
+            (l.port ? ":" + l.port : "") +
+            repo +
+            "/?/" +
+            rest +
+            (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+            l.hash,
+        );
+      })(window.location);
+    </script>
+  </head>
+  <body></body>
+</html>

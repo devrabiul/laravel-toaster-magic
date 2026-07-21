@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#04bb7b" />
+
+    <!-- Primary meta (per-page values are set at runtime by <Seo />) -->
+    <title>Laravel Toaster Magic — Elegant toast notifications for Laravel</title>
+    <meta
+      name="description"
+      content="Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with 7 beautiful themes, smooth animations, and first-class Livewire v3 & v4 support."
+    />
+    <meta
+      name="keywords"
+      content="laravel toast, laravel notification, livewire toast, toastr, blade, php, snackbar, alert, laravel-toaster-magic"
+    />
+    <link rel="canonical" href="https://devrabiul.github.io/laravel-toaster-magic/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Laravel Toaster Magic" />
+    <meta property="og:title" content="Laravel Toaster Magic — Elegant toast notifications for Laravel" />
+    <meta
+      property="og:description"
+      content="Dependency-free Laravel toast notifications with 7 themes, smooth animations, and Livewire v3 & v4 support."
+    />
+    <meta property="og:url" content="https://devrabiul.github.io/laravel-toaster-magic/" />
+    <meta property="og:image" content="https://devrabiul.github.io/laravel-toaster-magic/og-image.svg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Laravel Toaster Magic — Elegant toast notifications for Laravel" />
+    <meta
+      name="twitter:description"
+      content="Dependency-free Laravel toast notifications with 7 themes, animations, and Livewire support."
+    />
+    <meta name="twitter:image" content="https://devrabiul.github.io/laravel-toaster-magic/og-image.svg" />
+
+    <link rel="icon" type="image/svg+xml" href="/laravel-toaster-magic/favicon.svg" />
+    <link rel="manifest" href="/laravel-toaster-magic/manifest.webmanifest" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Laravel Toaster Magic",
+        "description": "Lightweight, dependency-free toast notification package for Laravel with 7 themes, animations, and Livewire support.",
+        "codeRepository": "https://github.com/devrabiul/laravel-toaster-magic",
+        "programmingLanguage": "PHP",
+        "runtimePlatform": "Laravel",
+        "license": "https://opensource.org/licenses/MIT",
+        "author": { "@type": "Person", "name": "Muhammad Rabiul" }
+      }
+    </script>
+
+    <!-- Set theme before paint to avoid a flash of the wrong color scheme -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("tm-theme");
+          var dark = stored ? stored === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", dark);
+          document.body && document.body.setAttribute("theme", dark ? "dark" : "light");
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Single Page Apps for GitHub Pages: restore the deep link stashed by 404.html -->
+    <script>
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

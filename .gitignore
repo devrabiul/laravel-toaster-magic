@@ -1,0 +1,15 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vite
+.DS_Store
+node_modules/.tmp
+
+# Editors / tooling
+.idea
+.claude
+
+# Scratch / task files
+plan.md
+*.tgz
