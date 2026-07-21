@@ -527,49 +527,250 @@ html.dark .page-meta__section {
   padding: 96px 0 72px;
   isolation: isolate;
 }
-/* Compact variant — used on the playground-first home so the hero yields
-   the fold to the live demo below it. */
-.hero--compact {
-  padding: 60px 0 32px;
+/* ============================================================================
+   Home page — split code-forward hero
+   ========================================================================== */
+.split-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding: 72px 0 40px;
+  isolation: isolate;
 }
-.hero--compact .hero__title {
-  font-size: clamp(2.1rem, 5vw, 3.35rem);
-  margin-bottom: 16px;
+.split-hero__copy {
+  text-align: left;
 }
-.hero--compact .hero__subtitle {
-  margin-bottom: 24px;
+.split-hero__title {
+  font-size: clamp(2.3rem, 4.6vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  margin: 18px 0;
+}
+.split-hero__subtitle {
+  font-size: clamp(1.02rem, 1.6vw, 1.18rem);
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 0 26px;
+}
+.split-hero .hero__cta {
+  justify-content: flex-start;
+}
+.split-hero__install {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+.split-hero__install > span:nth-child(2) {
+  overflow: auto;
+  white-space: nowrap;
+}
+.split-hero__install button {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.split-hero__install button:hover {
+  color: var(--brand);
 }
 
-/* Prominent live-demo panel that leads the home page. */
-.playground-showcase {
-  position: relative;
-  margin: 0 0 64px;
-  padding: 32px;
+/* Right-hand "editor" card with a live Run button */
+.code-window {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.code-window__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.code-window__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.code-window__dot--r { background: #ff5f57; }
+.code-window__dot--y { background: #febc2e; }
+.code-window__dot--g { background: #28c840; }
+.code-window__file {
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+.code-window .code-block {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+.code-window__run {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.code-window__run > span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.btn-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--brand);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 10px var(--brand-soft);
+}
+.btn-run:hover { background: var(--brand-strong); }
+
+/* Slim feature strip under the hero */
+.feature-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 8px;
+  padding: 8px 0 56px;
+}
+.feature-strip__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 14px;
+}
+
+/* "Use it your way" cards */
+.usage-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 24px 0 64px;
+}
+.usage-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  overflow: hidden;
+}
+.usage-card__head {
+  padding: 16px 18px 0;
+}
+.usage-card__tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand-strong);
+}
+.usage-card__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 4px 0 0;
+  font-family: var(--font-mono);
+}
+.usage-card .code-block {
+  border: none;
+  border-radius: 0;
+  margin: 14px 0 0;
+  flex: 1;
+}
+.usage-card__run {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* Interactive theme row */
+.themes-line__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.theme-chip {
+  cursor: pointer;
+  text-transform: capitalize;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.theme-chip:hover {
+  border-color: var(--brand);
+  color: var(--brand-strong);
+  background: var(--brand-soft);
+}
+
+/* Final CTA band */
+.cta-band {
+  text-align: center;
   border: 1px solid var(--brand-ring);
   border-radius: var(--radius-lg);
   background:
-    radial-gradient(130% 150% at 50% -10%, var(--brand-soft), transparent 62%),
+    radial-gradient(120% 160% at 50% 0%, var(--brand-soft), transparent 60%),
     var(--bg-subtle);
-  box-shadow: var(--shadow-md);
+  padding: 44px 24px;
+  margin: 0 0 56px;
 }
-.playground-showcase__head {
-  text-align: center;
-  margin-bottom: 24px;
+.cta-band .hero__cta {
+  justify-content: center;
 }
-.playground-showcase__head h2 {
-  font-size: clamp(1.6rem, 3.4vw, 2rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 0 0 8px;
-}
-.playground-showcase__head p {
-  color: var(--text-muted);
-  margin: 0 auto;
-  max-width: 580px;
-}
-@media (max-width: 640px) {
-  .playground-showcase {
-    padding: 20px;
+
+@media (max-width: 900px) {
+  .split-hero {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 48px 0 24px;
+  }
+  .split-hero__copy {
+    text-align: center;
+  }
+  .split-hero .hero__cta {
+    justify-content: center;
+  }
+  .split-hero__subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .usage-grid {
+    grid-template-columns: 1fr;
   }
 }
 /* Animated aurora background — soft, light, brand-tinted blobs drifting behind
