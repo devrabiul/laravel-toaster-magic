@@ -45,13 +45,13 @@
   text-decoration: none;
 }
 .navbar__brand-text {
-  background: linear-gradient(100deg, var(--brand-strong), #10b7c9);
+  background: linear-gradient(100deg, var(--brand-strong), #FF7A59);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 html.dark .navbar__brand-text {
-  background-image: linear-gradient(100deg, var(--brand), #22d3ee);
+  background-image: linear-gradient(100deg, var(--brand), #FF9E7A);
 }
 .navbar__logo {
   width: 28px;

@@ -6,7 +6,7 @@
   "scope": "/laravel-toaster-magic/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#04bb7b",
+  "theme_color": "#FF2D20",
   "icons": [
     {
       "src": "/laravel-toaster-magic/favicon.svg",

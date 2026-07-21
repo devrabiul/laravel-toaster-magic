@@ -257,15 +257,15 @@ html.dark .props .col-name code {
 }
 .btn--primary {
   background: var(--brand);
-  color: #04231a;
+  color: #ffffff;
   box-shadow: var(--shadow-sm);
 }
 .btn--primary:hover {
   background: var(--brand-strong);
-  color: #04231a;
+  color: #ffffff;
 }
 html.dark .btn--primary {
-  color: #032015;
+  color: #ffffff;
 }
 .btn--ghost {
   background: var(--bg-elevated);
@@ -328,7 +328,7 @@ html.dark .chip[data-active="true"] {
   color: var(--brand);
 }
 .chip--success {
-  border-left: 3px solid #04bb7b;
+  border-left: 3px solid #FF2D20;
 }
 .chip--error {
   border-left: 3px solid #dc3545;
@@ -527,6 +527,51 @@ html.dark .page-meta__section {
   padding: 96px 0 72px;
   isolation: isolate;
 }
+/* Compact variant — used on the playground-first home so the hero yields
+   the fold to the live demo below it. */
+.hero--compact {
+  padding: 60px 0 32px;
+}
+.hero--compact .hero__title {
+  font-size: clamp(2.1rem, 5vw, 3.35rem);
+  margin-bottom: 16px;
+}
+.hero--compact .hero__subtitle {
+  margin-bottom: 24px;
+}
+
+/* Prominent live-demo panel that leads the home page. */
+.playground-showcase {
+  position: relative;
+  margin: 0 0 64px;
+  padding: 32px;
+  border: 1px solid var(--brand-ring);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(130% 150% at 50% -10%, var(--brand-soft), transparent 62%),
+    var(--bg-subtle);
+  box-shadow: var(--shadow-md);
+}
+.playground-showcase__head {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.playground-showcase__head h2 {
+  font-size: clamp(1.6rem, 3.4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+.playground-showcase__head p {
+  color: var(--text-muted);
+  margin: 0 auto;
+  max-width: 580px;
+}
+@media (max-width: 640px) {
+  .playground-showcase {
+    padding: 20px;
+  }
+}
 /* Animated aurora background — soft, light, brand-tinted blobs drifting behind
    the hero, plus a faint grid. Sits full-bleed behind the content. */
 .hero__bg {
@@ -548,13 +593,13 @@ html.dark .page-meta__section {
 .hero__blob--1 {
   top: -120px;
   left: 12%;
-  background: radial-gradient(circle at 30% 30%, #0ad18a, transparent 70%);
+  background: radial-gradient(circle at 30% 30%, #FF5747, transparent 70%);
   animation: heroFloat1 16s ease-in-out infinite;
 }
 .hero__blob--2 {
   top: -60px;
   right: 14%;
-  background: radial-gradient(circle at 60% 40%, #22d3ee, transparent 70%);
+  background: radial-gradient(circle at 60% 40%, #FF9E7A, transparent 70%);
   animation: heroFloat2 19s ease-in-out infinite;
 }
 .hero__blob--3 {
@@ -562,7 +607,7 @@ html.dark .page-meta__section {
   left: 42%;
   width: 420px;
   height: 420px;
-  background: radial-gradient(circle at 50% 50%, #a78bfa, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, #FB7185, transparent 70%);
   opacity: 0.4;
   animation: heroFloat3 22s ease-in-out infinite;
 }
@@ -625,7 +670,7 @@ html.dark .hero__badge {
   margin: 0 0 22px;
 }
 .hero__title .grad {
-  background: linear-gradient(100deg, #04bb7b 0%, #10b7c9 45%, #7c6cf0 100%);
+  background: linear-gradient(100deg, #FF2D20 0%, #FF7A59 45%, #FF9142 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -633,7 +678,7 @@ html.dark .hero__badge {
   animation: heroGrad 8s linear infinite;
 }
 html.dark .hero__title .grad {
-  background-image: linear-gradient(100deg, #0ad18a 0%, #22d3ee 45%, #a78bfa 100%);
+  background-image: linear-gradient(100deg, #FF5747 0%, #FF9E7A 45%, #FB7185 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }

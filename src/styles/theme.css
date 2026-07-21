@@ -5,16 +5,16 @@
    ========================================================================== */
 
 :root {
-  --brand: #04bb7b;
-  --brand-strong: #039b66;
-  --brand-soft: rgba(4, 187, 123, 0.12);
-  --brand-ring: rgba(4, 187, 123, 0.4);
+  --brand: #FF2D20;
+  --brand-strong: #E01B0C;
+  --brand-soft: rgba(255, 45, 32, 0.12);
+  --brand-ring: rgba(255, 45, 32, 0.4);
 
   --bg: #ffffff;
   --bg-subtle: #f7f9fb;
   --bg-elevated: #ffffff;
   --bg-code: #f6f8fa;
-  --bg-inline-code: rgba(4, 187, 123, 0.1);
+  --bg-inline-code: rgba(255, 45, 32, 0.1);
 
   --text: #10161c;
   --text-muted: #55636e;
@@ -45,16 +45,16 @@
 }
 
 html.dark {
-  --brand: #0ad18a;
-  --brand-strong: #16e39a;
-  --brand-soft: rgba(10, 209, 138, 0.14);
-  --brand-ring: rgba(10, 209, 138, 0.4);
+  --brand: #FF5747;
+  --brand-strong: #FF8578;
+  --brand-soft: rgba(255, 87, 71, 0.14);
+  --brand-ring: rgba(255, 87, 71, 0.4);
 
   --bg: #0b0f14;
   --bg-subtle: #0f151c;
   --bg-elevated: #121a22;
   --bg-code: #0f151c;
-  --bg-inline-code: rgba(10, 209, 138, 0.14);
+  --bg-inline-code: rgba(255, 87, 71, 0.14);
 
   --text: #e6edf3;
   --text-muted: #9fb0bf;

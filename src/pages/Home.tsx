@@ -43,22 +43,21 @@ export default function Home() {
     <>
       <Seo title={home.title} description={home.description} path="/" keywords={home.keywords} />
       <div className="home">
-        <section className="hero">
+        {/* Compact hero — gets out of the way fast so the playground leads */}
+        <section className="hero hero--compact">
           <div className="hero__bg" aria-hidden="true">
             <span className="hero__blob hero__blob--1" />
             <span className="hero__blob hero__blob--2" />
             <span className="hero__blob hero__blob--3" />
             <div className="hero__grid" />
           </div>
-          <span className="hero__badge">🎉 v2.3 · MIT licensed · Livewire v3 &amp; v4</span>
+          <span className="hero__badge">🎉 v2.3 · Livewire v3 &amp; v4 · MIT licensed</span>
           <h1 className="hero__title">
-            Laravel toast notifications
-            <br />
-            that just feel <span className="grad">magic</span>
+            Laravel toasts that feel <span className="grad">magic</span>
           </h1>
           <p className="hero__subtitle">
-            A lightweight, dependency-free toast package for Laravel with 7 beautiful themes, buttery
-            animations, and first-class Livewire support. No jQuery, Bootstrap, or Tailwind required.
+            A lightweight, dependency-free toast package for Laravel — 7 themes, smooth animations,
+            and first-class Livewire support. No jQuery, Bootstrap, or Tailwind.
           </p>
           <div className="hero__cta">
             <Link className="btn btn--primary" to="/docs/getting-started">
@@ -82,21 +81,16 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="home-section">
-          <h2 className="home-section__title">See it in action</h2>
-          <p className="home-section__sub">
-            Pick a theme, animation, and position, then fire a real toast. This playground renders
-            with the same engine the package ships.
-          </p>
-          <Playground />
-        </section>
-
-        <section className="home-section">
-          <h2 className="home-section__title">Three lines to your first toast</h2>
-          <p className="home-section__sub">Trigger it from a controller — no boilerplate.</p>
-          <div style={{ maxWidth: 640, margin: "0 auto" }}>
-            <CodeBlock code={QUICK_CODE} language="php" filename="app/Http/Controllers/PostController.php" />
+        {/* Playground leads the page — try before you read */}
+        <section className="playground-showcase" aria-labelledby="try-it-live">
+          <div className="playground-showcase__head">
+            <h2 id="try-it-live">Try it live</h2>
+            <p>
+              Pick a theme, animation, and position, then fire a real toast — right here, no install
+              required. It renders with the same engine the package ships.
+            </p>
           </div>
+          <Playground />
         </section>
 
         <section className="home-section">
@@ -114,6 +108,14 @@ export default function Home() {
                 <p className="feature__desc">{f.desc}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="home-section">
+          <h2 className="home-section__title">Three lines to your first toast</h2>
+          <p className="home-section__sub">Trigger it from a controller — no boilerplate.</p>
+          <div style={{ maxWidth: 640, margin: "0 auto" }}>
+            <CodeBlock code={QUICK_CODE} language="php" filename="app/Http/Controllers/PostController.php" />
           </div>
         </section>
 
