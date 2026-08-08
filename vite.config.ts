@@ -19,10 +19,12 @@ function seoAssets(): Plugin {
       const urls = ROUTES.map(
         (r) =>
           `  <url>\n    <loc>${SITE_URL}${r.path === "/" ? "/" : r.path}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${r.path === "/" ? "1.0" : "0.7"}</priority>\n  </url>`,
-      ).join("\n");
-      // The stylesheet PI is purely cosmetic — it stops browsers from rendering
-      // the raw document tree with "no style information"; crawlers ignore it.
-      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="${BASE}sitemap.xsl"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+      ).join("\n\n");
+      // Blank lines around and between the <url> blocks keep the deployed file
+      // readable when it's viewed as raw XML. The stylesheet PI is purely
+      // cosmetic — it stops browsers from rendering the raw document tree with
+      // "no style information"; crawlers ignore it.
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="${BASE}sitemap.xsl"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n${urls}\n\n</urlset>\n`;
       writeFileSync(resolve(outDir, "sitemap.xml"), sitemap);
 
       const robots = `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
