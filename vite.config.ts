@@ -16,9 +16,11 @@ function seoAssets(): Plugin {
     apply: "build",
     closeBundle() {
       const outDir = resolve(__dirname, "dist");
+      // W3C Datetime (YYYY-MM-DD) — the date this build was produced.
+      const lastmod = new Date().toISOString().slice(0, 10);
       const urls = ROUTES.map(
         (r) =>
-          `  <url>\n    <loc>${SITE_URL}${r.path === "/" ? "/" : r.path}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${r.path === "/" ? "1.0" : "0.7"}</priority>\n  </url>`,
+          `  <url>\n    <loc>${SITE_URL}${r.path === "/" ? "/" : r.path}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${r.path === "/" ? "1.0" : "0.7"}</priority>\n  </url>`,
       ).join("\n\n");
       // Blank lines around and between the <url> blocks keep the deployed file
       // readable when it's viewed as raw XML.
