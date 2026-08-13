@@ -2,6 +2,8 @@
 // (config/laravel-toaster-magic.php and the ToastMagic facade). Keep in sync
 // with the package on each release.
 
+import type { ToastMagicConfig } from "toaster-magic";
+
 export interface PropRow {
   name: string;
   type: string;
@@ -178,6 +180,16 @@ export const METHODS: MethodRow[] = [
     description: "Render the required <script> tags. Call before </body>.",
   },
 ];
+
+/**
+ * The theme union accepted by the live demos.
+ *
+ * The standalone `toaster-magic` JS build's own union predates the `neumorphic`
+ * theme, whose CSS the docs vendor in src/styles/toast-neumorphic.css. Widen it
+ * here so the playground can offer the theme; drop this alias — and the vendored
+ * stylesheet — once the JS build ships it.
+ */
+export type DocsTheme = ToastMagicConfig["theme"] | "neumorphic";
 
 export interface ThemeInfo {
   id: string;

@@ -6,6 +6,8 @@ import App from "./App";
 import "./styles/theme.css";
 import "./styles/layout.css";
 import "./styles/components.css";
+// Ahead of the base stylesheet on purpose — see the note in the file itself.
+import "./styles/toast-neumorphic.css";
 import "toaster-magic/css";
 
 // import.meta.env.BASE_URL is "/laravel-toaster-magic/" in the GitHub Pages

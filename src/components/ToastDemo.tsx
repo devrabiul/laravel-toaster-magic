@@ -60,6 +60,7 @@ const THEME_OPTIONS = [
   "neon",
   "minimal",
   "neumorphism",
+  "neumorphic",
 ] as const;
 const ANIMATION_OPTIONS = ["default", "slide", "fade", "pop", "bounce"] as const;
 const POSITION_OPTIONS = [
@@ -79,7 +80,7 @@ export function Playground() {
   const [position, setPosition] = useState<string>("toast-top-end");
 
   const config: Partial<ToastMagicConfig> = {
-    theme,
+    theme: theme as ToastMagicConfig["theme"],
     animation,
     positionClass: position as ToastMagicConfig["positionClass"],
     closeButton: true,

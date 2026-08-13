@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { toastMagic, type ToastMagicConfig } from "toaster-magic";
 import { CodeBlock } from "../components/CodeBlock";
 import { Seo } from "../components/Seo";
+import type { DocsTheme } from "../data/reference";
 import { routeByPath } from "../data/routes";
 
 const HERO_CODE = `use Devrabiul\\ToastMagic\\Facades\\ToastMagic;
@@ -41,6 +42,7 @@ const THEME_IDS = [
   "neon",
   "minimal",
   "neumorphism",
+  "neumorphic",
 ] as const;
 
 const FEATURES = [
@@ -52,13 +54,13 @@ const FEATURES = [
   "✅ Zero dependencies",
 ];
 
-function fireSaved(theme: ToastMagicConfig["theme"] = "default") {
-  toastMagic.configure({ theme, closeButton: true, positionClass: "toast-top-end" });
+function fireSaved(theme: DocsTheme = "default") {
+  toastMagic.configure({ theme: theme as ToastMagicConfig["theme"], closeButton: true, positionClass: "toast-top-end" });
   toastMagic.success("Success!", "Your data has been saved!");
 }
 
-function fireThemed(theme: ToastMagicConfig["theme"]) {
-  toastMagic.configure({ theme, closeButton: true, positionClass: "toast-top-end" });
+function fireThemed(theme: DocsTheme) {
+  toastMagic.configure({ theme: theme as ToastMagicConfig["theme"], closeButton: true, positionClass: "toast-top-end" });
   toastMagic.success(`${theme} theme`, "This is how a toast looks.");
 }
 

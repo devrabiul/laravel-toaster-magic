@@ -162,10 +162,9 @@ export default function Themes() {
         <code>neumorphic</code> is a separate theme from the original <code>neumorphism</code>. Both
         ship side by side, and selecting one has no effect on the other.
       </Callout>
-      <Callout kind="warning">
-        The interactive previews on this site run on the standalone JavaScript build, which does not
-        carry the <code>neumorphic</code> theme yet — so it isn't selectable in the playground. In a
-        Laravel app the theme is available now: set it in the config as shown above.
+      <Callout kind="tip">
+        Try it on the <Link to="/">home page</Link> — pick <code>neumorphic</code> from the theme row
+        to fire a live toast in it.
       </Callout>
 
       <H2 id="theme-reference">Theme reference table</H2>
