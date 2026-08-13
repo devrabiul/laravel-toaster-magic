@@ -54,7 +54,7 @@ export function Navbar({ onMenuClick, onSearchClick }: NavbarProps) {
 
       <Link to="/" className="navbar__brand">
         <span className="navbar__brand-text">Laravel Toaster Magic</span>
-        <span className="navbar__version">v2.3</span>
+        <span className="navbar__version">v2.4</span>
       </Link>
 
       <div className="navbar__spacer" />

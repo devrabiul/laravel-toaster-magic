@@ -55,9 +55,21 @@ export const ROUTES: RouteMeta[] = [
   {
     path: "/docs/themes",
     title: "Themes",
-    description: "Seven built-in themes: default, material, iOS, glassmorphism, neon, minimal, and neumorphism.",
+    description:
+      "Eight built-in themes: default, material, iOS, glassmorphism, neon, minimal, neumorphism, and neumorphic.",
     section: "Guides",
-    keywords: ["theme", "material", "ios", "glassmorphism", "neon", "minimal", "neumorphism", "style"],
+    keywords: [
+      "theme",
+      "material",
+      "ios",
+      "glassmorphism",
+      "neon",
+      "minimal",
+      "neumorphism",
+      "neumorphic",
+      "soft ui",
+      "style",
+    ],
   },
   {
     path: "/docs/animations",

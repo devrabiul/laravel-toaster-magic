@@ -21,7 +21,7 @@ export const CONFIG_OPTIONS: PropRow[] = [
     name: "theme",
     type: "string",
     default: `'default'`,
-    description: "One of the seven built-in visual themes.",
+    description: "One of the eight built-in visual themes.",
   },
   {
     name: "animation",
@@ -193,6 +193,12 @@ export const THEMES: ThemeInfo[] = [
   { id: "neon", name: "Neon", blurb: "Dark background with glowing borders — ideal for dark UIs." },
   { id: "minimal", name: "Minimal", blurb: "Clean design with a colored left-side accent." },
   { id: "neumorphism", name: "Neumorphism", blurb: "Soft UI with extruded dual-shadow styling." },
+  {
+    id: "neumorphic",
+    name: "Neumorphic",
+    blurb:
+      "Refined soft UI — dual-direction shadows, raised controls that press in on click, and a recessed progress groove.",
+  },
 ];
 
 export interface AnimationInfo {

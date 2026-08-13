@@ -69,9 +69,9 @@ export default function DarkMode() {
 
       <H2 id="how-it-interacts-with-themes">How it interacts with themes</H2>
       <p>
-        Dark mode is orthogonal to the seven <Link to="/docs/themes">themes</Link>. The{" "}
+        Dark mode is orthogonal to the eight <Link to="/docs/themes">themes</Link>. The{" "}
         <code>theme</code> config option chooses the <em>visual style</em> (default, material, iOS,
-        glassmorphism, neon, minimal, neumorphism), while the <code>theme="dark"</code> attribute
+        glassmorphism, neon, minimal, neumorphism, neumorphic), while the <code>theme="dark"</code> attribute
         chooses the <em>color scheme</em>. Every built-in theme ships light and dark variants, so the
         two settings compose: a <code>material</code> toast automatically switches to its dark
         surface when the body is marked dark.

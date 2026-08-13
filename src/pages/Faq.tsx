@@ -76,7 +76,7 @@ export default function Faq() {
       <H2 id="theme-position">How do I change the theme or position?</H2>
       <p>
         Set <code>theme</code> and <code>positionClass</code> under the <code>options</code> key in the
-        config file (or override them per toast). There are seven themes and six positions:
+        config file (or override them per toast). There are eight themes and six positions:
       </p>
       <CodeBlock code={THEME} language="php" />
       <p>

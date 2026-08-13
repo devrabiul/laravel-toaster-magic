@@ -12,7 +12,7 @@ const CONFIG_THEME = `<?php
 // config/laravel-toaster-magic.php
 return [
     'options' => [
-        'theme' => 'glassmorphism', // default | material | ios | glassmorphism | neon | minimal | neumorphism
+        'theme' => 'glassmorphism', // default | material | ios | glassmorphism | neon | minimal | neumorphism | neumorphic
         // ...other options
     ],
 ];`;
@@ -23,6 +23,29 @@ const PER_TOAST = `use Devrabiul\\ToastMagic\\Facades\\ToastMagic;
 
 // The theme comes from config — every toast in the app shares it.
 ToastMagic::success('Saved', 'Your profile is up to date.');`;
+
+const NEUMORPHIC_CONFIG = `<?php
+
+// config/laravel-toaster-magic.php
+return [
+    'options' => [
+        'theme' => 'neumorphic',
+    ],
+];`;
+
+const NEUMORPHIC_VARS = `.toast-container.theme-neumorphic {
+    /* Material the toast and controls are cut from. */
+    --tm-neu-surface: #eef0f5;
+
+    /* Highlight top-left, shadow bottom-right. */
+    --tm-neu-shadow-light: rgba(255, 255, 255, 0.9);
+    --tm-neu-shadow-dark: rgba(163, 177, 198, 0.55);
+
+    /* Softness, distance off the page, diffusion. */
+    --tm-neu-radius: 1.5rem;
+    --tm-neu-distance: 7px;
+    --tm-neu-blur: 18px;
+}`;
 
 const GRADIENT_CONFIG = `<?php
 
@@ -38,7 +61,7 @@ export default function Themes() {
     <DocPage page={routeByPath("/docs/themes")!}>
       <h1>Themes</h1>
       <p className="lead">
-        Laravel Toaster Magic ships with seven hand-crafted themes. Pick one in the config file and
+        Laravel Toaster Magic ships with eight hand-crafted themes. Pick one in the config file and
         every toast in your application adopts the look — no CSS required.
       </p>
 
@@ -68,7 +91,7 @@ export default function Themes() {
       </p>
       <TypeButtons />
 
-      <H2 id="the-seven-themes">The seven themes</H2>
+      <H2 id="the-themes">The eight themes</H2>
       <p>
         Every value below is a valid <code>'theme'</code> setting. Choose the one that best matches
         your application's design language.
@@ -88,9 +111,62 @@ export default function Themes() {
       <p>
         <code>default</code> and <code>material</code> suit most dashboards and admin panels.{" "}
         <code>ios</code> and <code>glassmorphism</code> pair well with soft, blurred, image-heavy
-        UIs. <code>neon</code> is built for dark interfaces, while <code>minimal</code> and{" "}
-        <code>neumorphism</code> lean into understated, tactile designs.
+        UIs. <code>neon</code> is built for dark interfaces, while <code>minimal</code>,{" "}
+        <code>neumorphism</code> and <code>neumorphic</code> lean into understated, tactile designs.
       </p>
+
+      <H2 id="neumorphic">Neumorphic</H2>
+      <p>
+        Added in <strong>v2.4</strong>, <code>neumorphic</code> is a soft-UI theme where the toast
+        reads as an object extruded from the same material as the page behind it. Depth comes from a
+        dual-direction shadow pair — a light highlight from the top-left and a soft dark shadow from
+        the bottom-right — plus a hairline inner bevel, instead of borders or gradients.
+      </p>
+      <CodeBlock
+        code={NEUMORPHIC_CONFIG}
+        language="php"
+        filename="config/laravel-toaster-magic.php"
+      />
+      <ul>
+        <li>
+          <strong>Raised, pressable controls</strong> — the icon puck, close button and action button
+          lift on hover and press <em>into</em> the surface on click.
+        </li>
+        <li>
+          <strong>Recessed progress groove</strong> — the progress bar runs in a channel carved into
+          the toast's bottom edge.
+        </li>
+        <li>
+          <strong>Monochromatic surface</strong> — the toast never turns into a colored card; only
+          the icon, the progress fill and the focus ring take the semantic accent.
+        </li>
+        <li>
+          <strong>Light mode</strong> — a cool off-white surface that blends into the page, with a
+          white highlight and a soft blue-gray shadow.
+        </li>
+        <li>
+          <strong>Dark mode</strong> — a dedicated treatment rather than an inversion: a soft
+          charcoal surface where the shadow carries the depth, the highlight is a faint light edge,
+          and accents are muted so nothing glows.
+        </li>
+      </ul>
+
+      <H3 id="customizing-neumorphic">Customizing the surface</H3>
+      <p>
+        The theme is driven entirely by CSS variables scoped to{" "}
+        <code>.toast-container.theme-neumorphic</code>, so you can match it to your own surface
+        without forking any CSS:
+      </p>
+      <CodeBlock code={NEUMORPHIC_VARS} language="css" />
+      <Callout kind="info">
+        <code>neumorphic</code> is a separate theme from the original <code>neumorphism</code>. Both
+        ship side by side, and selecting one has no effect on the other.
+      </Callout>
+      <Callout kind="warning">
+        The interactive previews on this site run on the standalone JavaScript build, which does not
+        carry the <code>neumorphic</code> theme yet — so it isn't selectable in the playground. In a
+        Laravel app the theme is available now: set it in the config as shown above.
+      </Callout>
 
       <H2 id="theme-reference">Theme reference table</H2>
       <div className="table-wrap">

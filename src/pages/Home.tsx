@@ -45,7 +45,7 @@ const THEME_IDS = [
 
 const FEATURES = [
   "⚡ Livewire v3 & v4",
-  "🎨 7 themes",
+  "🎨 8 themes",
   "🎬 4 animations",
   "🌙 Dark mode",
   "🌍 RTL support",
@@ -90,12 +90,12 @@ export default function Home() {
           </div>
 
           <div className="split-hero__copy">
-            <span className="hero__badge">🎉 v2.3 · Livewire v3 &amp; v4 · MIT licensed</span>
+            <span className="hero__badge">🎉 v2.4 · Livewire v3 &amp; v4 · MIT licensed</span>
             <h1 className="split-hero__title">
               Laravel toasts that feel <span className="grad">magic</span>
             </h1>
             <p className="split-hero__subtitle">
-              A lightweight, dependency-free toast package for Laravel — 7 themes, smooth animations,
+              A lightweight, dependency-free toast package for Laravel — 8 themes, smooth animations,
               and first-class Livewire support. No jQuery, Bootstrap, or Tailwind.
             </p>
             <div className="hero__cta">

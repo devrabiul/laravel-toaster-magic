@@ -13,8 +13,30 @@ export default function Changelog() {
         history is maintained on GitHub.
       </p>
 
-      <H2 id="latest-highlights">Latest highlights (v2.3)</H2>
-      <p>The current v2.3 line focuses on polish, motion, and modern Livewire support:</p>
+      <H2 id="latest-highlights">Latest highlights (v2.4)</H2>
+      <p>
+        v2.4 is a <strong>Soft UI</strong> release. It adds one new theme and changes nothing else —
+        the API, the default theme and every existing theme are untouched:
+      </p>
+      <ul>
+        <li>
+          <strong>New <code>neumorphic</code> theme</strong> — a soft-UI surface built from
+          dual-direction shadows and a hairline inner bevel instead of borders, with raised controls
+          that press into the surface on click and a progress bar in a recessed groove. See{" "}
+          <Link to="/docs/themes#neumorphic">Themes</Link>.
+        </li>
+        <li>
+          <strong>Dedicated dark treatment</strong> — the dark variant is designed separately rather
+          than inverted, with muted semantic accents.
+        </li>
+        <li>
+          <strong>Themeable via CSS variables</strong> — override <code>--tm-neu-*</code> to match
+          the theme to your own surface.
+        </li>
+      </ul>
+
+      <H2 id="v23-highlights">v2.3 highlights</H2>
+      <p>The v2.3 line focused on polish, motion, and modern Livewire support:</p>
       <ul>
         <li>
           <strong>Smooth FLIP stack reflow</strong> — toasts glide into place as the stack grows and
