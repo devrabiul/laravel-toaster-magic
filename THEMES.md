@@ -109,6 +109,30 @@ Upgrading from **v1.x** to **v2.0**?
 
 ---
 
+## 🆕 Added Since v2.0
+
+### 🪶 Neumorphic *(v2.4)*
+
+| Theme | Config Value | Description |
+| :--- | :--- | :--- |
+| **Neumorphic** | `'neumorphic'` | Refined soft UI. The toast is extruded from the same material as the page: dual-direction shadows, raised icon/close/action controls that press in on click, and a progress bar recessed into a groove. |
+
+```php
+// config/laravel-toaster-magic.php
+'theme' => 'neumorphic',
+```
+
+![Neumorphic theme — light and dark mode](assets/images/theme-neumorphic.png)
+
+- **Light mode:** cool off-white surface that blends into the page, white highlight, soft blue-gray shadow.
+- **Dark mode:** a dedicated charcoal treatment — the shadow carries the depth, the highlight is a faint light edge, and semantic accents are muted.
+- **Accents:** the surface stays monochromatic for every toast type; only the icon, the progress fill and the focus ring take the semantic color.
+- **Customizable:** driven by CSS variables scoped to `.toast-container.theme-neumorphic` — see the [README](README.md#-neumorphic).
+
+> This is a separate theme from the original `neumorphism`; both ship side by side.
+
+---
+
 ## 🏁 Conclusion
 
 v2.0 transforms **Laravel Toaster Magic** from a simple notification library into a UI-first experience. Whether you're building a sleek SaaS (use **iOS**), a gaming platform (use **Neon**), or an admin dashboard (use **Material**), there is likely a theme for you.

@@ -1,4 +1,4 @@
-# 🍞 Laravel Toaster Magic — v2.3
+# 🍞 Laravel Toaster Magic — v2.4
 
 Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
 
@@ -27,7 +27,7 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 - 🔥 **Easy to Use** — Simple, intuitive API with support for both static and fluent syntax.
 - 🌍 **RTL Support** — Full compatibility with right-to-left languages.
 - 🌙 **Dark Mode** — Built-in dark mode support via a single HTML attribute.
-- 🎨 **7+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, and Default.
+- 🎨 **8+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, Neumorphic, and Default.
 - 🎞️ **Entrance/Exit Animations** — Choose how toasts enter and leave: `slide`, `fade`, `pop`, or `bounce`.
 - 🪄 **Smooth Stack Reflow** — Remaining toasts glide into place (FLIP) when one is added or dismissed. Respects `prefers-reduced-motion`.
 - 🖼️ **Avatar Toasts** — Render an image in place of the type icon for notification-style toasts.
@@ -243,7 +243,7 @@ Control where toasts appear on screen using the `positionClass` config option:
 
 ## 🎨 Themes
 
-ToastMagic includes 7 built-in themes. Set your preferred theme in `config/laravel-toaster-magic.php`:
+ToastMagic includes 8 built-in themes. Set your preferred theme in `config/laravel-toaster-magic.php`:
 
 ```php
 return [
@@ -262,8 +262,51 @@ return [
 | `neon` | Dark background with glowing borders — ideal for dark UIs |
 | `minimal` | Clean design with colored left-side accent |
 | `neumorphism` | Soft UI with extruded shadow styling |
+| `neumorphic` | Soft UI, refined — dual-direction shadows, raised controls, recessed progress groove |
 
 For a full theme preview, see [THEMES.md](THEMES.md).
+
+---
+
+### 🪶 Neumorphic
+
+A soft-UI theme where the toast reads as an object extruded from the same material as the page
+behind it. Depth comes from a dual-direction shadow pair — a light highlight from the top-left and a
+soft dark shadow from the bottom-right — plus a hairline inner bevel, instead of borders or
+gradients. The icon puck, close button and action button are raised controls that lift on hover and
+press *into* the surface on click, and the progress bar sits in a groove carved into the bottom edge.
+
+```php
+// config/laravel-toaster-magic.php
+'options' => [
+    'theme' => 'neumorphic',
+],
+```
+
+![Neumorphic theme — light and dark mode](assets/images/theme-neumorphic.png)
+
+- **Light mode** — a cool off-white surface (`#e6eaf2`) that blends into the page, a white highlight
+  and a soft blue-gray shadow.
+- **Dark mode** — a dedicated treatment rather than an inversion: a soft charcoal surface
+  (`#2c2f36`) on a deeper charcoal page, where the shadow carries the depth and the highlight is
+  reduced to a faint light edge. Semantic accents are muted so nothing glows.
+- **Supported toast types** — `success`, `error`, `warning` and `info`, plus avatar toasts. The
+  surface stays monochromatic for every type; only the icon, the progress fill and the focus ring
+  pick up the semantic accent.
+- **Customizing** — the theme is driven by CSS variables scoped to `.toast-container.theme-neumorphic`
+  (`--tm-neu-surface`, `--tm-neu-shadow-light`, `--tm-neu-shadow-dark`, `--tm-neu-radius`,
+  `--tm-neu-distance`, `--tm-neu-blur`, `--tm-neu-accent`). Override any of them in your own
+  stylesheet to match your app's surface:
+
+```css
+.toast-container.theme-neumorphic {
+    --tm-neu-surface: #eef0f5;
+    --tm-neu-radius: 1.5rem;
+}
+```
+
+> **Note:** `neumorphic` is a separate theme from the original `neumorphism` — selecting it does not
+> change the look of `neumorphism` or any other theme.
 
 ---
 
@@ -343,7 +386,7 @@ return [
         'preventDuplicates' => false,
         'showDuration'      => 300,
         'timeOut'           => 5000,
-        'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism
+        'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism, neumorphic
         'gradient_enable'   => false,
         'color_mode'        => false,
         'pauseOnHover'      => true, // Pause the auto-dismiss timer while hovering a toast

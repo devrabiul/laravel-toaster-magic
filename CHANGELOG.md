@@ -5,7 +5,27 @@ All notable changes to `laravel-toaster-magic` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.4.0] - 2026-08-13
+
+A **"Soft UI"** release: one new theme, no API changes, and no change to any existing theme.
+
+### Added
+
+- **Neumorphic theme.** A new `'theme' => 'neumorphic'` option: a soft-UI surface built from
+  dual-direction shadows (light highlight + soft dark shadow) and a hairline inner bevel instead of
+  borders. The icon puck, close button and action button are raised controls that lift on hover and
+  press into the surface on `:active`, and the progress bar sits in a recessed groove. Ships with a
+  dedicated dark-mode treatment, RTL support, mobile-tuned depth and touch targets, focus-visible
+  rings, and `prefers-reduced-motion` handling. Customizable through `--tm-neu-*` CSS variables
+  scoped to `.toast-container.theme-neumorphic`. Existing themes — including `neumorphism` — are
+  unchanged.
+- **Theme test coverage.** A new test suite verifies theme selection for every built-in theme, all
+  toast types under the neumorphic theme, its interaction with color mode, gradient mode, positions,
+  animations and per-toast options, and that no neumorphic rule leaks into another theme.
+
+## [2.3.0] - 2026-06-18
+
+A **"Motion & Avatars"** release. See [release.md](release.md) for the full notes.
 
 ### Added
 
@@ -17,6 +37,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Smooth stack reflow.** When a toast is added or dismissed, the remaining toasts now glide
   smoothly into their new positions (FLIP technique) instead of jumping. Respects
   `prefers-reduced-motion`.
+
+### Fixed
+
+- **Stack teleport during overlapping animations.** A stale animation-cleanup race and a
+  double-counted offset in the reflow logic made the stack jump when entrances and exits overlapped.
+- **Inconsistent Livewire stacking.** The Livewire runtime used hard-coded position checks that
+  handled some positions differently from the standard build; both runtimes now share one rule.
 
 ## [2.2.0] - 2026-06-17
 
