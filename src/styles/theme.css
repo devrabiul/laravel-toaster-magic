@@ -10,22 +10,44 @@
   --brand-soft: rgba(255, 45, 32, 0.12);
   --brand-ring: rgba(255, 45, 32, 0.4);
 
-  --bg: #ffffff;
-  --bg-subtle: #f7f9fb;
-  --bg-elevated: #ffffff;
-  --bg-code: #f6f8fa;
+  /* Soft UI surface: the page and everything on it are cut from one material,
+     so depth has to come from light rather than from lines. Backgrounds sit
+     within a few percent of each other and borders are barely there. */
+  --bg: #e7ebf2;
+  --bg-subtle: #e2e7ef;
+  --bg-elevated: #e9edf4;
+  --bg-code: #e1e6ee;
   --bg-inline-code: rgba(255, 45, 32, 0.1);
 
   --text: #10161c;
-  --text-muted: #55636e;
-  --text-faint: #7b8794;
+  --text-muted: #525f6b;
+  --text-faint: #6b7684;
 
-  --border: #e6e9ee;
-  --border-strong: #d3d9e0;
+  --border: rgba(163, 177, 198, 0.26);
+  --border-strong: rgba(163, 177, 198, 0.45);
 
-  --shadow-sm: 0 1px 2px rgba(16, 22, 28, 0.06);
-  --shadow-md: 0 6px 24px rgba(16, 22, 28, 0.08);
-  --shadow-lg: 0 16px 50px rgba(16, 22, 28, 0.14);
+  /* Neumorphic light source: highlight from the top-left, shadow from the
+     bottom-right. --neu-edge-* is the hairline bevel on the surface itself. */
+  --neu-light: rgba(255, 255, 255, 0.95);
+  --neu-dark: rgba(163, 177, 198, 0.5);
+  --neu-edge-light: rgba(255, 255, 255, 0.7);
+  --neu-edge-dark: rgba(163, 177, 198, 0.28);
+
+  /* The elevation scale is the extrusion scale — every raised surface in the
+     docs uses one of these three, so depth stays consistent. */
+  --shadow-sm: inset 1px 1px 1px var(--neu-edge-light),
+    inset -1px -1px 1px var(--neu-edge-dark), 3px 3px 7px var(--neu-dark),
+    -3px -3px 7px var(--neu-light);
+  --shadow-md: inset 1px 1px 1px var(--neu-edge-light),
+    inset -1px -1px 1px var(--neu-edge-dark), 6px 6px 15px var(--neu-dark),
+    -6px -6px 15px var(--neu-light);
+  --shadow-lg: inset 1px 1px 1px var(--neu-edge-light),
+    inset -1px -1px 1px var(--neu-edge-dark), 11px 11px 28px var(--neu-dark),
+    -11px -11px 28px var(--neu-light);
+
+  /* Pushed into the surface — used for :active controls and recessed wells. */
+  --neu-pressed: inset 2px 2px 5px var(--neu-dark), inset -2px -2px 5px var(--neu-light);
+  --neu-inset: inset 4px 4px 9px var(--neu-dark), inset -3px -3px 8px var(--neu-light);
 
   --radius-sm: 8px;
   --radius: 12px;
@@ -50,22 +72,25 @@ html.dark {
   --brand-soft: rgba(255, 87, 71, 0.14);
   --brand-ring: rgba(255, 87, 71, 0.4);
 
-  --bg: #0b0f14;
-  --bg-subtle: #0f151c;
-  --bg-elevated: #121a22;
-  --bg-code: #0f151c;
+  /* Dark soft UI is not an inversion: the surface lifts to a soft charcoal so
+     the shadow can do the work, and the highlight drops to a faint light edge. */
+  --bg: #23272f;
+  --bg-subtle: #262b34;
+  --bg-elevated: #282d37;
+  --bg-code: #1f232a;
   --bg-inline-code: rgba(255, 87, 71, 0.14);
 
   --text: #e6edf3;
-  --text-muted: #9fb0bf;
-  --text-faint: #6b7a89;
+  --text-muted: #a6b4c2;
+  --text-faint: #7d8b99;
 
-  --border: #1e2731;
-  --border-strong: #2a3742;
+  --border: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.1);
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --neu-light: rgba(255, 255, 255, 0.05);
+  --neu-dark: rgba(0, 0, 0, 0.5);
+  --neu-edge-light: rgba(255, 255, 255, 0.06);
+  --neu-edge-dark: rgba(0, 0, 0, 0.3);
 
   color-scheme: dark;
 }

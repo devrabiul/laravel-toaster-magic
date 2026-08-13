@@ -59,7 +59,7 @@ export default function ColorGradientMode() {
       <Callout kind="tip">
         Gradient mode works best with the <code>default</code>, <code>material</code>, and{" "}
         <code>neon</code> themes — their surfaces are designed for the gradient blend. On heavily
-        blurred themes like <code>glassmorphism</code> the effect is muted. Browse all seven on the{" "}
+        blurred themes like <code>glassmorphism</code> the effect is muted. Browse all eight on the{" "}
         <Link to="/docs/themes">Themes</Link> page.
       </Callout>
 

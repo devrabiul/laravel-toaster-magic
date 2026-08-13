@@ -1040,3 +1040,216 @@ html.dark .hero__title .grad {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ============================================================================
+   Neumorphic surface layer
+   The docs UI is cut from the same material as the page: no lines, no flat
+   cards — depth comes from the light source declared in theme.css. Three rules
+   of thumb: a surface is raised (--shadow-sm/md/lg), a well is carved in
+   (--neu-inset), and anything you press goes in (--neu-pressed).
+   ========================================================================== */
+
+/* ---- Raised surfaces ------------------------------------------------------- */
+.card,
+.feature,
+.usage-card,
+.code-window,
+.playground,
+.cta-band,
+.table-wrap,
+.search-dialog {
+  border: 1px solid transparent;
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-md);
+}
+
+.code-window,
+.search-dialog {
+  box-shadow: var(--shadow-lg);
+}
+
+/* The CTA band is a surface, not a colour wash. */
+.cta-band {
+  background: var(--bg-elevated);
+}
+
+/* Callouts keep their semantic tint, but lose the outline and lift instead. */
+.callout {
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Cards lift further on hover — light only, no jump. */
+a.card:hover {
+  transform: none;
+  border-color: transparent;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---- Carved wells ---------------------------------------------------------- */
+/* Code is pressed into the page rather than floated above it. */
+.code-block,
+.split-hero__install,
+.hero__install,
+.demo {
+  border: 1px solid transparent;
+  background: var(--bg-code);
+  box-shadow: var(--neu-inset);
+}
+
+.demo {
+  background: var(--bg-subtle);
+}
+
+.code-block__head {
+  border-bottom-color: transparent;
+  background: transparent;
+}
+
+/* A code block nested in an already-raised card stays flat — one depth per
+   element, never a well inside a well. */
+.code-window .code-block,
+.usage-card .code-block {
+  box-shadow: none;
+  background: var(--bg-code);
+}
+
+.code-window__bar,
+.code-window__run,
+.usage-card__run {
+  border-color: transparent;
+}
+
+.table-wrap {
+  overflow: hidden;
+}
+
+table.props th {
+  background: var(--bg-subtle);
+}
+
+/* ---- Pressable controls ---------------------------------------------------- */
+.btn,
+.chip,
+.theme-chip,
+.btn-run,
+.code-block__copy,
+.search-trigger,
+.search-trigger__kbd,
+.icon-btn,
+.feature-strip__item,
+.hero__badge,
+.navbar__version,
+.page-nav__link {
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.btn--ghost,
+.chip,
+.theme-chip,
+.icon-btn,
+.search-trigger,
+.feature-strip__item,
+.page-nav__link {
+  background: var(--bg-elevated);
+}
+
+.btn:hover,
+.chip:hover,
+.theme-chip:hover,
+.btn-run:hover,
+.code-block__copy:hover,
+.search-trigger:hover,
+.icon-btn:hover,
+.page-nav__link:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-md);
+}
+
+/* Movement is in the light, not the layout. */
+.chip:hover,
+.page-nav__link:hover {
+  transform: none;
+}
+
+.btn:active,
+.chip:active,
+.theme-chip:active,
+.btn-run:active,
+.code-block__copy:active,
+.search-trigger:active,
+.icon-btn:active {
+  box-shadow: var(--neu-pressed);
+}
+
+/* A selected control reads as pushed into the surface and stays there. */
+.chip[data-active="true"],
+.sidebar__link.active,
+.toc__link.active,
+.search-result.active,
+.search-result:hover {
+  border-color: transparent;
+  box-shadow: var(--neu-pressed);
+}
+
+.sidebar__link.active,
+.toc__link.active {
+  border-radius: var(--radius-sm);
+}
+
+/* The type chips keep their semantic edge, softened into the surface. */
+.chip--success,
+.chip--error,
+.chip--warning,
+.chip--info {
+  border-left-width: 0;
+}
+.chip--success { background: color-mix(in srgb, #FF2D20 9%, var(--bg-elevated)); }
+.chip--error { background: color-mix(in srgb, #dc3545 9%, var(--bg-elevated)); }
+.chip--warning { background: color-mix(in srgb, #ffc107 12%, var(--bg-elevated)); }
+.chip--info { background: color-mix(in srgb, #0dcaf0 11%, var(--bg-elevated)); }
+
+/* ---- Chrome ---------------------------------------------------------------- */
+/* The navbar floats over the same material; only its shadow marks the edge. */
+.navbar--scrolled {
+  border-bottom-color: transparent;
+  box-shadow: 0 6px 16px -8px var(--neu-dark);
+}
+
+.navbar__link:hover {
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-footer,
+.page-nav {
+  border-top-color: var(--border);
+}
+
+/* Soften the hero aurora so the surface stays monochromatic. */
+.hero__blob {
+  opacity: 0.2;
+}
+.hero__blob--3 {
+  opacity: 0.15;
+}
+html.dark .hero__blob {
+  opacity: 0.16;
+}
+html.dark .hero__blob--3 {
+  opacity: 0.12;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .chip,
+  .theme-chip,
+  .btn-run,
+  .code-block__copy,
+  .search-trigger,
+  .icon-btn {
+    transition: none;
+  }
+}

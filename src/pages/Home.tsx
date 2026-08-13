@@ -198,7 +198,7 @@ export default function Home() {
 
         {/* Interactive theme row */}
         <section className="home-section">
-          <h2 className="home-section__title">Seven themes, one config line</h2>
+          <h2 className="home-section__title">Eight themes, one config line</h2>
           <p className="home-section__sub">
             Set <code>'theme'</code> in <code>config/laravel-toaster-magic.php</code> — or click one
             to preview it live.

@@ -105,7 +105,7 @@ export default function Animations() {
       </Callout>
 
       <Callout kind="info">
-        Animations pair with every theme. Explore the seven looks on the{" "}
+        Animations pair with every theme. Explore the eight looks on the{" "}
         <Link to="/docs/themes">Themes</Link> page, and anchor the stack to any corner from{" "}
         <Link to="/docs/positioning">Positioning</Link>.
       </Callout>

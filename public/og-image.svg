@@ -21,7 +21,7 @@
   <text x="96" y="330" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="72" font-weight="800" fill="#f2f6fb">Laravel Toaster Magic</text>
   <text x="96" y="392" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="500" fill="#9fb0c6">Elegant, dependency-free toast notifications for Laravel</text>
   <g transform="translate(96 452)" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" font-weight="600" fill="#FF2D20">
-    <text x="0" y="0">7 themes</text>
+    <text x="0" y="0">8 themes</text>
     <text x="180" y="0">•  Livewire v3 &amp; v4</text>
     <text x="470" y="0">•  Zero dependencies</text>
   </g>

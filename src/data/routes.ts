@@ -18,7 +18,7 @@ export const ROUTES: RouteMeta[] = [
     title: "Laravel Toaster Magic — Elegant toast notifications for Laravel",
     label: "Introduction",
     description:
-      "A lightweight, dependency-free toast notification package for Laravel with 7 beautiful themes, smooth animations, and first-class Livewire v3 & v4 support.",
+      "A lightweight, dependency-free toast notification package for Laravel with 8 beautiful themes, smooth animations, and first-class Livewire v3 & v4 support.",
     section: "Overview",
     keywords: ["laravel", "toast", "notification", "livewire", "intro", "overview", "home"],
   },
