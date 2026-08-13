@@ -745,6 +745,270 @@ body[theme="dark"] .toast-container.theme-ios .toast-close-btn {
     box-shadow: 2px 2px 4px rgba(163, 177, 198, 0.6), -2px -2px 4px rgba(255, 255, 255, 0.5);
 }
 
+/* ===== Neumorphic theme (v2.4) ===== */
+/* Soft UI: the toast reads as an object extruded from the same material as the
+   page behind it. Depth comes from a dual-direction shadow pair (light from the
+   top-left, dark from the bottom-right) plus a hairline inner bevel — never from
+   borders or gradients. Every raised element gets its own --tm-neu-raised and
+   sets --tm-neu-distance / --tm-neu-blur, so an element is lifted (hover) or
+   pushed into the surface (:active) by changing just those two numbers. */
+.toast-container.theme-neumorphic {
+    --tm-neu-surface: #e6eaf2;
+    --tm-neu-text: #303643;
+    --tm-neu-text-muted: #5c6474;
+    --tm-neu-shadow-light: rgba(255, 255, 255, 0.9);
+    --tm-neu-shadow-dark: rgba(163, 177, 198, 0.55);
+    --tm-neu-edge-light: rgba(255, 255, 255, 0.75);
+    --tm-neu-edge-dark: rgba(163, 177, 198, 0.35);
+    --tm-neu-groove: rgba(163, 177, 198, 0.3);
+    --tm-neu-radius: 1.125rem;
+    --tm-neu-distance: 7px;
+    --tm-neu-blur: 18px;
+    --tm-neu-accent: var(--toast-magic-info);
+    --tm-neu-accent-rgb: var(--toast-magic-info-rgb);
+    --tm-neu-accent-alpha: 0.92;
+    --tm-neu-pressed:
+        inset 2px 2px 5px 0 var(--tm-neu-shadow-dark),
+        inset -2px -2px 5px 0 var(--tm-neu-shadow-light);
+    gap: 1rem;
+}
+
+/* The extrusion recipe, declared on every raised element rather than once on the
+   container: a var() inside a custom property is substituted where that property
+   is *declared*, so each element must own --tm-neu-raised for its local
+   --tm-neu-distance / --tm-neu-blur (and their :hover values) to take effect. */
+.toast-container.theme-neumorphic .toast-item,
+.toast-container.theme-neumorphic .toast-body-icon-container,
+.toast-container.theme-neumorphic .toast-avatar,
+.toast-container.theme-neumorphic .toast-close-btn,
+.toast-container.theme-neumorphic .toast-custom-btn {
+    --tm-neu-raised:
+        inset 1px 1px 1px 0 var(--tm-neu-edge-light),
+        inset -1px -1px 1px 0 var(--tm-neu-edge-dark),
+        var(--tm-neu-distance) var(--tm-neu-distance) var(--tm-neu-blur) 0 var(--tm-neu-shadow-dark),
+        calc(var(--tm-neu-distance) * -1) calc(var(--tm-neu-distance) * -1) var(--tm-neu-blur) 0 var(--tm-neu-shadow-light);
+}
+
+.toast-container.theme-neumorphic .toast-item {
+    --toast-magic-box-shadow: var(--tm-neu-raised);
+    /* Keep the generous padding inside the tracked width so the toast — and its
+       close button — stay on screen when the width collapses to the viewport. */
+    box-sizing: border-box;
+    background-color: var(--tm-neu-surface);
+    color: var(--tm-neu-text);
+    border: 1px solid transparent;
+    border-radius: var(--tm-neu-radius);
+    padding: 1rem 1.15rem 1.35rem !important;
+    transition: transform .5s ease-in-out, opacity .5s ease-in-out, box-shadow .3s ease;
+}
+
+/* Hover lifts the toast off the surface — shadow only, no movement. */
+.toast-container.theme-neumorphic .toast-item:hover {
+    --tm-neu-distance: 9px;
+    --tm-neu-blur: 24px;
+}
+
+/* Semantic accent per type. The surface stays monochromatic; only the icon,
+   the progress indicator and the focus ring pick the accent up. */
+.toast-container.theme-neumorphic .toast-item.toast-success {
+    --tm-neu-accent: var(--toast-magic-success);
+    --tm-neu-accent-rgb: var(--toast-magic-success-rgb);
+}
+
+.toast-container.theme-neumorphic .toast-item.toast-danger {
+    --tm-neu-accent: var(--toast-magic-danger);
+    --tm-neu-accent-rgb: var(--toast-magic-danger-rgb);
+}
+
+.toast-container.theme-neumorphic .toast-item.toast-warning {
+    --tm-neu-accent: var(--toast-magic-warning);
+    --tm-neu-accent-rgb: var(--toast-magic-warning-rgb);
+}
+
+.toast-container.theme-neumorphic .toast-item.toast-info {
+    --tm-neu-accent: var(--toast-magic-info);
+    --tm-neu-accent-rgb: var(--toast-magic-info-rgb);
+}
+
+.toast-container.theme-neumorphic .toast-item-content-center {
+    align-items: center;
+    gap: .85rem !important;
+}
+
+.toast-container.theme-neumorphic .toast-item-content-center .toast-body {
+    align-items: center;
+    gap: .85rem !important;
+}
+
+/* Icon sits on a small raised puck, tinted just enough to read as semantic. */
+.toast-container.theme-neumorphic .toast-body-icon-container {
+    --tm-neu-distance: 3px;
+    --tm-neu-blur: 7px;
+    inline-size: 2.375rem;
+    block-size: 2.375rem;
+    padding: 0;
+    border-radius: .875rem;
+    color: var(--tm-neu-accent);
+    background-color: rgba(var(--tm-neu-accent-rgb), 0.07);
+    box-shadow: var(--tm-neu-raised), inset 0 0 0 1px rgba(var(--tm-neu-accent-rgb), 0.12);
+}
+
+/* The bundled icons ship with mixed intrinsic sizes; normalize them on the puck. */
+.toast-container.theme-neumorphic .toast-body-icon-container svg {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+/* Avatar toasts: the image itself becomes the raised element. */
+.toast-container.theme-neumorphic .toast-body-avatar .toast-body-icon-container {
+    inline-size: auto;
+    block-size: auto;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.toast-container.theme-neumorphic .toast-avatar {
+    box-shadow: var(--tm-neu-raised);
+}
+
+.toast-container.theme-neumorphic .toast-body h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+}
+
+.toast-container.theme-neumorphic .toast-body p {
+    font-size: 0.78125rem;
+    color: var(--tm-neu-text-muted);
+    line-height: 1.5;
+}
+
+/* Close button: a small physical control — raised, lifted on hover, pressed in on click. */
+.toast-container.theme-neumorphic .toast-close-btn {
+    --tm-neu-distance: 3px;
+    --tm-neu-blur: 6px;
+    width: 1.625rem;
+    height: 1.625rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    opacity: 1;
+    color: var(--tm-neu-text-muted);
+    background-color: var(--tm-neu-surface);
+    box-shadow: var(--tm-neu-raised);
+    transition: box-shadow .18s ease, color .18s ease;
+}
+
+.toast-container.theme-neumorphic .toast-close-btn:hover {
+    --tm-neu-distance: 4px;
+    --tm-neu-blur: 9px;
+    opacity: 1;
+    color: var(--tm-neu-text);
+}
+
+.toast-container.theme-neumorphic .toast-close-btn:active {
+    box-shadow: var(--tm-neu-pressed);
+    color: var(--tm-neu-text);
+}
+
+.toast-container.theme-neumorphic .toast-close-btn:focus-visible,
+.toast-container.theme-neumorphic .toast-custom-btn:focus-visible {
+    outline: 2px solid rgba(var(--tm-neu-accent-rgb), 0.6);
+    outline-offset: 2px;
+}
+
+.toast-container.theme-neumorphic .toast-custom-btn {
+    --tm-neu-distance: 3px;
+    --tm-neu-blur: 7px;
+    background-color: rgba(var(--tm-neu-accent-rgb), 0.08);
+    color: var(--tm-neu-text);
+    border: 1px solid transparent;
+    border-radius: .75rem;
+    padding: 0.4rem 0.75rem;
+    box-shadow: var(--tm-neu-raised);
+    transition: box-shadow .18s ease, background-color .18s ease;
+}
+
+.toast-container.theme-neumorphic .toast-custom-btn:hover {
+    --tm-neu-distance: 4px;
+    --tm-neu-blur: 10px;
+    border: 1px solid transparent;
+    background-color: rgba(var(--tm-neu-accent-rgb), 0.14);
+}
+
+.toast-container.theme-neumorphic .toast-custom-btn:active {
+    box-shadow: var(--tm-neu-pressed);
+}
+
+/* Progress: a groove carved into the bottom edge, filled by the accent.
+   ::before becomes the static recessed track, ::after keeps the shared
+   progress animation so position/RTL direction handling still applies. */
+.toast-container.theme-neumorphic .toast-item::before {
+    inset-block-start: auto;
+    inset-block-end: 0;
+    width: 100%;
+    height: 6px;
+    background-color: var(--tm-neu-groove);
+    box-shadow: inset 0 1px 2px 0 var(--tm-neu-shadow-dark);
+    animation: none;
+}
+
+.toast-container.theme-neumorphic .toast-item::after {
+    inset-block-start: auto;
+    inset-block-end: 0;
+    height: 6px;
+    border-radius: 999px;
+    background-color: rgba(var(--tm-neu-accent-rgb), var(--tm-neu-accent-alpha));
+    box-shadow: none;
+}
+
+/* Dark mode is a dedicated treatment, not an inversion: the highlight becomes a
+   faint light edge rather than a white glow, and the shadow does the heavy lifting. */
+body[theme="dark"] .toast-container.theme-neumorphic {
+    --tm-neu-surface: #2c2f36;
+    --tm-neu-text: #e7e9ee;
+    --tm-neu-text-muted: #a3a9b7;
+    --tm-neu-shadow-light: rgba(255, 255, 255, 0.045);
+    --tm-neu-shadow-dark: rgba(9, 10, 13, 0.65);
+    --tm-neu-edge-light: rgba(255, 255, 255, 0.06);
+    --tm-neu-edge-dark: rgba(0, 0, 0, 0.35);
+    --tm-neu-groove: rgba(0, 0, 0, 0.35);
+    --tm-neu-accent-alpha: 0.7;
+}
+
+@media (max-width: 575px) {
+    .toast-container.theme-neumorphic {
+        gap: .75rem;
+    }
+
+    /* Softer depth so the shadows don't swallow a narrow screen. */
+    .toast-container.theme-neumorphic .toast-item {
+        --tm-neu-distance: 5px;
+        --tm-neu-blur: 12px;
+        --tm-neu-radius: 1rem;
+        padding: .875rem 1rem 1.25rem !important;
+    }
+
+    .toast-container.theme-neumorphic .toast-item:hover {
+        --tm-neu-distance: 6px;
+        --tm-neu-blur: 15px;
+    }
+
+    /* Comfortable touch target. */
+    .toast-container.theme-neumorphic .toast-close-btn {
+        width: 1.875rem;
+        height: 1.875rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .toast-container.theme-neumorphic .toast-close-btn,
+    .toast-container.theme-neumorphic .toast-custom-btn {
+        transition: none;
+    }
+}
+
 .toast-container.toast-color-true .toast-item.toast-success {
     background-color: rgba(var(--toast-magic-success-rgb), var(--toast-item-after-opacity, 1));
 }
