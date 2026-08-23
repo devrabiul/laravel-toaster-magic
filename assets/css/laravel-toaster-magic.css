@@ -1543,7 +1543,7 @@ body[theme="dark"] .toast-container.theme-compact .toast-item {
     transform: translate(0, 0);
 }
 
-/* ===== Explicit slide animation (v2.6) ===== */
+/* ===== Explicit slide animation (v2.5) ===== */
 /* `slide` was offered in the config and the README for three releases with no
    rule behind it, so selecting it silently fell through to `default`. It is now
    a real, position-aware slide with its own easing. */
@@ -1556,7 +1556,7 @@ body[theme="dark"] .toast-container.theme-compact .toast-item {
     transform: translate(0, 0);
 }
 
-/* ===== Progress bar state (v2.6) ===== */
+/* ===== Progress bar state (v2.5) ===== */
 /* Duration and start delay come from the runtime as --tm-toast-duration /
    --tm-toast-delay, so the bar tracks the real dismiss time instead of the 3s
    it used to assume. Pausing the timer pauses the bar with it. */
@@ -1572,7 +1572,7 @@ body[theme="dark"] .toast-container.theme-compact .toast-item {
     display: none;
 }
 
-/* ===== Accessible live regions (v2.6) ===== */
+/* ===== Accessible live regions (v2.5) ===== */
 /* Announcements are written into these persistent regions rather than relying
    on inserting an already-populated role="alert" element, which assistive
    technology frequently does not announce. Visually hidden, never clipped from
@@ -1590,7 +1590,7 @@ body[theme="dark"] .toast-container.theme-compact .toast-item {
     border: 0 !important;
 }
 
-/* ===== Touch targets (v2.6) ===== */
+/* ===== Touch targets (v2.5) ===== */
 /* WCAG 2.5.8 sets a 24px minimum for pointer targets. The icon stays its
    original size; the button grows around it so the visual weight is unchanged. */
 .toast-close-btn {
@@ -1615,7 +1615,7 @@ body[theme="dark"] .toast-container.theme-compact .toast-item {
     min-height: 24px;
 }
 
-/* ===== Reduced motion (v2.6) ===== */
+/* ===== Reduced motion (v2.5) ===== */
 /* Previously only the FLIP reflow and two neumorphic transitions honoured this,
    while entrances, exits, the iOS bounce and the progress bars all kept moving.
    One rule now covers everything inside the container, including future themes.

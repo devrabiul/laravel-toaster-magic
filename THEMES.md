@@ -97,7 +97,7 @@ Upgrading from **v1.x** to **v2.0**?
    ```
 
 3. **Check Config**:
-   Since v2.6 a published config no longer needs manual updating — the package
+   Since v2.5 a published config no longer needs manual updating — the package
    merges its own defaults in, so options added in later releases are picked up
    automatically. Set only what you want to override:
    ```php

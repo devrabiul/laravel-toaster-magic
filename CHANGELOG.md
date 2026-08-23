@@ -5,17 +5,20 @@ All notable changes to `laravel-toaster-magic` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.6.0] - 2026-08-23
+## [2.5.0] - 2026-08-23
 
-A **"Safe by default"** release. It fixes a cross-site scripting vulnerability,
-makes message escaping the default, removes a per-request filesystem loop, and
-consolidates the two JavaScript runtimes into one.
+A **"Safe by default"** release. It adds the compact theme, a global shadow toggle and global
+spacing/typography options — and fixes a cross-site scripting vulnerability, makes message
+escaping the default, removes a per-request filesystem loop and consolidates the two JavaScript
+runtimes into one.
 
 **Upgrading:** republish the assets — the CSS and JS both changed.
 
 ```bash
 php artisan vendor:publish --tag=toast-magic-assets --force
 ```
+
+---
 
 ### Security
 
@@ -109,6 +112,30 @@ php artisan vendor:publish --tag=toast-magic-assets --force
 
 ### Added
 
+- **Compact theme.** A new `'theme' => 'compact'` option: a smaller, denser take on the default
+  toast. Padding, the icon-to-text gap, the title/description gap and the space around the close and
+  action controls are all pulled in, the controls share a single row, the progress bar is slimmed to
+  2px and the track narrows from 370px to 320px. Deliberately plain — a solid surface, a hairline
+  border and semantic accents, with no gradients, blur or glass effects. Supports every toast type,
+  avatar toasts, color mode, animations, dark mode and RTL.
+- **Global shadow toggle.** A new `'shadow_enable'` option (default `true`). Setting it to `false`
+  removes every box-shadow inside the toast — the surface, the icon puck, the close button and the
+  action button, in their hover and pressed states — for whichever theme is active, including themes
+  whose depth is hardcoded (`ios`, `glassmorphism`, `neon`, `minimal`) or built from shadows
+  (`neumorphism`, `neumorphic`). Borders and background colors are left alone. The rule is
+  theme-agnostic, so future themes are covered without extra CSS.
+- **Global spacing options.** A new `'spacing'` section (`enable`, `container`, `icon_gap`,
+  `content_gap`, `close_gap`) controls the toast's padding, the icon-to-text gap, the
+  title-to-description gap and the space around the close/action controls — for any theme, not just
+  `compact`. Each value is resolved into a CSS custom property that every theme declares as the
+  *fallback* of its own value, so `enable => false` (or an omitted value) falls back to the theme's
+  spacing while a set value overrides every theme without `!important` overrides.
+- **Global typography options.** A new `'typography'` section (`enable`, `title_size`,
+  `description_size`, plus optional `title_weight`, `description_weight` and `line_height`) works
+  the same way, with the same per-value fallback behavior.
+- **Test coverage** for the compact theme and for the shadow toggle across every built-in theme,
+  including its interaction with color mode and gradient mode, and its presence in both JavaScript
+  runtimes.
 - **`html` option per toast** — `['html' => true]` renders that toast's text as HTML.
   The global `escape_html` option turns escaping off everywhere, but is not recommended.
 - **`stagger` option** — the delay between consecutive queued toasts, previously a
@@ -162,39 +189,7 @@ php artisan vendor:publish --tag=toast-magic-assets --force
   project root *and* whose entry script is not at the project root. Auto-detection covers
   the standard layouts.
 
-## [2.5.0] - 2026-08-23
-
-A **"Less is more"** release: one new theme and one global switch. No API changes, and no change to
-any existing theme.
-
-### Added
-
-- **Compact theme.** A new `'theme' => 'compact'` option: a smaller, denser take on the default
-  toast. Padding, the icon-to-text gap, the title/description gap and the space around the close and
-  action controls are all pulled in, the controls share a single row, the progress bar is slimmed to
-  2px and the track narrows from 370px to 320px. Deliberately plain — a solid surface, a hairline
-  border and semantic accents, with no gradients, blur or glass effects. Supports every toast type,
-  avatar toasts, color mode, animations, dark mode and RTL.
-- **Global shadow toggle.** A new `'shadow_enable'` option (default `true`). Setting it to `false`
-  removes every box-shadow inside the toast — the surface, the icon puck, the close button and the
-  action button, in their hover and pressed states — for whichever theme is active, including themes
-  whose depth is hardcoded (`ios`, `glassmorphism`, `neon`, `minimal`) or built from shadows
-  (`neumorphism`, `neumorphic`). Borders and background colors are left alone. The rule is
-  theme-agnostic, so future themes are covered without extra CSS.
-- **Global spacing options.** A new `'spacing'` section (`enable`, `container`, `icon_gap`,
-  `content_gap`, `close_gap`) controls the toast's padding, the icon-to-text gap, the
-  title-to-description gap and the space around the close/action controls — for any theme, not just
-  `compact`. Each value is resolved into a CSS custom property that every theme declares as the
-  *fallback* of its own value, so `enable => false` (or an omitted value) falls back to the theme's
-  spacing while a set value overrides every theme without `!important` overrides.
-- **Global typography options.** A new `'typography'` section (`enable`, `title_size`,
-  `description_size`, plus optional `title_weight`, `description_weight` and `line_height`) works
-  the same way, with the same per-value fallback behavior.
-- **Test coverage** for the compact theme and for the shadow toggle across every built-in theme,
-  including its interaction with color mode and gradient mode, and its presence in both JavaScript
-  runtimes.
-
-### Notes
+### Notes on the new defaults
 
 - Existing config files are unaffected: `shadow_enable` has to be set to `false` explicitly, so a
   config published before this release keeps its shadows.
