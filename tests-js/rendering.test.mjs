@@ -211,12 +211,12 @@ describe("container configuration", () => {
             expect(headings()).toHaveLength(9);
         });
 
-        it("defaults to six when nothing is configured", () => {
+        it("falls back to the runtime default when nothing is configured", () => {
             loadRuntime({});
             stubAnimationFrame();
-            fill(10);
+            fill(20);
 
-            expect(headings()).toHaveLength(6);
+            expect(headings()).toHaveLength(15);
         });
     });
 

@@ -133,9 +133,9 @@ php artisan vendor:publish --tag=toast-magic-assets --force
   The global `escape_html` option turns escaping off everywhere, but is not recommended.
 - **`stagger` option** — the delay between consecutive queued toasts, previously a
   hardcoded 1000 ms which meant the fifth flashed message appeared four seconds after
-  page load, by which time the first had already dismissed. Now 400 ms by default, so a
-  full stack lands within ~2 s while the entrances still read as a cascade.
-- **`maxVisible` option** (default `6`) — the most toasts on screen at once; the oldest is
+  page load, by which time the first had already dismissed. Now configurable, and 800 ms
+  by default.
+- **`maxVisible` option** (default `15`) — the most toasts on screen at once; the oldest is
   dismissed to make room. The container is `position: fixed` with no scrolling and
   `pointer-events: none`, so without a cap a burst of flashed messages pushed toasts past
   the bottom of the viewport, where they could be neither read nor closed and simply waited

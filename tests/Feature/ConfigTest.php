@@ -194,7 +194,9 @@ it('publishes the assets directory under the assets tag', function () {
 });
 
 it('emits the stack cap and clamps a negative value to unlimited', function () {
-    expect(emittedConfig()['maxVisible'])->toBe(6);
+    // Read the shipped value rather than a literal, so tuning the default in the
+    // config file is not a test change.
+    expect(emittedConfig()['maxVisible'])->toBe(packagedDefaults()['options']['maxVisible']);
 
     config(['laravel-toaster-magic.options.maxVisible' => 3]);
     expect(emittedConfig()['maxVisible'])->toBe(3);

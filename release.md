@@ -153,8 +153,8 @@ You can also set the same properties directly in a stylesheet if you prefer CSS 
 |--------|--------------|
 | `['html' => true]` | Renders that toast's text as HTML (per toast) |
 | `escape_html` | Global escaping switch — off is not recommended |
-| `stagger` | Delay between consecutive queued toasts. Was a hardcoded 1000 ms; now **400 ms** |
-| `maxVisible` | Most toasts on screen at once (default **6**); the oldest is dismissed to make room. `0` = no limit |
+| `stagger` | Delay between consecutive queued toasts. Was hardcoded at 1000 ms; now configurable, default **800 ms** |
+| `maxVisible` | Most toasts on screen at once (default **15**); the oldest is dismissed to make room. `0` = no limit |
 | `closeButtonLabel` | Accessible name for the close button |
 | `containerLabel` | Accessible name for the toast region |
 | `csp_nonce` | CSP nonce for the inline script blocks |

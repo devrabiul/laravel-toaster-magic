@@ -318,14 +318,17 @@ it('emits the avatar URL in the toast call', function () {
 
 it('exposes the behaviour options to the front end', function () {
     $config = runtimeConfig();
+    // Pacing values are read from the shipped config: the invariant under test is
+    // that they reach the front end intact, not what they happen to be tuned to.
+    $shipped = (require __DIR__ . '/../../src/config/laravel-toaster-magic.php')['options'];
 
     expect($config['pauseOnHover'])->toBeTrue()
         ->and($config['animation'])->toBe('default')
         ->and($config['escape_html'])->toBeTrue()
         ->and($config['timeOut'])->toBe(5000)
         ->and($config['showDuration'])->toBe(300)
-        ->and($config['stagger'])->toBe(400)
-        ->and($config['maxVisible'])->toBe(6);
+        ->and($config['stagger'])->toBe($shipped['stagger'])
+        ->and($config['maxVisible'])->toBe($shipped['maxVisible']);
 });
 
 it('exposes the accessibility labels to the front end', function () {

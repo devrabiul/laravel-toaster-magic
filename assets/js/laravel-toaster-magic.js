@@ -494,7 +494,7 @@
             // with no scroll and `pointer-events: none`, so anything pushed past
             // the edge of the viewport is neither readable nor closable — it just
             // waits out its timer off-screen. Roughly six toasts fit on a phone.
-            var maxVisible = Math.max(0, parseInt(configValue("maxVisible", 6), 10) || 0);
+            var maxVisible = Math.max(0, parseInt(configValue("maxVisible", 15), 10) || 0);
             if (maxVisible > 0) {
                 var live = Array.prototype.slice.call(container.querySelectorAll(".toast-item"))
                     .filter(function (el) { return !el.dataset.tmClosing; });
