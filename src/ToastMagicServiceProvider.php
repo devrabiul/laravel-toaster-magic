@@ -2,37 +2,32 @@
 
 namespace Devrabiul\ToastMagic;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 /**
  * Class ToastMagicServiceProvider
  *
  * Service provider for the ToastMagic Laravel package.
  *
- * Handles bootstrapping of the package including:
- * - Setting up asset routes for package resources.
- * - Managing version-based asset publishing.
- * - Configuring processing directory detection.
- * - Registering package publishing commands.
- * - Registering the ToastMagic singleton.
+ * Responsibilities:
+ * - Merge the package configuration with any published copy.
+ * - Register the ToastMagic singleton.
+ * - Register the publishable config and asset groups.
+ * - Detect whether the application is served from `public/` or the project root.
  *
  * @package Devrabiul\ToastMagic
  */
 class ToastMagicServiceProvider extends ServiceProvider
 {
     /**
+     * Absolute path to the package's default configuration file.
+     */
+    private const CONFIG_PATH = __DIR__ . '/config/laravel-toaster-magic.php';
+
+    /**
      * Bootstrap any package services.
-     *
-     * This method is called after all other services have been registered,
-     * allowing you to perform actions like route registration, publishing assets,
-     * and configuration adjustments.
-     *
-     * It:
-     * - Sets the system processing directory config value.
-     * - Defines a route for serving package assets in development or fallback.
-     * - Handles version-based asset publishing, replacing assets if package version changed.
-     * - Registers publishable resources when running in console.
      *
      * @return void
      */
@@ -49,99 +44,98 @@ class ToastMagicServiceProvider extends ServiceProvider
     /**
      * Register the package's publishable resources.
      *
-     * This method registers:
-     * - Configuration file publishing to the application's config directory.
-     * - Asset publishing to the public packages directory, replacing old assets if found.
+     * Both groups are tagged so they can be published individually:
      *
-     * It is typically called when the application is running in console mode
-     * to enable artisan vendor:publish commands.
+     *   php artisan vendor:publish --tag=toast-magic-config
+     *   php artisan vendor:publish --tag=toast-magic-assets --force
+     *
+     * The asset tag in particular has been documented as the upgrade step for
+     * several releases without actually existing; it does now.
      *
      * @return void
      */
     private function registerPublishing(): void
     {
         $this->publishes([
-            __DIR__ . '/config/laravel-toaster-magic.php' => config_path('laravel-toaster-magic.php'),
+            self::CONFIG_PATH => config_path('laravel-toaster-magic.php'),
+        ], 'toast-magic-config');
+
+        $this->publishes([
+            dirname(__DIR__) . '/assets' => public_path('packages/devrabiul/laravel-toaster-magic'),
+        ], 'toast-magic-assets');
+
+        // Publishing with no tag keeps the historical behavior of writing the
+        // config file, so existing `--provider=...` instructions still work.
+        $this->publishes([
+            self::CONFIG_PATH => config_path('laravel-toaster-magic.php'),
         ]);
     }
 
     /**
      * Register any application services.
      *
-     * This method:
-     * - Loads the package config file if not already loaded.
-     * - Registers a singleton instance of the ToastMagic class in the Laravel service container.
+     * `mergeConfigFrom()` replaces the previous "load defaults only when no
+     * published config exists" behavior. That approach meant a config file
+     * published before an option was introduced never received that option's
+     * default, so every release that added an option silently changed behavior
+     * for anyone who had published their config.
      *
-     * This allows other parts of the application to resolve the 'ToastMagic' service.
+     * Note that the merge is shallow, which is why {@see ToastMagic} resolves
+     * nested `options` keys against the packaged defaults as well.
      *
      * @return void
      */
     public function register(): void
     {
-        $configPath = config_path('laravel-toaster-magic.php');
-
-        if (!file_exists($configPath)) {
-            config(['laravel-toaster-magic' => require __DIR__ . '/config/laravel-toaster-magic.php']);
-        }
+        $this->mergeConfigFrom(self::CONFIG_PATH, 'laravel-toaster-magic');
 
         $this->app->singleton('ToastMagic', function ($app) {
             return new ToastMagic($app['session'], $app['config']);
         });
-    }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * This method is used by Laravel's deferred providers mechanism
-     * and lists the services that this provider registers.
-     *
-     * @return array<string> Array of service container binding keys provided by this provider.
-     */
-    public function provides(): array
-    {
-        return ['ToastMagic'];
+        $this->app->alias('ToastMagic', ToastMagic::class);
     }
 
     /**
      * Determine and set the 'system_processing_directory' configuration value.
      *
-     * This detects if the current PHP script is being executed from the public directory
-     * or the project root directory, or neither, and sets a config value accordingly:
+     * Detects whether the entry script lives in the application's public
+     * directory, its base directory, or somewhere else entirely:
      *
-     * - 'public' if script path equals public_path()
-     * - 'root' if script path equals base_path()
+     * - 'public'  when the script path equals public_path()
+     * - 'root'    when the script path equals base_path()
      * - 'unknown' otherwise
-     *
-     * This config can be used internally to adapt asset loading or paths.
      *
      * @return void
      */
     private function updateProcessingDirectoryConfig(): void
     {
-        $script = $_SERVER['SCRIPT_FILENAME'] ?? getcwd() ?? '';
+        $script = $_SERVER['SCRIPT_FILENAME'] ?? getcwd() ?: '';
 
         $compute = function () use ($script) {
             $scriptPath = realpath(dirname($script));
-            $basePath   = realpath(base_path());
+            $basePath = realpath(base_path());
             $publicPath = realpath(public_path());
 
-            if ($scriptPath === $publicPath) {
+            if ($scriptPath !== false && $scriptPath === $publicPath) {
                 return 'public';
-            } elseif ($scriptPath === $basePath) {
+            }
+
+            if ($scriptPath !== false && $scriptPath === $basePath) {
                 return 'root';
             }
+
             return 'unknown';
         };
 
         try {
             $cacheKey = 'SYSTEM_DOMAIN_POINTED_DIRECTORY_' . md5($script);
             $systemProcessingDirectory = Cache::rememberForever($cacheKey, $compute);
-        } catch (\Throwable) {
+        } catch (Throwable) {
             // Cache unavailable (e.g. database cache driver before migrations run)
             $systemProcessingDirectory = $compute();
         }
 
         config(['laravel-toaster-magic.system_processing_directory' => $systemProcessingDirectory]);
     }
-
 }

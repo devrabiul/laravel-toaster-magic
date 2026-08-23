@@ -1,5 +1,17 @@
+# Editors / OS
 /.idea
 /.vscode
-.DS_Store
-vendor
 .claude
+.DS_Store
+
+# Installed dependencies
+vendor
+node_modules
+
+# Generated output (the docs site build; the package's own assets are committed)
+dist
+
+# Test artefacts
+/.phpunit.cache
+/.phpunit.result.cache
+/coverage

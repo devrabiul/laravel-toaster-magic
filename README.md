@@ -1,4 +1,4 @@
-# 🍞 Laravel Toaster Magic — v2.4
+# 🍞 Laravel Toaster Magic — v2.5
 
 Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
 
@@ -27,13 +27,28 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 - 🔥 **Easy to Use** — Simple, intuitive API with support for both static and fluent syntax.
 - 🌍 **RTL Support** — Full compatibility with right-to-left languages.
 - 🌙 **Dark Mode** — Built-in dark mode support via a single HTML attribute.
-- 🎨 **8+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, Neumorphic, and Default.
+- 🎨 **9+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, Neumorphic, Compact, and Default.
+- 🌑 **Shadow Control** — One global switch turns every toast shadow off, whichever theme is active.
+- 📏 **Configurable Spacing & Typography** — Global padding, gaps and font sizes that work with any theme.
 - 🎞️ **Entrance/Exit Animations** — Choose how toasts enter and leave: `slide`, `fade`, `pop`, or `bounce`.
-- 🪄 **Smooth Stack Reflow** — Remaining toasts glide into place (FLIP) when one is added or dismissed. Respects `prefers-reduced-motion`.
+- 🪄 **Smooth Stack Reflow** — Remaining toasts glide into place (FLIP) when one is added or dismissed.
 - 🖼️ **Avatar Toasts** — Render an image in place of the type icon for notification-style toasts.
-- ⚡ **Livewire Ready** — First-class support for Livewire v3 & v4 with event-based dispatching.
-- 🔒 **Safe Button Links** — Custom button URLs are sanitized before being rendered into the DOM. See the [Security](#-security) section for how message content is handled.
+- ⚡ **Livewire Ready** — Livewire v3 & v4 via a thin event bridge over the same runtime the standard build uses.
+- 🔒 **Safe by Default** — Toast text is escaped, URLs are protocol-checked, and HTML is opt-in per toast. See [Security](#-security).
+- ♿ **Accessible** — Live-region announcements, a labelled close button, Escape to dismiss, pause on focus, and full `prefers-reduced-motion` support.
 - ✅ **Zero Dependencies** — No jQuery, Bootstrap, or Tailwind required.
+
+---
+
+## ✅ Requirements
+
+| | Supported | Covered by CI |
+|---|---|---|
+| **PHP** | 8.0 – 8.5 | 8.1 – 8.5 |
+| **Laravel** | 8 – 13 | 10 – 13 |
+| **Livewire** | v3, v4 *(optional)* | — |
+
+Laravel 8 and 9 are supported and expected to work — the package targets PHP 8.0 and uses only long-stable Illuminate APIs — but they are not in the CI matrix. Their Testbench majors pin PHPUnit 9 while Pest 2+ requires PHPUnit 10, so covering them would mean maintaining a second test-tooling major for two end-of-life framework versions. If you hit a problem on Laravel 8 or 9, please [open an issue](https://github.com/devrabiul/laravel-toaster-magic/issues).
 
 ---
 
@@ -45,13 +60,19 @@ Install the package via Composer:
 composer require devrabiul/laravel-toaster-magic
 ```
 
-Publish the package assets:
+Publish the config file (optional):
 
 ```bash
-php artisan vendor:publish --provider="Devrabiul\ToastMagic\ToastMagicServiceProvider"
+php artisan vendor:publish --tag=toast-magic-config
 ```
 
-> **Note:** Assets are also auto-published on the first page load and automatically refreshed whenever the package is updated.
+> **Assets** are copied into `public/packages/devrabiul/laravel-toaster-magic` automatically on the first request after an install or upgrade — you do not normally need to publish them.
+>
+> If you install from a branch (`dev-main`) or a path repository, Composer has no version to compare against, so publish them explicitly after each update:
+>
+> ```bash
+> php artisan vendor:publish --tag=toast-magic-assets --force
+> ```
 
 ---
 
@@ -132,23 +153,63 @@ ToastMagic::info('New message', 'Hey, are you free to chat?', [
 
 ### 2. JavaScript Usage
 
-Use ToastMagic directly in JavaScript for AJAX responses or client-side events:
+The runtime creates a single shared instance as `window.toastMagic`. Use it directly — **do not call `new ToastMagic()`**, which would build a second instance competing for the same container.
 
 ```js
-const toastMagic = new ToastMagic();
+// Options object (recommended)
+toastMagic.success({ heading: 'Success!', description: 'Your data has been saved!' });
+toastMagic.error({ heading: 'Error!', description: 'Something went wrong.' });
 
-toastMagic.success('Success!', 'Your data has been saved!');
-toastMagic.error('Error!', 'Something went wrong.');
-toastMagic.warning('Warning!', 'Check your input.', true);
-toastMagic.info('Info!', 'Click for details.', false, 'Learn More', 'https://example.com');
+toastMagic.info({
+    heading: 'New message',
+    description: 'Hey, are you free to chat?',
+    showCloseBtn: true,
+    customBtnText: 'Reply',
+    customBtnLink: '/messages/42',
+    avatar: '/avatars/42.png',
+    timeOut: 10000,   // 0 = stay until dismissed
+    showDuration: 300,
+    html: false,      // true renders the text as HTML — you own its safety
+});
 
 // Programmatically dismiss all visible toasts
 toastMagic.clear();      // or toastMagic.dismissAll();
 ```
 
-**Signature:** `toastMagic.{type}(heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration, avatar)`
+**Positional signature** (still supported for backward compatibility):
 
-> `timeOut` and `showDuration` are optional per-toast overrides (in milliseconds). `avatar` is an optional image URL shown in place of the type icon. When omitted, the global config values are used.
+```js
+toastMagic.success('Heading', 'Description', showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration, avatar);
+```
+
+---
+
+### 2a. HTML Data Attributes
+
+Any element carrying `data-toast-type` raises a toast when clicked — no JavaScript required:
+
+```html
+<button
+    data-toast-type="success"
+    data-toast-heading="Saved"
+    data-toast-description="Your changes are live."
+    data-toast-close-btn
+    data-toast-btn-text="View"
+    data-toast-btn-link="/records/42"
+>Save</button>
+```
+
+| Attribute | Purpose |
+|-----------|---------|
+| `data-toast-type` | `success`, `error`, `warning` or `info`. Anything else falls back to `info`. |
+| `data-toast-heading` | Toast heading. Defaults to `Notification`. |
+| `data-toast-description` | Optional body text. |
+| `data-toast-close-btn` | Presence of the attribute shows the close button. |
+| `data-toast-btn-text` | Action button label. |
+| `data-toast-btn-link` | Action button URL (protocol-checked). |
+| `data-toast-avatar` | Image URL shown in place of the type icon. |
+
+Attribute content is escaped like any other toast text.
 
 ---
 
@@ -164,7 +225,6 @@ return [
         // your toast options...
     ],
     'livewire_enabled' => true,
-    'livewire_version' => 'v3', // 'v3' or 'v4'
 ];
 ```
 
@@ -243,7 +303,7 @@ Control where toasts appear on screen using the `positionClass` config option:
 
 ## 🎨 Themes
 
-ToastMagic includes 8 built-in themes. Set your preferred theme in `config/laravel-toaster-magic.php`:
+ToastMagic includes 9 built-in themes. Set your preferred theme in `config/laravel-toaster-magic.php`:
 
 ```php
 return [
@@ -263,8 +323,36 @@ return [
 | `minimal` | Clean design with colored left-side accent |
 | `neumorphism` | Soft UI with extruded shadow styling |
 | `neumorphic` | Soft UI, refined — dual-direction shadows, raised controls, recessed progress groove |
+| `compact` | Minimal and dense — tight spacing, small footprint, no decorative effects |
 
 For a full theme preview, see [THEMES.md](THEMES.md).
+
+---
+
+### 🧷 Compact
+
+A smaller, denser take on the default toast for interfaces where a notification should stay out of
+the way. The surface is deliberately plain — a solid background, a hairline border and a slim
+progress bar, with no gradients, blur or glass effects. Everything that costs space is pulled in:
+the padding around the toast, the gap between the icon and the text, the gap between the title and
+the description, and the space around the close and action controls, which share a single row
+instead of being spread down the full height of the toast.
+
+```php
+// config/laravel-toaster-magic.php
+'options' => [
+    'theme' => 'compact',
+],
+```
+
+![Compact theme — light and dark mode](art/theme-compact.png)
+
+- **Footprint** — a 320px track instead of the default 370px, with roughly half the vertical
+  padding. On small screens it falls back to the same full-width track as every other theme.
+- **Supported toast types** — `success`, `error`, `warning` and `info`, plus avatar toasts, the
+  custom action button, color mode and every animation option.
+- **Shadow** — kept on the shared `--toast-magic-box-shadow` variable, so
+  [`shadow_enable`](#-shadow-control) removes it like it does for any other theme.
 
 ---
 
@@ -283,7 +371,7 @@ press *into* the surface on click, and the progress bar sits in a groove carved 
 ],
 ```
 
-![Neumorphic theme — light and dark mode](assets/images/theme-neumorphic.png)
+![Neumorphic theme — light and dark mode](art/theme-neumorphic.png)
 
 - **Light mode** — a cool off-white surface (`#e6eaf2`) that blends into the page, a white highlight
   and a soft blue-gray shadow.
@@ -340,6 +428,114 @@ return [
 
 ---
 
+## 🌑 Shadow Control
+
+Shadows are on by default. Set `shadow_enable` to `false` to render completely flat toasts:
+
+```php
+return [
+    'options' => [
+        'shadow_enable' => false,
+    ],
+];
+```
+
+This is a **global** option, not a theme option — it works with every theme, including themes whose
+depth is part of their identity (`neon`'s glow, `neumorphic`'s extrusion, `glassmorphism`'s inner
+highlight) and any theme added later. It removes every shadow inside the toast: the toast surface,
+the icon puck, the close button and the action button, in their hover and pressed states too.
+Borders and background colors are left alone.
+
+| Value | Result |
+|---------|-------------------------------------------------------|
+| `true`  | Each theme keeps its own shadow *(default)* |
+| `false` | Every toast shadow is removed, on any theme |
+
+> **Backward compatible:** a config file published before this option existed simply keeps its
+> shadows — the option has to be set to `false` explicitly to turn them off.
+
+---
+
+## 📏 Spacing
+
+Spacing is a **global** option: it works with every theme, not just `compact`.
+
+```php
+return [
+    'options' => [
+        'spacing' => [
+            'enable' => true,
+            'container' => '10px 12px', // Padding inside the toast
+            'icon_gap' => '8px',        // Icon <-> content
+            'content_gap' => '2px',     // Title <-> description
+            'close_gap' => '6px',       // Content <-> close/action controls
+        ],
+    ],
+];
+```
+
+| Key | Controls |
+|---------------|----------------------------------------------------------|
+| `enable`      | Whether the values below are applied at all |
+| `container`   | The toast's internal padding (any valid CSS `padding` value) |
+| `icon_gap`    | The gap between the icon (or avatar) and the text |
+| `content_gap` | The gap between the title and the description |
+| `close_gap`   | The gap between the content and the close/action controls |
+
+Set `'enable' => false` and every theme falls back to its own spacing. The same happens per value:
+omit a key (or set it to `null`) and only that one falls back — so you can retune the padding while
+leaving the theme's gaps alone.
+
+Want the toast even tighter than `compact`?
+
+```php
+'spacing' => [
+    'enable' => true,
+    'container' => '6px 8px',
+    'icon_gap' => '5px',
+    'content_gap' => '0px',
+    'close_gap' => '4px',
+],
+```
+
+---
+
+## 🔤 Typography
+
+Also global, and shaped exactly like `spacing`:
+
+```php
+return [
+    'options' => [
+        'typography' => [
+            'enable' => true,
+            'title_size' => '14px',
+            'description_size' => '13px',
+        ],
+    ],
+];
+```
+
+| Key | Controls |
+|----------------------|-------------------------------------------------|
+| `enable`             | Whether the values below are applied at all |
+| `title_size`         | The toast title font size |
+| `description_size`   | The description/message font size |
+| `title_weight`       | *(optional)* The title font weight |
+| `description_weight` | *(optional)* The description font weight |
+| `line_height`        | *(optional)* Line height for the title and description |
+
+The last three are optional on purpose: leave them out and each theme keeps its own weight and line
+height while the sizes still follow your config.
+
+> **How it works:** both sections are resolved into CSS custom properties
+> (`--tm-space-container`, `--tm-font-title-size`, …) that are set on the toast container. Every
+> theme declares its own value as that property's *fallback*, so an unset property is a no-op and a
+> set one overrides every theme — no `!important` overrides, and no theme-specific config. You can
+> also set the same properties yourself in a stylesheet if you prefer CSS over config.
+
+---
+
 ## 🎞️ Animations
 
 Choose how toasts enter and leave the screen using the `animation` config option:
@@ -355,7 +551,7 @@ return [
 | Value | Effect |
 |-----------|------------------------------------------------|
 | `default` | Slide in from the toast's position *(default)* |
-| `slide`   | Same as default — explicit slide |
+| `slide`   | Position-aware slide with its own easing |
 | `fade`    | Fade in/out with no movement |
 | `pop`     | Scale up from slightly smaller, with a soft overshoot |
 | `bounce`  | Slide in with a springy overshoot |
@@ -366,11 +562,45 @@ return [
 
 ## 🌙 Dark Mode
 
-Add `theme="dark"` to your `<body>` tag to enable dark mode globally:
+Add `theme="dark"` to your `<body>` tag:
 
 ```html
 <body theme="dark">
 ```
+
+Every shipped theme has a dark treatment. `neon` is dark by design and looks the same either way; `neumorphism` keeps its light soft-UI surface deliberately and pins its own text colour so it stays readable.
+
+**Using Tailwind or `prefers-color-scheme` instead?** The stylesheet keys off the `theme` attribute, so mirror your existing signal onto `<body>`:
+
+```js
+// Tailwind's .dark class on <html>
+const sync = () => document.body.toggleAttribute('theme', document.documentElement.classList.contains('dark'))
+    || document.body.setAttribute('theme', document.documentElement.classList.contains('dark') ? 'dark' : '');
+sync();
+```
+
+```css
+/* …or follow the OS setting directly */
+@media (prefers-color-scheme: dark) {
+    body:not([theme]) { /* copy the dark tokens you want here */ }
+}
+```
+
+---
+
+## ♿ Accessibility
+
+Built in, no configuration required:
+
+- **Announcements** — toasts are announced through persistent live regions. Errors use `role="alert"` (assertive); everything else uses `role="status"` (polite), so a success message never interrupts what a screen reader is reading.
+- **Close button** — a real `<button>` with an accessible name (`closeButtonLabel`, default *"Close notification"*). Icons are `aria-hidden`.
+- **Keyboard** — <kbd>Esc</kbd> dismisses the most recent toast, so dismissal never depends on the close button being enabled.
+- **Focus** — tabbing into a toast pauses its dismiss timer, regardless of the `pauseOnHover` setting, so a toast cannot vanish mid-interaction.
+- **Timing** — set `timeOut => 0` (globally or per toast) to keep a toast until it is dismissed. Recommended for anything the user must act on.
+- **Reduced motion** — under `prefers-reduced-motion: reduce` every entrance, exit, progress and reflow animation is neutralised; toasts appear and disappear without travel.
+- **Touch targets** — close buttons are at least 24×24 px, and 32×32 px on coarse pointers.
+
+Colour-mode backgrounds pick their own foreground per type so text stays above the WCAG AA 4.5:1 contrast ratio.
 
 ---
 
@@ -381,19 +611,51 @@ Add `theme="dark"` to your `<body>` tag to enable dark mode globally:
 
 return [
     'options' => [
+        'escape_html'       => true,  // Escape toast text. Leave this on.
         'closeButton'       => true,
         'positionClass'     => 'toast-top-end',
         'preventDuplicates' => false,
         'showDuration'      => 300,
-        'timeOut'           => 5000,
-        'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism, neumorphic
+        'timeOut'           => 5000,  // 0 = stay until dismissed
+        'stagger'           => 250,   // Gap between consecutive queued toasts (ms)
+        'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism, neumorphic, compact
         'gradient_enable'   => false,
         'color_mode'        => false,
-        'pauseOnHover'      => true, // Pause the auto-dismiss timer while hovering a toast
+        'shadow_enable'     => true, // false removes every toast shadow, on any theme
+        'pauseOnHover'      => true, // Keyboard focus always pauses the timer
         'animation'         => 'default', // default, slide, fade, pop, bounce
+
+        // Accessible names
+        'closeButtonLabel'  => 'Close notification',
+        'containerLabel'    => 'Notifications',
+
+        // Global spacing — 'enable' => false uses each theme's own spacing.
+        'spacing' => [
+            'enable'      => true,
+            'container'   => '10px 12px',
+            'icon_gap'    => '8px',
+            'content_gap' => '2px',
+            'close_gap'   => '6px',
+        ],
+
+        // Global typography — 'enable' => false uses each theme's own typography.
+        // 'title_weight', 'description_weight' and 'line_height' are optional.
+        'typography' => [
+            'enable'           => true,
+            'title_size'       => '14px',
+            'description_size' => '13px',
+        ],
     ],
+
+    // One event bridge serves both Livewire v3 and v4.
     'livewire_enabled'  => false,
-    'livewire_version'  => 'v3',
+
+    // CSP nonce for the inline <script> blocks (or use ToastMagic::nonce()).
+    'csp_nonce'         => null,
+
+    // null auto-detects. Set 'public' if your document root is the project
+    // root, or '' to force no prefix on published asset URLs.
+    'asset_path_prefix' => null,
 ];
 ```
 
@@ -401,15 +663,54 @@ return [
 
 ## 🔒 Security
 
-**Custom button links** (`customBtnLink`) are validated before being rendered into `href` attributes. Only URLs starting with `http://`, `https://`, `/`, or `#` are allowed; all other values are safely replaced with `#`.
+### Message content is escaped by default
 
-**Message content is rendered as HTML.** The toast heading and description are inserted into the DOM as HTML — this is what enables multi-line messages (newlines become `<br>`). Because of this, **you should never pass unescaped, user-supplied input directly into a toast**, as it can introduce a cross-site scripting (XSS) vulnerability. If a value may contain user input, escape it first — for example with Laravel's `e()` helper or `strip_tags()`:
+Toast text is written to the DOM with `textContent`, so passing user-supplied input straight into a toast is safe:
 
 ```php
-ToastMagic::success('Welcome, ' . e($user->name) . '!');
+ToastMagic::success('Welcome, ' . $user->name . '!');   // safe, no e() needed
 ```
 
-> **Roadmap:** A future major release (v3.0.0) will escape message content by default, with an opt-in flag for cases where HTML is intentional.
+Multi-line messages still work — newlines become real `<br>` elements *after* escaping:
+
+```php
+ToastMagic::info("First line\nSecond line");
+```
+
+If you genuinely need markup in a toast, opt in per toast:
+
+```php
+ToastMagic::success('<strong>Saved</strong>', null, ['html' => true]);
+```
+
+With `['html' => true]` **you** own the safety of that string — escape any user input inside it yourself. There is also a global `escape_html => false` switch, but turning it off makes every toast render raw HTML and is not recommended.
+
+### URLs are validated by protocol
+
+`customBtnLink` and `avatar` are parsed and checked against a protocol allowlist:
+
+| Field | Allowed |
+|-------|---------|
+| `customBtnLink` | `http:`, `https:`, `mailto:`, `tel:`, plus relative (`/path`) and fragment (`#id`) URLs |
+| `avatar` | `http:`, `https:`, plus relative URLs |
+
+Anything else — `javascript:`, `data:`, `vbscript:` — is rejected. A rejected link falls back to `#`; a rejected avatar falls back to the type icon.
+
+URLs are applied with `setAttribute()` rather than being interpolated into an HTML string, so a value containing quotes cannot create additional attributes.
+
+### Content Security Policy
+
+The package emits two small inline `<script>` blocks. Under a CSP that disallows `'unsafe-inline'`, give them a nonce:
+
+```php
+{!! ToastMagic::nonce($nonce)->scripts() !!}
+```
+
+or set `csp_nonce` in the config when the value is known at config time. External assets are plain `<script src>` / `<link rel="stylesheet">` and need no exception.
+
+### Reporting
+
+Please report vulnerabilities privately — see [SECURITY.md](SECURITY.md).
 
 ---
 

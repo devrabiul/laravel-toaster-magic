@@ -3,7 +3,7 @@
 namespace Devrabiul\ToastMagic\Facades;
 
 use Illuminate\Support\Facades\Facade;
-
+use Illuminate\Support\MessageBag;
 
 /**
  * @method static string styles()
@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\Facade;
  * @method static string scriptsPath()
  * @method static \Devrabiul\ToastMagic\ToastMagic dispatch()
  * @method static void add(string $type, string $message, string|null $description = null, array $options = [])
- * @method static void info(string|\Illuminate\Support\MessageBag $message, string|null $description = null, array $options = [])
- * @method static void success(string|\Illuminate\Support\MessageBag $message, string|null $description = null, array $options = [])
- * @method static void warning(string|\Illuminate\Support\MessageBag $message, string|null $description = null, array $options = [])
- * @method static void error(string|\Illuminate\Support\MessageBag $message, string|null $description = null, array $options = [])
+ * @method static void info(string|MessageBag $message, string|null $description = null, array $options = [])
+ * @method static void success(string|MessageBag $message, string|null $description = null, array $options = [])
+ * @method static void warning(string|MessageBag $message, string|null $description = null, array $options = [])
+ * @method static void error(string|MessageBag $message, string|null $description = null, array $options = [])
  * @method static void clear()
- * @method static void useVite()
+ * @method static \Devrabiul\ToastMagic\ToastMagic useVite()
+ * @method static \Devrabiul\ToastMagic\ToastMagic nonce(string $nonce)
  *
  * @see \Devrabiul\ToastMagic\ToastMagic
  */

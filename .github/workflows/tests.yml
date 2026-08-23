@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
+  php:
     runs-on: ubuntu-latest
 
     strategy:
@@ -14,6 +14,14 @@ jobs:
       matrix:
         # Each row pins the Testbench and Pest majors compatible with that
         # PHP/Laravel pair.
+        #
+        # The package supports Laravel 8 and up; CI covers Laravel 10 and up.
+        # That gap is deliberate: Testbench 6/7 (Laravel 8/9) pin PHPUnit 9 while
+        # Pest 2+ requires PHPUnit 10, and the two cannot resolve together — so
+        # testing those lines would mean maintaining a second test-tooling major
+        # for two EOL framework versions. The package code targets PHP 8.0 and
+        # uses only long-stable Illuminate APIs; the syntax job below guards the
+        # PHP floor.
         include:
           - php: '8.1'
             laravel: 10
@@ -57,12 +65,14 @@ jobs:
           extensions: mbstring, json
           coverage: none
 
+      # Laravel 10 and 11 are past their security-support windows and carry
+      # unpatched advisories, so Composer will not resolve them unless blocking
+      # is turned off. Testing them is deliberate — the package supports them —
+      # but the advisories belong to the framework, not to anything shipped here.
+      # The `|| true` keeps this a no-op on Composer versions that predate the
+      # feature and its config key.
       - name: Install dependencies
         run: |
-          # Don't block resolution on security advisories: testing against older
-          # Laravel lines is intentional and those releases aren't shipped by this
-          # package. The `|| true` keeps this a no-op on older Composer versions
-          # that predate the advisory-blocking feature (and its config key).
           composer config --no-plugins policy.advisories.block false || true
           composer require --dev --no-update --no-interaction \
             "orchestra/testbench:^${{ matrix.testbench }}.0" \
@@ -71,3 +81,60 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest
+
+  # The runtime holds essentially all of the package's behaviour, so it gets the
+  # same gate the PHP does.
+  javascript:
+    runs-on: ubuntu-latest
+    name: JavaScript
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Vitest pulls in Vite, which pulls in Rollup, and Rollup ships its native
+      # binary as ~27 platform-specific optional packages. npm records only the
+      # platform the lockfile was generated on (npm/cli#4828), so a lockfile
+      # committed from macOS left `@rollup/rollup-linux-x64-gnu` out entirely and
+      # this job failed on it. Declaring the binaries this project builds on as
+      # optionalDependencies in package.json makes npm record the whole family in
+      # the lockfile, so `npm ci` installs the right one per runner.
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Execute tests
+        run: npm test
+
+      # The minified stylesheet is committed because ToastMagic::styles() links
+      # to it and Composer installs never run a build. This proves the committed
+      # file is exactly what the source produces.
+      - name: Verify the minified assets are in sync
+        run: npm run build:check
+
+  # A parse check on the lowest supported PHP. Catches syntax that only newer
+  # versions accept — typed class constants, for instance, parse on 8.3+ and
+  # fatal everywhere below.
+  syntax:
+    runs-on: ubuntu-latest
+    name: Syntax (PHP 8.0 floor)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          coverage: none
+
+      - name: Lint every PHP file
+        run: find src tests -name '*.php' -print0 | xargs -0 -n1 php -l

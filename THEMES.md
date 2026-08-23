@@ -97,14 +97,15 @@ Upgrading from **v1.x** to **v2.0**?
    ```
 
 3. **Check Config**:
-   If you have a published config file, add the new options:
+   Since v2.5 a published config no longer needs manual updating — the package
+   merges its own defaults in, so options added in later releases are picked up
+   automatically. Set only what you want to override:
    ```php
    'options' => [
        'theme' => 'default',
        'gradient_enable' => false,
        'color_mode' => false,
    ],
-   'livewire_version' => 'v3',
    ```
 
 ---
@@ -122,7 +123,7 @@ Upgrading from **v1.x** to **v2.0**?
 'theme' => 'neumorphic',
 ```
 
-![Neumorphic theme — light and dark mode](assets/images/theme-neumorphic.png)
+![Neumorphic theme — light and dark mode](art/theme-neumorphic.png)
 
 - **Light mode:** cool off-white surface that blends into the page, white highlight, soft blue-gray shadow.
 - **Dark mode:** a dedicated charcoal treatment — the shadow carries the depth, the highlight is a faint light edge, and semantic accents are muted.
@@ -130,6 +131,83 @@ Upgrading from **v1.x** to **v2.0**?
 - **Customizable:** driven by CSS variables scoped to `.toast-container.theme-neumorphic` — see the [README](README.md#-neumorphic).
 
 > This is a separate theme from the original `neumorphism`; both ship side by side.
+
+---
+
+### 🧷 Compact *(v2.5)*
+
+| Theme | Config Value | Description |
+| :--- | :--- | :--- |
+| **Compact** | `'compact'` | A smaller, denser default. Tight padding, a narrow icon-to-text gap, close and action controls on one row, and a slim progress bar — clean and solid, with no gradients or glass effects. |
+
+```php
+// config/laravel-toaster-magic.php
+'theme' => 'compact',
+```
+
+![Compact theme — light and dark mode](art/theme-compact.png)
+
+- **Smaller footprint:** a 320px track (vs. 370px) and roughly half the vertical padding, without
+  clipping longer messages.
+- **Deliberately plain:** a solid surface, a hairline border and semantic accent colors — nothing
+  decorative.
+- **Everything still works:** all four toast types, avatar toasts, the action button, color mode,
+  animations and RTL.
+
+---
+
+### 🌑 Shadow Control *(v2.5)*
+
+A global switch, independent of the theme:
+
+```php
+// config/laravel-toaster-magic.php
+'shadow_enable' => false,
+```
+
+`true` (the default) leaves every theme's shadow exactly as it is. `false` flattens all of them —
+the toast surface, the icon puck, the close button and the action button — for whichever theme is
+active, including `neon`'s glow and `neumorphic`'s extrusion. Borders and colors are untouched.
+
+---
+
+### 📏 Spacing & Typography *(v2.5)*
+
+Two more global sections, independent of the theme:
+
+```php
+// config/laravel-toaster-magic.php
+'spacing' => [
+    'enable' => true,
+    'container' => '10px 12px', // Toast padding
+    'icon_gap' => '8px',        // Icon <-> content
+    'content_gap' => '2px',     // Title <-> description
+    'close_gap' => '6px',       // Content <-> close/action controls
+],
+
+'typography' => [
+    'enable' => true,
+    'title_size' => '14px',
+    'description_size' => '13px',
+    // Optional: 'title_weight', 'description_weight', 'line_height'
+],
+```
+
+Each section is resolved into CSS custom properties set on the toast container, and every theme
+declares its own value as that property's *fallback*. So `'enable' => false` — or simply leaving a
+value out — falls back to the theme's own spacing/typography, while a value you do set overrides
+every theme without touching theme CSS. This is what lets `compact` be tuned even tighter:
+
+```php
+'theme' => 'compact',
+'spacing' => [
+    'enable' => true,
+    'container' => '6px 8px',
+    'icon_gap' => '5px',
+    'content_gap' => '0px',
+    'close_gap' => '4px',
+],
+```
 
 ---
 

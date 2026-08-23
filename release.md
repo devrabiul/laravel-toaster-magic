@@ -30,7 +30,7 @@ v2.4.0 is a **"Soft UI"** release. It adds **Neumorphic**, a new theme built aro
 ],
 ```
 
-![Neumorphic theme — light and dark mode](assets/images/theme-neumorphic.png)
+![Neumorphic theme — light and dark mode](art/theme-neumorphic.png)
 
 Depth comes from a **dual-direction shadow pair** — a light highlight from the top-left and a soft
 dark shadow from the bottom-right — plus a hairline inner bevel, rather than borders, gradients or
