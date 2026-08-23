@@ -13,18 +13,16 @@ jobs:
       fail-fast: false
       matrix:
         # Each row pins the Testbench and Pest majors compatible with that
-        # PHP/Laravel pair. The first two rows exist to actually exercise the
-        # floor declared in composer.json — previously the matrix started at
-        # PHP 8.1 / Laravel 10 while the package advertised PHP 8.0 / Laravel 8.
+        # PHP/Laravel pair.
+        #
+        # The package supports Laravel 8 and up; CI covers Laravel 10 and up.
+        # That gap is deliberate: Testbench 6/7 (Laravel 8/9) pin PHPUnit 9 while
+        # Pest 2+ requires PHPUnit 10, and the two cannot resolve together — so
+        # testing those lines would mean maintaining a second test-tooling major
+        # for two EOL framework versions. The package code targets PHP 8.0 and
+        # uses only long-stable Illuminate APIs; the syntax job below guards the
+        # PHP floor.
         include:
-          - php: '8.0'
-            laravel: 8
-            testbench: 6
-            pest: 1
-          - php: '8.1'
-            laravel: 9
-            testbench: 7
-            pest: 2
           - php: '8.1'
             laravel: 10
             testbench: 8
@@ -67,12 +65,14 @@ jobs:
           extensions: mbstring, json
           coverage: none
 
+      # Laravel 10 and 11 are past their security-support windows and carry
+      # unpatched advisories, so Composer will not resolve them unless blocking
+      # is turned off. Testing them is deliberate — the package supports them —
+      # but the advisories belong to the framework, not to anything shipped here.
+      # The `|| true` keeps this a no-op on Composer versions that predate the
+      # feature and its config key.
       - name: Install dependencies
         run: |
-          # Don't block resolution on security advisories: testing against older
-          # Laravel lines is intentional and those releases aren't shipped by this
-          # package. The `|| true` keeps this a no-op on older Composer versions
-          # that predate the advisory-blocking feature (and its config key).
           composer config --no-plugins policy.advisories.block false || true
           composer require --dev --no-update --no-interaction \
             "orchestra/testbench:^${{ matrix.testbench }}.0" \
@@ -97,8 +97,16 @@ jobs:
         with:
           node-version: '20'
 
+      # `npm install`, not `npm ci`. Vitest pulls in Vite, which pulls in Rollup,
+      # and Rollup ships its native binary as 26 platform-specific optional
+      # packages. npm only records the platform it generated the lockfile on
+      # (npm/cli#4828), so a lockfile committed from macOS makes `npm ci` fail on
+      # a Linux runner with "Cannot find module @rollup/rollup-linux-x64-gnu".
+      # `npm install` still honours the lockfile for versions but resolves the
+      # correct native binary for this runner. The lockfile stays committed for
+      # local reproducibility.
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Lint
         run: npm run lint

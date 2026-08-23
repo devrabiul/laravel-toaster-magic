@@ -40,6 +40,18 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 
 ---
 
+## ✅ Requirements
+
+| | Supported | Covered by CI |
+|---|---|---|
+| **PHP** | 8.0 – 8.5 | 8.1 – 8.5 |
+| **Laravel** | 8 – 13 | 10 – 13 |
+| **Livewire** | v3, v4 *(optional)* | — |
+
+Laravel 8 and 9 are supported and expected to work — the package targets PHP 8.0 and uses only long-stable Illuminate APIs — but they are not in the CI matrix. Their Testbench majors pin PHPUnit 9 while Pest 2+ requires PHPUnit 10, so covering them would mean maintaining a second test-tooling major for two end-of-life framework versions. If you hit a problem on Laravel 8 or 9, please [open an issue](https://github.com/devrabiul/laravel-toaster-magic/issues).
+
+---
+
 ## 📦 Installation
 
 Install the package via Composer:
