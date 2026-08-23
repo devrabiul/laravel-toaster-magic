@@ -178,16 +178,14 @@ it('re-applies the properties from the javascript runtime', function () {
         ->toContain('setProperty');
 });
 
-it('keeps working together with the theme, shadow and color options', function () {
+it('keeps working together with the theme and color options', function () {
     config([
         'laravel-toaster-magic.options.theme' => 'compact',
-        'laravel-toaster-magic.options.shadow_enable' => false,
         'laravel-toaster-magic.options.color_mode' => true,
     ]);
 
     expect(ToastMagic::scripts())
         ->toContain('"theme":"compact"')
-        ->toContain('"shadow_enable":false')
         ->toContain('"color_mode":true')
         ->toContain('"--tm-space-container":"10px 12px"');
 });

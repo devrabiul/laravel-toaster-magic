@@ -412,7 +412,6 @@
 
             container.classList.toggle("toast-gradient-enable", !!getConfig().gradient_enable);
             container.classList.toggle("toast-color-true", !!getConfig().color_mode);
-            container.classList.toggle("toast-shadow-disable", getConfig().shadow_enable === false);
 
             if (!container.hasAttribute("aria-label")) {
                 container.setAttribute("aria-label", configValue("containerLabel", "Notifications"));

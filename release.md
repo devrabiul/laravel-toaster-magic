@@ -5,10 +5,9 @@
 
 v2.5.0 is a **"Safe by default"** release, and the largest one so far. It fixes a **cross-site
 scripting vulnerability**, makes message escaping the default, and adds the things people kept
-asking for: a **compact theme**, a **global shadow toggle**, and **global spacing and typography
-options** that work with any theme. Under the surface it also removes a per-request filesystem loop
-that could serve 404s for the package's own CSS, and consolidates the two JavaScript runtimes into
-one.
+asking for: a **compact theme**, and **global spacing and typography options** that work with any
+theme. Under the surface it also removes a per-request filesystem loop that could serve 404s for the
+package's own CSS, and consolidates the two JavaScript runtimes into one.
 
 > ⚠️ **Please read the Security Fixes section below.** If you pass user-supplied values to a
 > toast — a name, an avatar URL, a link — you were exposed to XSS in v2.4 and earlier.
@@ -21,12 +20,11 @@ one.
   Livewire event options and `data-toast-btn-link`.
 - 🛡️ **Message content is now escaped by default**, with an explicit `['html' => true]` opt-in.
 - 🧷 **New `compact` theme** — smaller, denser, deliberately plain.
-- 🌑 **Global `shadow_enable`** — one switch flattens every shadow, on any theme.
 - 📏 **Global `spacing` and `typography`** — padding, gaps and font sizes, configurable per app.
 - ♿ **Accessibility overhaul** — announcements that actually announce, <kbd>Esc</kbd> to dismiss,
   WCAG AA contrast fixes, real touch targets.
 - ⚡ **No more per-request asset churn** — publishing converges instead of re-copying every request.
-- 🧪 **141 JavaScript tests + a reproducible asset build** where there was previously neither.
+- 🧪 **143 JavaScript tests + a reproducible asset build** where there was previously neither.
 - 📦 **~140 KB published payload**, down from ~1.6 MB.
 
 ---
@@ -97,21 +95,6 @@ are all pulled in; the close and action buttons share a single row; the progress
 Deliberately plain — a solid surface, a hairline border and semantic accents, with **no gradients,
 blur or glass effects**. Supports every toast type, avatar toasts, color mode, animations, dark mode
 and RTL.
-
-### 🌑 Global shadow toggle
-
-```php
-'options' => [
-    'shadow_enable' => false,
-],
-```
-
-One switch, every theme. `false` removes every shadow inside the toast — the surface, the icon puck,
-the close button and the action button, including their hover and pressed states — whether the theme
-hardcodes its depth (`ios`, `glassmorphism`, `neon`, `minimal`) or is *built* from shadows
-(`neumorphism`, `neumorphic`). Borders and background colors are left alone.
-
-The rule is theme-agnostic, so any theme added later is covered without extra CSS.
 
 ### 📏 Global spacing and typography
 
@@ -250,7 +233,7 @@ You can also set the same properties directly in a stylesheet if you prefer CSS 
 
 ## 🧪 Quality
 
-- **141 JavaScript tests** covering rendering, escaping, URL sanitising, timers, the data-attribute
+- **143 JavaScript tests** covering rendering, escaping, URL sanitising, timers, the data-attribute
   API, the Livewire bridge and accessibility. The runtime holds essentially all of this package's
   behaviour and previously had **no tests at all**.
 - **A reproducible asset build** — `npm run build` regenerates the minified stylesheet, and

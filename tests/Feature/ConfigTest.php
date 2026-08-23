@@ -31,7 +31,7 @@ it('merges the package config so top-level keys are always present', function ()
 
 it('fills in every option a published config predates', function () {
     // A config published at v2.0 knew nothing about pauseOnHover, animation,
-    // shadow_enable, escape_html, stagger or the accessibility labels. Without a
+    // escape_html, stagger or the accessibility labels. Without a
     // recursive merge those all arrived as null and the runtime silently fell
     // back to values that differed from the documented defaults.
     config(['laravel-toaster-magic.options' => [
@@ -48,7 +48,6 @@ it('fills in every option a published config predates', function () {
     expect($emitted['theme'])->toBe('material')          // user value preserved
         ->and($emitted['pauseOnHover'])->toBe($defaults['pauseOnHover'])
         ->and($emitted['animation'])->toBe($defaults['animation'])
-        ->and($emitted['shadow_enable'])->toBe($defaults['shadow_enable'])
         ->and($emitted['escape_html'])->toBe($defaults['escape_html'])
         ->and($emitted['stagger'])->toBe($defaults['stagger'])
         ->and($emitted['timeOut'])->toBe($defaults['timeOut'])
@@ -74,13 +73,11 @@ it('keeps a user value of false rather than replacing it with the default', func
     config(['laravel-toaster-magic.options' => [
         'theme' => 'default',
         'pauseOnHover' => false,
-        'shadow_enable' => false,
     ]]);
 
     $emitted = emittedConfig();
 
-    expect($emitted['pauseOnHover'])->toBeFalse()
-        ->and($emitted['shadow_enable'])->toBeFalse();
+    expect($emitted['pauseOnHover'])->toBeFalse();
 });
 
 it('emits the documented defaults when nothing is configured', function () {
@@ -90,7 +87,7 @@ it('emits the documented defaults when nothing is configured', function () {
     // The PHP default and the value the runtime actually uses must agree; they
     // previously diverged (showDuration was 300 in config, 100 in the runtime).
     foreach (['closeButton', 'positionClass', 'preventDuplicates', 'showDuration',
-              'timeOut', 'theme', 'gradient_enable', 'color_mode', 'shadow_enable',
+              'timeOut', 'theme', 'gradient_enable', 'color_mode',
               'pauseOnHover', 'animation', 'escape_html', 'stagger'] as $key) {
         expect($emitted[$key])->toBe($defaults[$key], "option {$key}");
     }

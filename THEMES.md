@@ -156,21 +156,6 @@ Upgrading from **v1.x** to **v2.0**?
 
 ---
 
-### 🌑 Shadow Control *(v2.5)*
-
-A global switch, independent of the theme:
-
-```php
-// config/laravel-toaster-magic.php
-'shadow_enable' => false,
-```
-
-`true` (the default) leaves every theme's shadow exactly as it is. `false` flattens all of them —
-the toast surface, the icon puck, the close button and the action button — for whichever theme is
-active, including `neon`'s glow and `neumorphic`'s extrusion. Borders and colors are untouched.
-
----
-
 ### 📏 Spacing & Typography *(v2.5)*
 
 Two more global sections, independent of the theme:

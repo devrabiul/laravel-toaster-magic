@@ -1064,9 +1064,8 @@ body[theme="dark"] .toast-container.theme-neumorphic {
    semantic accents — with every piece of spacing pulled in: the container gap,
    the item padding, the icon-to-text gap, the gap between the title and the
    description, and the space around the close/action controls. Deliberately
-   plain: no gradients, no blur, no decorative depth. The only shadow comes from
-   the shared --toast-magic-box-shadow, so the global `shadow_enable` toggle
-   applies here exactly as it does to every other theme. */
+   plain: no gradients, no blur, no decorative depth — the only shadow is a
+   single hairline lift on the shared --toast-magic-box-shadow variable. */
 .toast-container.theme-compact {
     gap: .375rem;
 }
@@ -1258,30 +1257,6 @@ body[theme="dark"] .toast-container.theme-compact .toast-item {
 .toast-container.toast-color-true .toast-item-content-center .toast-body h4,
 .toast-container.toast-color-true .toast-item-content-center .toast-body p {
     letter-spacing: 1px;
-}
-
-/* ===== Global shadow toggle (v2.5) ===== */
-/* `shadow_enable => false` adds .toast-shadow-disable to the container. Themes
-   express depth in different ways — through the shared --toast-magic-box-shadow
-   variable (default, material, compact, neumorphic), a hardcoded box-shadow on
-   the item itself (ios, glassmorphism, neon, minimal) or on individual controls
-   (the neumorphism/neumorphic pucks and buttons, including their :hover and
-   :active states). So the toggle clears the variable and flattens every
-   box-shadow inside the container in a single pass, rather than unsetting each
-   theme rule one by one. Being theme-agnostic, it covers future themes too. */
-.toast-container.toast-shadow-disable {
-    --toast-magic-box-shadow: none;
-}
-
-.toast-container.toast-shadow-disable .toast-item,
-.toast-container.toast-shadow-disable .toast-item::before,
-.toast-container.toast-shadow-disable .toast-item::after,
-.toast-container.toast-shadow-disable .toast-item *,
-.toast-container.toast-shadow-disable .toast-item *::before,
-.toast-container.toast-shadow-disable .toast-item *::after {
-    box-shadow: none !important;
-    /* The neon theme glows its close icon with a text-shadow on hover. */
-    text-shadow: none !important;
 }
 
 .toast-item-content-center {

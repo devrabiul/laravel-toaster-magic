@@ -166,18 +166,12 @@ describe("container configuration", () => {
         expect(onlyToast().querySelector(".toast-close-btn")).not.toBeNull();
     });
 
-    it("applies the gradient, color and shadow modifiers", () => {
-        loadRuntime({ gradient_enable: true, color_mode: true, shadow_enable: false });
+    it("applies the gradient and color modifiers", () => {
+        loadRuntime({ gradient_enable: true, color_mode: true });
         const container = document.querySelector(".toast-container");
 
         expect(container.classList.contains("toast-gradient-enable")).toBe(true);
         expect(container.classList.contains("toast-color-true")).toBe(true);
-        expect(container.classList.contains("toast-shadow-disable")).toBe(true);
-    });
-
-    it("leaves the shadow modifier off unless shadow_enable is explicitly false", () => {
-        loadRuntime({});
-        expect(document.querySelector(".toast-container").classList.contains("toast-shadow-disable")).toBe(false);
     });
 
     it("preserves host application classes on the container", () => {

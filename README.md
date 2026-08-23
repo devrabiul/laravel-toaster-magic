@@ -1,3 +1,5 @@
+<div align="center">
+
 # 🍞 Laravel Toaster Magic — v2.5
 
 Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
@@ -11,6 +13,8 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 [![GitHub License](https://img.shields.io/github/license/devrabiul/laravel-toaster-magic)](LICENSE)
 [![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/devrabiul/laravel-toaster-magic)
 [![GitHub Stars](https://img.shields.io/github/stars/devrabiul/laravel-toaster-magic?style=social)](https://github.com/devrabiul/laravel-toaster-magic)
+
+</div>
 
 ---
 
@@ -28,7 +32,6 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 - 🌍 **RTL Support** — Full compatibility with right-to-left languages.
 - 🌙 **Dark Mode** — Built-in dark mode support via a single HTML attribute.
 - 🎨 **9+ Themes** — iOS, Neon, Glassmorphism, Material, Minimal, Neumorphism, Neumorphic, Compact, and Default.
-- 🌑 **Shadow Control** — One global switch turns every toast shadow off, whichever theme is active.
 - 📏 **Configurable Spacing & Typography** — Global padding, gaps and font sizes that work with any theme.
 - 🎞️ **Entrance/Exit Animations** — Choose how toasts enter and leave: `slide`, `fade`, `pop`, or `bounce`.
 - 🪄 **Smooth Stack Reflow** — Remaining toasts glide into place (FLIP) when one is added or dismissed.
@@ -351,8 +354,8 @@ instead of being spread down the full height of the toast.
   padding. On small screens it falls back to the same full-width track as every other theme.
 - **Supported toast types** — `success`, `error`, `warning` and `info`, plus avatar toasts, the
   custom action button, color mode and every animation option.
-- **Shadow** — kept on the shared `--toast-magic-box-shadow` variable, so
-  [`shadow_enable`](#-shadow-control) removes it like it does for any other theme.
+- **Shadow** — a single hairline lift on the shared `--toast-magic-box-shadow` variable, which you
+  can override in your own stylesheet.
 
 ---
 
@@ -425,34 +428,6 @@ return [
 ```
 
 > **Note:** Gradient mode works best with the `default`, `material`, and `neon` themes.
-
----
-
-## 🌑 Shadow Control
-
-Shadows are on by default. Set `shadow_enable` to `false` to render completely flat toasts:
-
-```php
-return [
-    'options' => [
-        'shadow_enable' => false,
-    ],
-];
-```
-
-This is a **global** option, not a theme option — it works with every theme, including themes whose
-depth is part of their identity (`neon`'s glow, `neumorphic`'s extrusion, `glassmorphism`'s inner
-highlight) and any theme added later. It removes every shadow inside the toast: the toast surface,
-the icon puck, the close button and the action button, in their hover and pressed states too.
-Borders and background colors are left alone.
-
-| Value | Result |
-|---------|-------------------------------------------------------|
-| `true`  | Each theme keeps its own shadow *(default)* |
-| `false` | Every toast shadow is removed, on any theme |
-
-> **Backward compatible:** a config file published before this option existed simply keeps its
-> shadows — the option has to be set to `false` explicitly to turn them off.
 
 ---
 
@@ -621,7 +596,6 @@ return [
         'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism, neumorphic, compact
         'gradient_enable'   => false,
         'color_mode'        => false,
-        'shadow_enable'     => true, // false removes every toast shadow, on any theme
         'pauseOnHover'      => true, // Keyboard focus always pauses the timer
         'animation'         => 'default', // default, slide, fade, pop, bounce
 

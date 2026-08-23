@@ -48,9 +48,6 @@ return [
         "color_mode" => false,
         // Enable/disable color mode
 
-        "shadow_enable" => true,
-        // Global: set false to remove shadows from all toasts
-
         // ─────────────────────────────────────────────
         // Animation
         // ─────────────────────────────────────────────

@@ -364,7 +364,6 @@ class ToastMagic
             'theme' => $this->allowlist($options['theme'] ?? null, self::THEMES, 'default'),
             'gradient_enable' => (bool)($options['gradient_enable'] ?? false),
             'color_mode' => (bool)($options['color_mode'] ?? false),
-            'shadow_enable' => (bool)($options['shadow_enable'] ?? true),
             'pauseOnHover' => (bool)($options['pauseOnHover'] ?? true),
             'animation' => $this->allowlist($options['animation'] ?? null, self::ANIMATIONS, 'default'),
             'escape_html' => (bool)($options['escape_html'] ?? true),
