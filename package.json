@@ -17,5 +17,9 @@
     "eslint": "^9.0.0",
     "jsdom": "^26.0.0",
     "vitest": "^3.0.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.62.2",
+    "@rollup/rollup-darwin-arm64": "^4.62.2"
   }
 }

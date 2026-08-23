@@ -97,16 +97,15 @@ jobs:
         with:
           node-version: '20'
 
-      # `npm install`, not `npm ci`. Vitest pulls in Vite, which pulls in Rollup,
-      # and Rollup ships its native binary as 26 platform-specific optional
-      # packages. npm only records the platform it generated the lockfile on
-      # (npm/cli#4828), so a lockfile committed from macOS makes `npm ci` fail on
-      # a Linux runner with "Cannot find module @rollup/rollup-linux-x64-gnu".
-      # `npm install` still honours the lockfile for versions but resolves the
-      # correct native binary for this runner. The lockfile stays committed for
-      # local reproducibility.
+      # Vitest pulls in Vite, which pulls in Rollup, and Rollup ships its native
+      # binary as ~27 platform-specific optional packages. npm records only the
+      # platform the lockfile was generated on (npm/cli#4828), so a lockfile
+      # committed from macOS left `@rollup/rollup-linux-x64-gnu` out entirely and
+      # this job failed on it. Declaring the binaries this project builds on as
+      # optionalDependencies in package.json makes npm record the whole family in
+      # the lockfile, so `npm ci` installs the right one per runner.
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Lint
         run: npm run lint
