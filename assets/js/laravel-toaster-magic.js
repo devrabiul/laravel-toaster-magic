@@ -488,11 +488,28 @@
             });
 
             var position = configValue("positionClass", "toast-top-end");
+            var atBottom = String(position).indexOf("bottom") !== -1;
+
+            // Cap the stack before inserting. The container is `position: fixed`
+            // with no scroll and `pointer-events: none`, so anything pushed past
+            // the edge of the viewport is neither readable nor closable — it just
+            // waits out its timer off-screen. Roughly six toasts fit on a phone.
+            var maxVisible = Math.max(0, parseInt(configValue("maxVisible", 6), 10) || 0);
+            if (maxVisible > 0) {
+                var live = Array.prototype.slice.call(container.querySelectorAll(".toast-item"))
+                    .filter(function (el) { return !el.dataset.tmClosing; });
+
+                // The newest sits closest to the anchored corner, so the oldest are
+                // at the far end: the tail when we prepend, the head when we append.
+                for (var i = 0; i < live.length - (maxVisible - 1); i++) {
+                    closeToastMagicItem(atBottom ? live[i] : live[live.length - 1 - i]);
+                }
+            }
 
             // Newest toast always appears closest to its anchored corner: on top
             // for top positions (older toasts move down), at the bottom for bottom
             // positions (older toasts move up).
-            if (String(position).indexOf("bottom") !== -1) {
+            if (atBottom) {
                 flipReflow(container, function () { container.append(toast); });
             } else {
                 flipReflow(container, function () { container.prepend(toast); });

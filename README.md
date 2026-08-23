@@ -592,7 +592,8 @@ return [
         'preventDuplicates' => false,
         'showDuration'      => 300,
         'timeOut'           => 5000,  // 0 = stay until dismissed
-        'stagger'           => 250,   // Gap between consecutive queued toasts (ms)
+        'stagger'           => 400,   // Gap between consecutive queued toasts (ms)
+        'maxVisible'        => 6,     // Most toasts on screen at once; 0 = no limit
         'theme'             => 'default', // default, material, ios, glassmorphism, neon, minimal, neumorphism, neumorphic, compact
         'gradient_enable'   => false,
         'color_mode'        => false,

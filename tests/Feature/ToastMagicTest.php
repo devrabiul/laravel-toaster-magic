@@ -324,7 +324,8 @@ it('exposes the behaviour options to the front end', function () {
         ->and($config['escape_html'])->toBeTrue()
         ->and($config['timeOut'])->toBe(5000)
         ->and($config['showDuration'])->toBe(300)
-        ->and($config['stagger'])->toBe(250);
+        ->and($config['stagger'])->toBe(400)
+        ->and($config['maxVisible'])->toBe(6);
 });
 
 it('exposes the accessibility labels to the front end', function () {

@@ -87,7 +87,7 @@ it('emits the documented defaults when nothing is configured', function () {
     // The PHP default and the value the runtime actually uses must agree; they
     // previously diverged (showDuration was 300 in config, 100 in the runtime).
     foreach (['closeButton', 'positionClass', 'preventDuplicates', 'showDuration',
-              'timeOut', 'theme', 'gradient_enable', 'color_mode',
+              'timeOut', 'theme', 'gradient_enable', 'color_mode', 'maxVisible',
               'pauseOnHover', 'animation', 'escape_html', 'stagger'] as $key) {
         expect($emitted[$key])->toBe($defaults[$key], "option {$key}");
     }
@@ -191,4 +191,14 @@ it('publishes the assets directory under the assets tag', function () {
 
     expect($paths)->not->toBeEmpty();
     expect(array_key_first($paths))->toEndWith('/assets');
+});
+
+it('emits the stack cap and clamps a negative value to unlimited', function () {
+    expect(emittedConfig()['maxVisible'])->toBe(6);
+
+    config(['laravel-toaster-magic.options.maxVisible' => 3]);
+    expect(emittedConfig()['maxVisible'])->toBe(3);
+
+    config(['laravel-toaster-magic.options.maxVisible' => -5]);
+    expect(emittedConfig()['maxVisible'])->toBe(0);
 });

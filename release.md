@@ -24,7 +24,7 @@ package's own CSS, and consolidates the two JavaScript runtimes into one.
 - ♿ **Accessibility overhaul** — announcements that actually announce, <kbd>Esc</kbd> to dismiss,
   WCAG AA contrast fixes, real touch targets.
 - ⚡ **No more per-request asset churn** — publishing converges instead of re-copying every request.
-- 🧪 **143 JavaScript tests + a reproducible asset build** where there was previously neither.
+- 🧪 **148 JavaScript tests + a reproducible asset build** where there was previously neither.
 - 📦 **~140 KB published payload**, down from ~1.6 MB.
 
 ---
@@ -153,7 +153,8 @@ You can also set the same properties directly in a stylesheet if you prefer CSS 
 |--------|--------------|
 | `['html' => true]` | Renders that toast's text as HTML (per toast) |
 | `escape_html` | Global escaping switch — off is not recommended |
-| `stagger` | Delay between consecutive queued toasts. Was a hardcoded 1000 ms; now **250 ms** |
+| `stagger` | Delay between consecutive queued toasts. Was a hardcoded 1000 ms; now **400 ms** |
+| `maxVisible` | Most toasts on screen at once (default **6**); the oldest is dismissed to make room. `0` = no limit |
 | `closeButtonLabel` | Accessible name for the close button |
 | `containerLabel` | Accessible name for the toast region |
 | `csp_nonce` | CSP nonce for the inline script blocks |
@@ -233,7 +234,7 @@ You can also set the same properties directly in a stylesheet if you prefer CSS 
 
 ## 🧪 Quality
 
-- **143 JavaScript tests** covering rendering, escaping, URL sanitising, timers, the data-attribute
+- **148 JavaScript tests** covering rendering, escaping, URL sanitising, timers, the data-attribute
   API, the Livewire bridge and accessibility. The runtime holds essentially all of this package's
   behaviour and previously had **no tests at all**.
 - **A reproducible asset build** — `npm run build` regenerates the minified stylesheet, and

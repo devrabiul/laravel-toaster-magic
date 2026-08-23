@@ -368,6 +368,7 @@ class ToastMagic
             'animation' => $this->allowlist($options['animation'] ?? null, self::ANIMATIONS, 'default'),
             'escape_html' => (bool)($options['escape_html'] ?? true),
             'stagger' => $this->staggerDelay($options),
+            'maxVisible' => max(0, (int)($options['maxVisible'] ?? 6)),
             'closeButtonLabel' => (string)($options['closeButtonLabel'] ?? 'Close notification'),
             'containerLabel' => (string)($options['containerLabel'] ?? 'Notifications'),
         ];
@@ -393,7 +394,7 @@ class ToastMagic
      */
     private function staggerDelay(array $options): int
     {
-        return max(0, (int)($options['stagger'] ?? 250));
+        return max(0, (int)($options['stagger'] ?? 400));
     }
 
     /**

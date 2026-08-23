@@ -166,6 +166,60 @@ describe("container configuration", () => {
         expect(onlyToast().querySelector(".toast-close-btn")).not.toBeNull();
     });
 
+    describe("maxVisible", () => {
+        function fill(count) {
+            for (let i = 1; i <= count; i++) window.toastMagic.info({ heading: `Toast ${i}` });
+        }
+
+        function headings() {
+            return toasts()
+                .filter((el) => !el.dataset.tmClosing)
+                .map((el) => el.querySelector("h4").textContent);
+        }
+
+        it("caps the stack at the configured maximum", () => {
+            loadRuntime({ maxVisible: 3 });
+            stubAnimationFrame();
+            fill(6);
+
+            expect(headings()).toHaveLength(3);
+        });
+
+        it("drops the oldest toasts, keeping the newest", () => {
+            loadRuntime({ maxVisible: 3 });
+            stubAnimationFrame();
+            fill(5);
+
+            // Top positions prepend, so the newest is first.
+            expect(headings()).toEqual(["Toast 5", "Toast 4", "Toast 3"]);
+        });
+
+        it("drops the oldest from the other end for bottom positions", () => {
+            loadRuntime({ maxVisible: 3, positionClass: "toast-bottom-end" });
+            stubAnimationFrame();
+            fill(5);
+
+            // Bottom positions append, so the newest is last.
+            expect(headings()).toEqual(["Toast 3", "Toast 4", "Toast 5"]);
+        });
+
+        it("treats 0 as unlimited", () => {
+            loadRuntime({ maxVisible: 0 });
+            stubAnimationFrame();
+            fill(9);
+
+            expect(headings()).toHaveLength(9);
+        });
+
+        it("defaults to six when nothing is configured", () => {
+            loadRuntime({});
+            stubAnimationFrame();
+            fill(10);
+
+            expect(headings()).toHaveLength(6);
+        });
+    });
+
     it("applies the gradient and color modifiers", () => {
         loadRuntime({ gradient_enable: true, color_mode: true });
         const container = document.querySelector(".toast-container");

@@ -26,8 +26,19 @@ return [
         "timeOut" => 5000,
         // Use 0 to keep toasts on screen until dismissed.
 
-        "stagger" => 250,
+        "stagger" => 800,
         // Gap between consecutive queued toasts, in ms.
+        // The entrance animation runs for 500ms, so this
+        // staggers them into a cascade rather than a burst.
+        // All of maxVisible land within maxVisible * stagger.
+
+        "maxVisible" => 15,
+        // Most toasts on screen at once; the oldest is
+        // dismissed to make room. The container is fixed
+        // positioned, so without a cap a burst of flashed
+        // messages pushes toasts past the bottom of the
+        // viewport where they cannot be seen or closed.
+        // Use 0 for no limit.
 
         "pauseOnHover" => true,
         // Keyboard focus always pauses the timer, regardless
