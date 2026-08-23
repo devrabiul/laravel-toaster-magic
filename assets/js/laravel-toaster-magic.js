@@ -1,26 +1,196 @@
+/*!
+ * Laravel Toaster Magic — shared runtime
+ *
+ * This is the single source of truth for toast behaviour. The Livewire build
+ * loads this same file and layers a thin event bridge on top
+ * (livewire-v3/livewire-toaster-magic-v3.js), so both integrations render
+ * identically by construction rather than by convention.
+ *
+ * Security note: no user-controlled value is ever concatenated into an HTML
+ * string. Text goes through `textContent` and URLs go through `setAttribute`,
+ * which makes attribute breakout structurally impossible. HTML is rendered only
+ * when a caller explicitly opts in with `html: true`.
+ */
 (function () {
+    "use strict";
+
+    var TOAST_TYPES = ["success", "error", "warning", "info"];
+
+    // Protocols that may appear in a toast action link. `javascript:` and
+    // `data:` are deliberately absent — those are the executable ones.
+    var LINK_PROTOCOLS = ["http:", "https:", "mailto:", "tel:"];
+    // Avatars are images; only real network schemes make sense.
+    var IMAGE_PROTOCOLS = ["http:", "https:"];
+
     // ===============================
-    // Utility: URL sanitizer
+    // Config access
     // ===============================
-    function sanitizeUrl(url) {
-        if (!url || !/^(https?:\/\/|\/|#)/.test(url)) return '#';
-        return url;
+    // Read lazily on every access. The runtime therefore does not care whether
+    // it is evaluated before or after the inline config block, which is what
+    // previously left every configured value stuck on its default.
+    function getConfig() {
+        return window.toastMagicConfig || {};
+    }
+
+    function getStyleVars() {
+        return window.toastMagicStyleVars || {};
+    }
+
+    function configValue(key, fallback) {
+        var config = getConfig();
+        return config[key] === undefined || config[key] === null ? fallback : config[key];
     }
 
     // ===============================
-    // Utility: Close toast function
+    // Utility: URL sanitizer
+    // ===============================
+    // Returns a safe URL string, or null when the value cannot be trusted.
+    //
+    // Because every URL produced here is applied with `setAttribute()`, quotes
+    // and angle brackets cannot escape the attribute no matter what they are.
+    // That reduces this function's job to one question: does the URL resolve to
+    // a protocol that can execute code? Anything that does is rejected outright.
+    function sanitizeUrl(value, allowedProtocols) {
+        if (typeof value !== "string") return null;
+
+        var raw = value.trim();
+        if (!raw) return null;
+
+        // Control characters and raw whitespace inside the value are the
+        // classic way to smuggle a scheme past a naive check. Reject them.
+        // eslint-disable-next-line no-control-regex -- rejecting control characters is the point
+        if (/[\u0000-\u0020\u007F]/.test(raw)) return null;
+
+        var parsed;
+        try {
+            parsed = new URL(raw, document.baseURI);
+        } catch {
+            return null;
+        }
+
+        if (allowedProtocols.indexOf(parsed.protocol) === -1) return null;
+
+        // A relative or fragment URL that already resolved to a safe protocol is
+        // returned in the author's original form — resolving it to an absolute
+        // URL would work too, but needlessly rewrites what ends up in the DOM.
+        if (raw.charAt(0) === "#" || raw.charAt(0) === "/") return raw;
+
+        return parsed.href;
+    }
+
+    // ===============================
+    // Utility: safe text rendering
+    // ===============================
+    // Escaped by default. Newlines become real <br> elements, so multi-line
+    // messages keep working without ever interpreting caller content as markup.
+    function renderText(target, value, allowHtml) {
+        var text = value === null || value === undefined ? "" : String(value);
+
+        if (allowHtml) {
+            // Explicit opt-in. The caller owns the safety of this string.
+            target.innerHTML = text;
+            return;
+        }
+
+        var lines = text.split(/\r\n|\r|\n/);
+        for (var i = 0; i < lines.length; i++) {
+            if (i > 0) target.appendChild(document.createElement("br"));
+            if (lines[i] !== "") target.appendChild(document.createTextNode(lines[i]));
+        }
+    }
+
+    // Parse a trusted SVG string into an element. Used only for the bundled
+    // icons, which are package constants and never caller input.
+    function buildIcon(markup) {
+        var wrapper = document.createElement("span");
+        wrapper.innerHTML = markup;
+
+        var svg = wrapper.querySelector("svg");
+        if (!svg) return null;
+
+        // Icons are decorative: the toast text already carries the meaning, so
+        // they must not be announced or focusable.
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("focusable", "false");
+        return svg;
+    }
+
+    // ===============================
+    // Utility: accessible live regions
+    // ===============================
+    // A live region only announces mutations that happen *inside* a region the
+    // assistive technology is already observing. Inserting an already-populated
+    // role="alert" element — which is what this package used to do — is widely
+    // unreliable. So two empty regions are created up front and the toast text
+    // is written into the one matching the severity.
+    var liveRegions = null;
+
+    function ensureLiveRegions() {
+        if (liveRegions && liveRegions.polite.isConnected) return liveRegions;
+        if (!document.body) return null;
+
+        // Adopt regions already in the DOM (a second evaluation of this file, or
+        // a server-rendered pair) instead of appending a duplicate set.
+        var existing = document.querySelectorAll(".toast-magic-live-region");
+        if (existing.length >= 2) {
+            liveRegions = { polite: existing[0], assertive: existing[1] };
+            return liveRegions;
+        }
+
+        function build(role, live) {
+            var region = document.createElement("div");
+            region.className = "toast-magic-live-region";
+            region.setAttribute("role", role);
+            region.setAttribute("aria-live", live);
+            region.setAttribute("aria-atomic", "true");
+            document.body.appendChild(region);
+            return region;
+        }
+
+        liveRegions = {
+            polite: build("status", "polite"),
+            assertive: build("alert", "assertive")
+        };
+
+        return liveRegions;
+    }
+
+    function announce(type, heading, description) {
+        var regions = ensureLiveRegions();
+        if (!regions) return;
+
+        // Errors interrupt; everything else waits for a natural pause.
+        var region = type === "error" ? regions.assertive : regions.polite;
+        var message = [heading, description]
+            .filter(function (part) { return part; })
+            .join(". ");
+
+        if (!message) return;
+
+        // Clearing first guarantees a mutation even when two identical toasts
+        // are announced back to back.
+        region.textContent = "";
+        window.setTimeout(function () {
+            region.textContent = message;
+        }, 50);
+    }
+
+    // ===============================
+    // Utility: close toast
     // ===============================
     function closeToastMagicItem(toast) {
-        if (toast.dataset.tmClosing) return; // guard against double-close
+        if (!toast || toast.dataset.tmClosing) return; // guard against double-close
         toast.dataset.tmClosing = "1";
 
-        const container = toast.closest(".toast-container");
+        if (typeof toast._tmDispose === "function") toast._tmDispose();
+
+        var container = toast.closest(".toast-container");
 
         // Pin the closing toast in place (out of flow) so the flex gap collapses
         // immediately, then glide the remaining toasts up to fill the space — all
-        // while it slides/fades out. Keeps the stack moving smoothly and continuously.
-        flipReflow(container, () => {
-            const rect = toast.getBoundingClientRect();
+        // while it slides/fades out. Keeps the stack moving smoothly.
+        flipReflow(container, function () {
+            var rect = toast.getBoundingClientRect();
             toast.style.translate = "";   // drop any in-progress reflow offset
             toast.style.position = "fixed";
             toast.style.top = rect.top + "px";
@@ -31,7 +201,17 @@
         });
 
         toast.classList.remove("show");
-        setTimeout(() => toast.remove(), 500);
+        // `hide` drives the exit transform, including the RTL-specific rule that
+        // was previously unreachable because nothing ever added this class.
+        toast.classList.add("hide");
+
+        window.setTimeout(function () {
+            if (toast.parentNode) toast.remove();
+        }, 500);
+    }
+
+    function prefersReducedMotion() {
+        return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     }
 
     // ===============================
@@ -42,302 +222,571 @@
     // never fights the entrance/exit animation, which uses `transform` — that means
     // a toast can slide in AND reflow vertically at the same time without conflict.
     function flipReflow(container, mutate) {
-        if (!container || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+        if (!container || prefersReducedMotion()) {
             mutate();
             return;
         }
 
-        // Keep the entrance/exit (`transform`, `opacity`) animating while `translate` reflows.
-        const reflowTransition = "translate .5s cubic-bezier(0.22, 0.61, 0.36, 1), transform .5s ease-in-out, opacity .5s ease-in-out";
+        var reflowTransition = "translate .5s cubic-bezier(0.22, 0.61, 0.36, 1), transform .5s ease-in-out, opacity .5s ease-in-out";
 
-        const snapshot = Array.from(container.querySelectorAll(".toast-item"))
-            .filter(el => !el.dataset.tmClosing)
-            .map(el => ({ el, top: el.getBoundingClientRect().top }));
+        var snapshot = Array.prototype.slice.call(container.querySelectorAll(".toast-item"))
+            .filter(function (el) { return !el.dataset.tmClosing; })
+            .map(function (el) { return { el: el, top: el.getBoundingClientRect().top }; });
 
         mutate();
 
-        snapshot.forEach(({ el, top }) => {
+        snapshot.forEach(function (entry) {
+            var el = entry.el;
             if (!el.isConnected) return;
 
             // Cancel any reflow still animating on this element so its stale
-            // transitionend cleanup can't wipe the new one mid-glide — that race
-            // is what made the stack teleport when entrances and exits overlapped.
+            // cleanup can't wipe the new one mid-glide — that race is what made
+            // the stack teleport when entrances and exits overlapped.
             if (el._tmReflowCleanup) {
-                el.removeEventListener("transitionend", el._tmReflowCleanup);
-                el._tmReflowCleanup = null;
+                el._tmReflowCleanup();
             }
 
-            // Measure the true post-mutate layout position with our own offset
-            // removed, so an in-progress glide isn't double-counted into delta.
             el.style.transition = "none";
             el.style.translate = "0px";
-            const delta = top - el.getBoundingClientRect().top;
+            var delta = entry.top - el.getBoundingClientRect().top;
             if (!delta) {
                 el.style.transition = "";
                 el.style.translate = "";
                 return;
             }
 
-            // Invert: offset to the old position instantly via the independent `translate`...
-            el.style.translate = `0 ${delta}px`;
+            el.style.translate = "0 " + delta + "px";
             void el.offsetHeight; // flush the inverted position before playing
 
-            // ...then play: glide to the new position without touching `transform`.
-            requestAnimationFrame(() => {
+            window.requestAnimationFrame(function () {
                 el.style.transition = reflowTransition;
                 el.style.translate = "0 0";
-                const cleanup = (event) => {
-                    if (event.propertyName !== "translate") return;
+
+                var settled = false;
+                var fallbackTimer = null;
+
+                // Single cleanup path shared by transitionend and the timeout.
+                // Without the timeout an interrupted transition would leave the
+                // inline transition/translate styles stuck on the element.
+                var cleanup = function () {
+                    if (settled) return;
+                    settled = true;
+                    if (fallbackTimer) window.clearTimeout(fallbackTimer);
                     el.style.transition = "";
                     el.style.translate = "";
-                    el.removeEventListener("transitionend", cleanup);
+                    el.removeEventListener("transitionend", onEnd);
                     el._tmReflowCleanup = null;
                 };
+
+                var onEnd = function (event) {
+                    if (event.propertyName !== "translate") return;
+                    cleanup();
+                };
+
+                fallbackTimer = window.setTimeout(cleanup, 700);
                 el._tmReflowCleanup = cleanup;
-                el.addEventListener("transitionend", cleanup);
+                el.addEventListener("transitionend", onEnd);
             });
         });
     }
 
     // ===============================
-    // Utility: Icon generator
+    // Utility: Apply configured style variables
     // ===============================
-    function getToasterIcon(key = null) {
-        if (key?.toString() === 'success') {
-            return `<?xml version="1.0" encoding="UTF-8"?>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="250" height="25"><g><path fill="currentColor" d="M405.333,0H106.667C47.786,0.071,0.071,47.786,0,106.667v298.667C0.071,464.214,47.786,511.93,106.667,512h298.667   C464.214,511.93,511.93,464.214,512,405.333V106.667C511.93,47.786,464.214,0.071,405.333,0z M426.667,172.352L229.248,369.771   c-16.659,16.666-43.674,16.671-60.34,0.012c-0.004-0.004-0.008-0.008-0.012-0.012l-83.563-83.541   c-8.348-8.348-8.348-21.882,0-30.229s21.882-8.348,30.229,0l83.541,83.541l197.44-197.419c8.348-8.318,21.858-8.294,30.176,0.053   C435.038,150.524,435.014,164.034,426.667,172.352z"/></g></svg>
-            `;
-        } else if (key?.toString() === 'error') {
-            return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="25" height="25"><path fill="currentColor" d="m19,0H5C2.243,0,0,2.243,0,5v14c0,2.757,2.243,5,5,5h14c2.757,0,5-2.243,5-5V5c0-2.757-2.243-5-5-5Zm-1.231,6.641l-4.466,5.359,4.466,5.359c.354.425.296,1.056-.128,1.409-.188.155-.414.231-.64.231-.287,0-.571-.122-.77-.359l-4.231-5.078-4.231,5.078c-.198.237-.482.359-.77.359-.226,0-.452-.076-.64-.231-.424-.354-.481-.984-.128-1.409l4.466-5.359-4.466-5.359c-.354-.425-.296-1.056.128-1.409.426-.353,1.056-.296,1.409.128l4.231,5.078,4.231-5.078c.354-.424.983-.48,1.409-.128.424.354.481.984.128,1.409Z"/></svg>`;
-        } else if (key?.toString() === 'info') {
-            return `<svg fill="currentColor" width="25px" height="25px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                <path d="M960 0c530.193 0 960 429.807 960 960s-429.807 960-960 960S0 1490.193 0 960 429.807 0 960 0Zm223.797 707.147c-28.531-29.561-67.826-39.944-109.227-39.455-55.225.657-114.197 20.664-156.38 40.315-100.942 47.024-178.395 130.295-242.903 219.312-11.616 16.025-17.678 34.946 2.76 49.697 17.428 12.58 29.978 1.324 40.49-9.897l.69-.74c.801-.862 1.591-1.72 2.37-2.565 11.795-12.772 23.194-25.999 34.593-39.237l2.85-3.31 2.851-3.308c34.231-39.687 69.056-78.805 115.144-105.345 27.4-15.778 47.142 8.591 42.912 35.963-2.535 16.413-11.165 31.874-17.2 47.744-21.44 56.363-43.197 112.607-64.862 168.888-23.74 61.7-47.405 123.425-70.426 185.398l-2 5.38-1.998 5.375c-20.31 54.64-40.319 108.872-53.554 165.896-10.575 45.592-24.811 100.906-4.357 145.697 11.781 25.8 36.77 43.532 64.567 47.566 37.912 5.504 78.906 6.133 116.003-2.308 19.216-4.368 38.12-10.07 56.57-17.005 56.646-21.298 108.226-54.146 154.681-92.755 47.26-39.384 88.919-85.972 126.906-134.292 12.21-15.53 27.004-32.703 31.163-52.596 3.908-18.657-12.746-45.302-34.326-34.473-11.395 5.718-19.929 19.867-28.231 29.27-10.42 11.798-21.044 23.423-31.786 34.92-21.488 22.987-43.513 45.463-65.634 67.831-13.54 13.692-30.37 25.263-47.662 33.763-21.59 10.609-38.785-1.157-36.448-25.064 2.144-21.954 7.515-44.145 15.046-64.926 30.306-83.675 61.19-167.135 91.834-250.686 19.157-52.214 38.217-104.461 56.999-156.816 17.554-48.928 32.514-97.463 38.834-149.3 4.357-35.71-4.9-72.647-30.269-98.937Zm63.72-401.498c-91.342-35.538-200.232 25.112-218.574 121.757-13.25 69.784 13.336 131.23 67.998 157.155 105.765 50.16 232.284-29.954 232.29-147.084.005-64.997-28.612-111.165-81.715-131.828Z" fill-rule="evenodd"/>
-            </svg>`;
-        } else if (key?.toString() === 'warning') {
-            return `<svg fill="currentColor" width="25px" height="25px" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg"><path d="m51.4 42.5l-22.9-37c-1.2-2-3.8-2-5 0l-22.9 37c-1.4 2.3 0 5.5 2.5 5.5h45.8c2.5 0 4-3.2 2.5-5.5z m-25.4-2.5c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z m3-9c0 0.6-0.4 1-1 1h-4c-0.6 0-1-0.4-1-1v-13c0-0.6 0.4-1 1-1h4c0.6 0 1 0.4 1 1v13z"></path></svg>`;
-        } else if (key?.toString() === 'close') {
-            return `<svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="currentColor"/></svg>`;
-        } else {
-            return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="m19,0H5C2.243,0,0,2.243,0,5v14c0,2.757,2.243,5,5,5h14c2.757,0,5-2.243,5-5V5c0-2.757-2.243-5-5-5Zm-8,6c0-.553.447-1,1-1s1,.447,1,1v7.5c0,.553-.447,1-1,1s-1-.447-1-1v-7.5Zm1,13c-.828,0-1.5-.672-1.5-1.5s.672-1.5,1.5-1.5,1.5.672,1.5,1.5-.672,1.5-1.5,1.5Z"/></svg>`;
+    // The spacing/typography config is resolved server-side into CSS custom
+    // properties (see ToastMagic::resolveStyleVariables) and published as
+    // `window.toastMagicStyleVars`.
+    function applyToastMagicStyleVars(container) {
+        if (!container) return;
+        var vars = getStyleVars();
+        for (var name in vars) {
+            if (Object.prototype.hasOwnProperty.call(vars, name)) {
+                container.style.setProperty(name, vars[name]);
+            }
         }
     }
 
     // ===============================
-    // ToastMagic Class Definition
+    // Utility: Icon markup
+    // ===============================
+    function getToasterIcon(key) {
+        switch (String(key)) {
+            case "success":
+                return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path fill="currentColor" d="M405.333,0H106.667C47.786,0.071,0.071,47.786,0,106.667v298.667C0.071,464.214,47.786,511.93,106.667,512h298.667C464.214,511.93,511.93,464.214,512,405.333V106.667C511.93,47.786,464.214,0.071,405.333,0z M426.667,172.352L229.248,369.771c-16.659,16.666-43.674,16.671-60.34,0.012c-0.004-0.004-0.008-0.008-0.012-0.012l-83.563-83.541c-8.348-8.348-8.348-21.882,0-30.229s21.882-8.348,30.229,0l83.541,83.541l197.44-197.419c8.348-8.318,21.858-8.294,30.176,0.053C435.038,150.524,435.014,164.034,426.667,172.352z"/></svg>';
+            case "error":
+                return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="m19,0H5C2.243,0,0,2.243,0,5v14c0,2.757,2.243,5,5,5h14c2.757,0,5-2.243,5-5V5c0-2.757-2.243-5-5-5Zm-1.231,6.641l-4.466,5.359,4.466,5.359c.354.425.296,1.056-.128,1.409-.188.155-.414.231-.64.231-.287,0-.571-.122-.77-.359l-4.231-5.078-4.231,5.078c-.198.237-.482.359-.77.359-.226,0-.452-.076-.64-.231-.424-.354-.481-.984-.128-1.409l4.466-5.359-4.466-5.359c-.354-.425-.296-1.056.128-1.409.426-.353,1.056-.296,1.409.128l4.231,5.078,4.231-5.078c.354-.424.983-.48,1.409-.128.424.354.481.984.128,1.409Z"/></svg>';
+            case "info":
+                return '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 1920 1920"><path d="M960 0c530.193 0 960 429.807 960 960s-429.807 960-960 960S0 1490.193 0 960 429.807 0 960 0Zm223.797 707.147c-28.531-29.561-67.826-39.944-109.227-39.455-55.225.657-114.197 20.664-156.38 40.315-100.942 47.024-178.395 130.295-242.903 219.312-11.616 16.025-17.678 34.946 2.76 49.697 17.428 12.58 29.978 1.324 40.49-9.897l.69-.74c.801-.862 1.591-1.72 2.37-2.565 11.795-12.772 23.194-25.999 34.593-39.237l2.85-3.31 2.851-3.308c34.231-39.687 69.056-78.805 115.144-105.345 27.4-15.778 47.142 8.591 42.912 35.963-2.535 16.413-11.165 31.874-17.2 47.744-21.44 56.363-43.197 112.607-64.862 168.888-23.74 61.7-47.405 123.425-70.426 185.398l-2 5.38-1.998 5.375c-20.31 54.64-40.319 108.872-53.554 165.896-10.575 45.592-24.811 100.906-4.357 145.697 11.781 25.8 36.77 43.532 64.567 47.566 37.912 5.504 78.906 6.133 116.003-2.308 19.216-4.368 38.12-10.07 56.57-17.005 56.646-21.298 108.226-54.146 154.681-92.755 47.26-39.384 88.919-85.972 126.906-134.292 12.21-15.53 27.004-32.703 31.163-52.596 3.908-18.657-12.746-45.302-34.326-34.473-11.395 5.718-19.929 19.867-28.231 29.27-10.42 11.798-21.044 23.423-31.786 34.92-21.488 22.987-43.513 45.463-65.634 67.831-13.54 13.692-30.37 25.263-47.662 33.763-21.59 10.609-38.785-1.157-36.448-25.064 2.144-21.954 7.515-44.145 15.046-64.926 30.306-83.675 61.19-167.135 91.834-250.686 19.157-52.214 38.217-104.461 56.999-156.816 17.554-48.928 32.514-97.463 38.834-149.3 4.357-35.71-4.9-72.647-30.269-98.937Zm63.72-401.498c-91.342-35.538-200.232 25.112-218.574 121.757-13.25 69.784 13.336 131.23 67.998 157.155 105.765 50.16 232.284-29.954 232.29-147.084.005-64.997-28.612-111.165-81.715-131.828Z" fill-rule="evenodd"/></svg>';
+            case "warning":
+                return '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 52 52"><path d="m51.4 42.5l-22.9-37c-1.2-2-3.8-2-5 0l-22.9 37c-1.4 2.3 0 5.5 2.5 5.5h45.8c2.5 0 4-3.2 2.5-5.5z m-25.4-2.5c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z m3-9c0 0.6-0.4 1-1 1h-4c-0.6 0-1-0.4-1-1v-13c0-0.6 0.4-1 1-1h4c0.6 0 1 0.4 1 1v13z"/></svg>';
+            case "close":
+                return '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="currentColor"/></svg>';
+            default:
+                return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="m19,0H5C2.243,0,0,2.243,0,5v14c0,2.757,2.243,5,5,5h14c2.757,0,5-2.243,5-5V5c0-2.757-2.243-5-5-5Zm-8,6c0-.553.447-1,1-1s1,.447,1,1v7.5c0,.553-.447,1-1,1s-1-.447-1-1v-7.5Zm1,13c-.828,0-1.5-.672-1.5-1.5s.672-1.5,1.5-1.5,1.5.672,1.5,1.5-.672,1.5-1.5,1.5Z"/></svg>';
+        }
+    }
+
+    function typeClasses(type) {
+        switch (type) {
+            case "success": return { item: "toast-success", basic: "success" };
+            case "error": return { item: "toast-danger", basic: "danger" };
+            case "warning": return { item: "toast-warning", basic: "warning" };
+            default: return { item: "toast-info", basic: "info" };
+        }
+    }
+
+    // ===============================
+    // ToastMagic class
     // ===============================
     if (typeof window.ToastMagic === "undefined") {
-        window.ToastMagic = class ToastMagic {
-            constructor() {
-                const config = window.toastMagicConfig || {};
-                this.toastMagicPosition = config.positionClass || "toast-top-end";
-                this.toastMagicCloseButton = config.closeButton || false;
-                this.toastMagicTheme = config.theme || 'default';
+        window.ToastMagic = function ToastMagic() {
+            this.toastContainer = null;
+            this._pending = [];
+            this._ready = false;
+            this._init();
+        };
 
+        window.ToastMagic.prototype._init = function () {
+            var self = this;
+
+            if (document.readyState === "loading") {
+                // Placing the scripts in <head> used to throw, because the
+                // constructor reached for document.body during parse. Now the
+                // container is built when the DOM is ready and any toast raised
+                // before that point is queued rather than lost.
+                document.addEventListener("DOMContentLoaded", function () { self._boot(); });
+                return;
+            }
+
+            this._boot();
+        };
+
+        window.ToastMagic.prototype._boot = function () {
+            if (this._ready) return;
+
+            this.ensureContainer();
+            ensureLiveRegions();
+            this._ready = true;
+
+            var pending = this._pending;
+            this._pending = [];
+            for (var i = 0; i < pending.length; i++) {
+                this.show(pending[i]);
+            }
+        };
+
+        // Create the container if needed and (re)apply every container-level
+        // modifier from the current config. Modifiers are toggled individually
+        // rather than by overwriting className, so classes added by the host
+        // application survive.
+        window.ToastMagic.prototype.ensureContainer = function () {
+            if (!document.body) return null;
+
+            if (!this.toastContainer || !this.toastContainer.isConnected) {
                 this.toastContainer = document.querySelector(".toast-container");
-                if (!this.toastContainer) {
-                    this.toastContainer = document.createElement("div");
-                    this.toastContainer.classList.add("toast-container");
-                    document.body.appendChild(this.toastContainer);
-                }
-
-                this.toastContainer.className = "toast-container " + this.toastMagicPosition + " theme-" + this.toastMagicTheme;
             }
 
-            show({
-                type,
-                heading,
-                description = "",
-                showCloseBtn = this.toastMagicCloseButton,
-                customBtnText = "",
-                customBtnLink = "",
-                timeOut = null,
-                showDuration = null,
-                avatar = ""
-            }) {
-                // Skip rendering if an identical toast is already visible and
-                // duplicate prevention is enabled in the config.
-                const duplicateKey = `${type}|${heading}|${description}`;
-                if ((window.toastMagicConfig || {}).preventDuplicates && this.toastContainer) {
-                    const isDuplicate = Array.from(this.toastContainer.querySelectorAll(".toast-item"))
-                        .some(el => el.dataset.toastKey === duplicateKey);
-                    if (isDuplicate) return;
+            if (!this.toastContainer) {
+                this.toastContainer = document.createElement("div");
+                this.toastContainer.className = "toast-container";
+                document.body.appendChild(this.toastContainer);
+            }
+
+            var container = this.toastContainer;
+            var position = configValue("positionClass", "toast-top-end");
+            var theme = configValue("theme", "default");
+
+            [
+                "toast-top-start", "toast-top-end", "toast-top-center",
+                "toast-bottom-start", "toast-bottom-end", "toast-bottom-center"
+            ].forEach(function (name) {
+                container.classList.toggle(name, name === position);
+            });
+
+            Array.prototype.slice.call(container.classList).forEach(function (name) {
+                if (name.indexOf("theme-") === 0 && name !== "theme-" + theme) {
+                    container.classList.remove(name);
                 }
+            });
+            container.classList.add("theme-" + theme);
 
-                let toastClass, toastClassBasic;
-                switch (type) {
-                    case "success":
-                        toastClass = "toast-success";
-                        toastClassBasic = "success";
-                        break;
-                    case "error":
-                        toastClass = "toast-danger";
-                        toastClassBasic = "danger";
-                        break;
-                    case "warning":
-                        toastClass = "toast-warning";
-                        toastClassBasic = "warning";
-                        break;
-                    case "info":
-                    default:
-                        toastClass = "toast-info";
-                        toastClassBasic = "info";
-                }
+            container.classList.toggle("toast-gradient-enable", !!getConfig().gradient_enable);
+            container.classList.toggle("toast-color-true", !!getConfig().color_mode);
+            container.classList.toggle("toast-shadow-disable", getConfig().shadow_enable === false);
 
-                const toast = document.createElement("div");
-                toast.classList.add("toast-item", toastClass);
-                toast.dataset.toastKey = duplicateKey;
-                // Apply the configured entrance/exit animation (default keeps the current behavior).
-                const toastAnimation = (window.toastMagicConfig || {}).animation;
-                if (toastAnimation && toastAnimation !== "default") {
-                    toast.classList.add("toast-animate-" + toastAnimation);
-                }
-                toast.setAttribute("role", "alert");
-                toast.setAttribute("aria-live", "assertive");
-                toast.setAttribute("aria-atomic", "true");
+            if (!container.hasAttribute("aria-label")) {
+                container.setAttribute("aria-label", configValue("containerLabel", "Notifications"));
+            }
 
-                toast.innerHTML = `
-                <div class="theme-ios-toast-item-border"></div>
-                    <div class="position-relative">
-                        <div class="toast-item-content-center">
-                            <div class="toast-body ${avatar ? `toast-body-avatar` : ``}">
-                                <span class="toast-body-icon-container toast-text-${toastClassBasic}">
-                                    ${avatar ? `<img src="${sanitizeUrl(avatar)}" alt="" class="toast-avatar">` : getToasterIcon(type)}
-                                </span>
-                                <div class="toast-body-container">
-                                    ${heading ? `<div class="toast-body-title"><h4>${heading}</h4></div>` : ''}
-                                    ${description ? `<p class="fs-12">${description}</p>` : ''}
-                                </div>
-                            </div>
-                            <div class="toast-body-end">
-                                ${showCloseBtn ? `<button type="button" class="toast-close-btn">${getToasterIcon('close')}</button>` : ""}
-                                ${customBtnText && customBtnLink ? `<a href="${sanitizeUrl(customBtnLink)}" class="toast-custom-btn toast-btn-bg-${toastClassBasic}">${customBtnText}</a>` : ""}
-                            </div>
-                        </div>
-                    </div>`;
+            applyToastMagicStyleVars(container);
 
-                const cfg = window.toastMagicConfig || {};
-                const toastMagicPosition = cfg.positionClass || "toast-top-end";
-                // Per-toast overrides take precedence; otherwise fall back to the global config.
-                const toastMagicShowDuration = (typeof showDuration === "number") ? showDuration : (cfg?.showDuration || 100);
-                const toastMagicTimeOut = (typeof timeOut === "number") ? timeOut : (cfg?.timeOut || 5000);
+            return container;
+        };
 
-                // Newest toast always appears closest to its anchored corner: on top
-                // for top positions (older toasts move down), at the bottom for bottom
-                // positions (older toasts move up). flipReflow glides the existing toasts
-                // smoothly to their new spots instead of letting them jump, and removal
-                // reflows the stack to close the gap (see closeToastMagicItem).
-                if (
-                    toastMagicPosition.includes('bottom')
-                ) {
-                    flipReflow(this.toastContainer, () => this.toastContainer.append(toast));
-                } else {
-                    flipReflow(this.toastContainer, () => this.toastContainer.prepend(toast));
-                }
+        window.ToastMagic.prototype.show = function (options) {
+            var settings = options || {};
 
-                setTimeout(() => toast.classList.add("show"), toastMagicShowDuration);
+            if (!this._ready) {
+                this._pending.push(settings);
+                return;
+            }
 
-                // Auto-dismiss timer with optional pause-on-hover.
-                // Enabled by default; set `pauseOnHover: false` in the config to disable.
-                const pauseOnHover = (window.toastMagicConfig || {}).pauseOnHover !== false;
-                let remaining = toastMagicTimeOut;
-                let startedAt = Date.now();
-                let dismissTimer = setTimeout(() => closeToastMagicItem(toast), remaining);
+            var container = this.ensureContainer();
+            if (!container) return;
 
-                if (pauseOnHover) {
-                    toast.addEventListener("mouseenter", () => {
-                        clearTimeout(dismissTimer);
-                        remaining -= Date.now() - startedAt;
-                    });
-                    toast.addEventListener("mouseleave", () => {
-                        startedAt = Date.now();
-                        dismissTimer = setTimeout(() => closeToastMagicItem(toast), Math.max(remaining, 0));
-                    });
+            var config = getConfig();
+            var type = TOAST_TYPES.indexOf(settings.type) === -1 ? "info" : settings.type;
+            var heading = settings.heading === undefined || settings.heading === null ? "" : String(settings.heading);
+            var description = settings.description === undefined || settings.description === null ? "" : String(settings.description);
+
+            // Escaping is the default. `html: true` per toast, or a global
+            // `escape_html: false`, opts back into raw HTML rendering.
+            var allowHtml = settings.html === true || config.escape_html === false;
+
+            var showCloseBtn = settings.showCloseBtn === undefined
+                ? !!config.closeButton
+                : !!settings.showCloseBtn;
+
+            var customBtnText = settings.customBtnText ? String(settings.customBtnText) : "";
+            var customBtnLink = settings.customBtnLink ? String(settings.customBtnLink) : "";
+            var avatar = settings.avatar ? String(settings.avatar) : "";
+
+            // Skip rendering if an identical toast is already visible and
+            // duplicate prevention is enabled in the config.
+            var duplicateKey = type + "|" + heading + "|" + description;
+            if (config.preventDuplicates) {
+                var existing = Array.prototype.slice.call(container.querySelectorAll(".toast-item"));
+                for (var d = 0; d < existing.length; d++) {
+                    if (existing[d].dataset.toastKey === duplicateKey && !existing[d].dataset.tmClosing) return;
                 }
             }
 
-            success(...args) {
-                this.show({ type: "success", ...this._parseArgs(args) });
+            var names = typeClasses(type);
+
+            var showDuration = typeof settings.showDuration === "number"
+                ? settings.showDuration
+                : (typeof config.showDuration === "number" ? config.showDuration : 300);
+
+            // `timeOut: 0` means "stay until dismissed" — a WCAG 2.2.1 escape
+            // hatch. Only a strictly positive number starts the dismiss timer.
+            var timeOut = typeof settings.timeOut === "number"
+                ? settings.timeOut
+                : (typeof config.timeOut === "number" ? config.timeOut : 5000);
+
+            var toast = this._buildToast({
+                type: type,
+                names: names,
+                heading: heading,
+                description: description,
+                allowHtml: allowHtml,
+                showCloseBtn: showCloseBtn,
+                customBtnText: customBtnText,
+                customBtnLink: customBtnLink,
+                avatar: avatar,
+                duplicateKey: duplicateKey,
+                timeOut: timeOut,
+                showDuration: showDuration
+            });
+
+            var position = configValue("positionClass", "toast-top-end");
+
+            // Newest toast always appears closest to its anchored corner: on top
+            // for top positions (older toasts move down), at the bottom for bottom
+            // positions (older toasts move up).
+            if (String(position).indexOf("bottom") !== -1) {
+                flipReflow(container, function () { container.append(toast); });
+            } else {
+                flipReflow(container, function () { container.prepend(toast); });
             }
 
-            error(...args) {
-                this.show({ type: "error", ...this._parseArgs(args) });
+            window.setTimeout(function () { toast.classList.add("show"); }, showDuration);
+
+            announce(type, heading, description);
+
+            this._startDismissTimer(toast, timeOut);
+
+            return toast;
+        };
+
+        window.ToastMagic.prototype._buildToast = function (spec) {
+            var config = getConfig();
+
+            var toast = document.createElement("div");
+            toast.className = "toast-item " + spec.names.item;
+            toast.dataset.toastKey = spec.duplicateKey;
+            // Deliberately NOT `data-toast-type`: that attribute is the trigger
+            // API, and the delegated handler finds triggers with
+            // closest("[data-toast-type]"). Stamping it here made every rendered
+            // toast its own trigger, so clicking one spawned a duplicate.
+            toast.dataset.toastItemType = spec.type;
+
+            var animation = config.animation;
+            if (animation && animation !== "default") {
+                toast.classList.add("toast-animate-" + animation);
             }
 
-            warning(...args) {
-                this.show({ type: "warning", ...this._parseArgs(args) });
+            // The toast is a labelled group rather than its own live region —
+            // announcement is handled by the persistent regions above, and
+            // duplicating it here would make screen readers read it twice.
+            toast.setAttribute("role", "group");
+            toast.setAttribute(
+                "aria-label",
+                (config.typeLabels && config.typeLabels[spec.type]) || spec.type + " notification"
+            );
+
+            // Drive the progress bar from the real dismiss time instead of the
+            // hardcoded 3s it used to assume.
+            if (spec.timeOut > 0) {
+                toast.style.setProperty("--tm-toast-duration", spec.timeOut + "ms");
+                toast.style.setProperty("--tm-toast-delay", spec.showDuration + "ms");
+            } else {
+                toast.classList.add("toast-no-timeout");
             }
 
-            info(...args) {
-                this.show({ type: "info", ...this._parseArgs(args) });
+            var positionRelative = document.createElement("div");
+            positionRelative.className = "toast-magic-relative";
+
+            var content = document.createElement("div");
+            content.className = "toast-item-content-center";
+
+            var body = document.createElement("div");
+            body.className = "toast-body" + (spec.avatar ? " toast-body-avatar" : "");
+
+            var iconContainer = document.createElement("span");
+            iconContainer.className = "toast-body-icon-container toast-text-" + spec.names.basic;
+
+            var avatarUrl = spec.avatar ? sanitizeUrl(spec.avatar, IMAGE_PROTOCOLS) : null;
+            if (avatarUrl) {
+                var img = document.createElement("img");
+                // setAttribute cannot break out of the attribute, whatever the value.
+                img.setAttribute("src", avatarUrl);
+                img.setAttribute("alt", "");
+                img.className = "toast-avatar";
+                iconContainer.appendChild(img);
+            } else {
+                if (spec.avatar) body.classList.remove("toast-body-avatar");
+                var icon = buildIcon(getToasterIcon(spec.type));
+                if (icon) iconContainer.appendChild(icon);
             }
 
-            // Programmatically dismiss every currently visible toast.
-            clear() {
-                if (!this.toastContainer) return;
-                this.toastContainer
-                    .querySelectorAll(".toast-item")
-                    .forEach(toast => closeToastMagicItem(toast));
+            var bodyContainer = document.createElement("div");
+            bodyContainer.className = "toast-body-container";
+
+            if (spec.heading) {
+                var titleWrap = document.createElement("div");
+                titleWrap.className = "toast-body-title";
+                var title = document.createElement("h4");
+                renderText(title, spec.heading, spec.allowHtml);
+                titleWrap.appendChild(title);
+                bodyContainer.appendChild(titleWrap);
             }
 
-            // Alias for clear().
-            dismissAll() {
-                this.clear();
+            if (spec.description) {
+                var paragraph = document.createElement("p");
+                paragraph.className = "toast-body-description";
+                renderText(paragraph, spec.description, spec.allowHtml);
+                bodyContainer.appendChild(paragraph);
             }
 
-            _parseArgs(args) {
-                const [heading = "", description = "", showCloseBtn = false, customBtnText = "", customBtnLink = "", timeOut = null, showDuration = null, avatar = ""] = args;
-                return { heading, description, showCloseBtn, customBtnText, customBtnLink, timeOut, showDuration, avatar };
+            body.appendChild(iconContainer);
+            body.appendChild(bodyContainer);
+
+            var end = document.createElement("div");
+            end.className = "toast-body-end";
+
+            if (spec.showCloseBtn) {
+                var closeBtn = document.createElement("button");
+                closeBtn.setAttribute("type", "button");
+                closeBtn.className = "toast-close-btn";
+                closeBtn.setAttribute("aria-label", configValue("closeButtonLabel", "Close notification"));
+                var closeIcon = buildIcon(getToasterIcon("close"));
+                if (closeIcon) closeBtn.appendChild(closeIcon);
+                end.appendChild(closeBtn);
             }
+
+            if (spec.customBtnText && spec.customBtnLink) {
+                var link = document.createElement("a");
+                // An unusable URL degrades to "#", matching the documented
+                // contract, and is safe because it is applied as an attribute.
+                link.setAttribute("href", sanitizeUrl(spec.customBtnLink, LINK_PROTOCOLS) || "#");
+                link.className = "toast-custom-btn toast-btn-bg-" + spec.names.basic;
+                renderText(link, spec.customBtnText, spec.allowHtml);
+                end.appendChild(link);
+            }
+
+            content.appendChild(body);
+            content.appendChild(end);
+            positionRelative.appendChild(content);
+            toast.appendChild(positionRelative);
+
+            return toast;
+        };
+
+        // Auto-dismiss with pause on hover *and* keyboard focus. Pausing the
+        // timer also pauses the progress bar, which previously kept running.
+        window.ToastMagic.prototype._startDismissTimer = function (toast, timeOut) {
+            if (!(timeOut > 0)) {
+                toast._tmDispose = function () {};
+                return;
+            }
+
+            var config = getConfig();
+            var pauseOnHover = config.pauseOnHover !== false;
+            var remaining = timeOut;
+            var startedAt = Date.now();
+            var timer = window.setTimeout(function () { closeToastMagicItem(toast); }, remaining);
+            var paused = false;
+
+            function pause() {
+                if (paused) return;
+                paused = true;
+                window.clearTimeout(timer);
+                remaining -= Date.now() - startedAt;
+                toast.classList.add("toast-paused");
+            }
+
+            function resume() {
+                if (!paused) return;
+                paused = false;
+                startedAt = Date.now();
+                toast.classList.remove("toast-paused");
+                timer = window.setTimeout(function () { closeToastMagicItem(toast); }, Math.max(remaining, 0));
+            }
+
+            toast._tmDispose = function () {
+                window.clearTimeout(timer);
+                toast.removeEventListener("mouseenter", pause);
+                toast.removeEventListener("mouseleave", resume);
+                toast.removeEventListener("focusin", pause);
+                toast.removeEventListener("focusout", resume);
+            };
+
+            if (pauseOnHover) {
+                toast.addEventListener("mouseenter", pause);
+                toast.addEventListener("mouseleave", resume);
+            }
+
+            // Focus pausing is not optional: a keyboard user who has tabbed into
+            // a toast must not have it yanked away mid-interaction.
+            toast.addEventListener("focusin", pause);
+            toast.addEventListener("focusout", resume);
+        };
+
+        // Accepts either the positional signature kept for backward
+        // compatibility, or a single options object (what the PHP side emits).
+        window.ToastMagic.prototype._parseArgs = function (args) {
+            if (args.length === 1 && args[0] && typeof args[0] === "object") {
+                return args[0];
+            }
+
+            return {
+                heading: args[0] !== undefined ? args[0] : "",
+                description: args[1] !== undefined ? args[1] : "",
+                showCloseBtn: args[2] !== undefined ? args[2] : undefined,
+                customBtnText: args[3] !== undefined ? args[3] : "",
+                customBtnLink: args[4] !== undefined ? args[4] : "",
+                timeOut: args[5] !== undefined ? args[5] : null,
+                showDuration: args[6] !== undefined ? args[6] : null,
+                avatar: args[7] !== undefined ? args[7] : ""
+            };
+        };
+
+        TOAST_TYPES.forEach(function (type) {
+            window.ToastMagic.prototype[type] = function () {
+                var parsed = this._parseArgs(Array.prototype.slice.call(arguments));
+                parsed.type = type;
+                return this.show(parsed);
+            };
+        });
+
+        // Programmatically dismiss every currently visible toast.
+        window.ToastMagic.prototype.clear = function () {
+            if (!this.toastContainer) return;
+            Array.prototype.slice.call(this.toastContainer.querySelectorAll(".toast-item"))
+                .forEach(function (toast) { closeToastMagicItem(toast); });
+        };
+
+        window.ToastMagic.prototype.dismissAll = function () {
+            this.clear();
         };
     }
 
     // ===============================
-    // Initialize Instance Once
+    // Single shared instance
     // ===============================
     if (typeof window.toastMagic === "undefined") {
         window.toastMagic = new window.ToastMagic();
     }
 
     // ===============================
-    // DOM Ready: Setup Container + Events
+    // Delegated document listeners (bound once)
     // ===============================
-    document.addEventListener("DOMContentLoaded", function () {
-        const config = window.toastMagicConfig || {};
-        const toastMagicPosition = config.positionClass || "toast-top-end";
+    if (!window._toastMagicListenersBound) {
+        window._toastMagicListenersBound = true;
 
-        if (!document.querySelector(".toast-container")) {
-            document.body.insertAdjacentHTML(
-                "afterbegin",
-                `<div><div class="toast-container ${toastMagicPosition}"></div></div>`
-            );
-        }
-
-        // Listen for toast trigger buttons
-        document.body.addEventListener("click", function (event) {
-            const btn = event.target.closest("[data-toast-type]");
-            if (!btn) return;
-
-            const type = btn.getAttribute("data-toast-type");
-            const heading = btn.getAttribute("data-toast-heading") || "Notification";
-            const description = btn.getAttribute("data-toast-description") || "";
-            const showCloseBtn = btn.hasAttribute("data-toast-close-btn");
-            const customBtnText = btn.getAttribute("data-toast-btn-text") || "";
-            const customBtnLink = btn.getAttribute("data-toast-btn-link") || "";
-
-            if (window.toastMagic[type]) {
-                window.toastMagic[type](heading, description, showCloseBtn, customBtnText, customBtnLink);
-            } else {
-                window.toastMagic.info(heading, description, showCloseBtn, customBtnText, customBtnLink);
-            }
-        });
-
-        // Listen for toast close buttons
-        document.body.addEventListener("click", function (event) {
-            const closeBtn = event.target.closest(".toast-close-btn");
+        document.addEventListener("click", function (event) {
+            var closeBtn = event.target.closest && event.target.closest(".toast-close-btn");
             if (closeBtn) {
-                const toast = closeBtn.closest(".toast-item");
-                if (toast) closeToastMagicItem(toast);
+                closeToastMagicItem(closeBtn.closest(".toast-item"));
+                return;
             }
+
+            var trigger = event.target.closest && event.target.closest("[data-toast-type]");
+            if (!trigger) return;
+
+            // A rendered toast must never act as a trigger. The marker attribute
+            // no longer collides, but this also covers an application that puts
+            // its own data-toast-type inside a toast — clicking a toast should
+            // dismiss or do nothing, never spawn another one.
+            if (trigger.closest(".toast-container") || trigger.classList.contains("toast-item")) return;
+
+            // Only real toast types are accepted. Previously any truthy property
+            // name — "show", "clear", "constructor" — was invoked here.
+            var type = trigger.getAttribute("data-toast-type");
+            if (TOAST_TYPES.indexOf(type) === -1) type = "info";
+
+            window.toastMagic[type]({
+                heading: trigger.getAttribute("data-toast-heading") || "Notification",
+                description: trigger.getAttribute("data-toast-description") || "",
+                showCloseBtn: trigger.hasAttribute("data-toast-close-btn"),
+                customBtnText: trigger.getAttribute("data-toast-btn-text") || "",
+                customBtnLink: trigger.getAttribute("data-toast-btn-link") || "",
+                avatar: trigger.getAttribute("data-toast-avatar") || ""
+            });
         });
-    });
+
+        // Escape dismisses the most recent toast, giving keyboard users a way
+        // out that does not depend on the close button being enabled.
+        document.addEventListener("keydown", function (event) {
+            if (event.key !== "Escape" && event.key !== "Esc") return;
+
+            var container = document.querySelector(".toast-container");
+            if (!container) return;
+
+            var toasts = Array.prototype.slice.call(container.querySelectorAll(".toast-item"))
+                .filter(function (toast) { return !toast.dataset.tmClosing; });
+
+            if (!toasts.length) return;
+
+            var position = configValue("positionClass", "toast-top-end");
+            // The newest toast is nearest the anchored corner: first child for
+            // top positions, last child for bottom ones.
+            var newest = String(position).indexOf("bottom") !== -1
+                ? toasts[toasts.length - 1]
+                : toasts[0];
+
+            closeToastMagicItem(newest);
+        });
+    }
+
+    // Exposed for the test suite and for integrations that need the same
+    // guarantees (the Livewire bridge reuses `show`).
+    window.ToastMagicInternals = {
+        sanitizeUrl: sanitizeUrl,
+        renderText: renderText,
+        closeToast: closeToastMagicItem,
+        TOAST_TYPES: TOAST_TYPES,
+        LINK_PROTOCOLS: LINK_PROTOCOLS,
+        IMAGE_PROTOCOLS: IMAGE_PROTOCOLS
+    };
 })();

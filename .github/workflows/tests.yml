@@ -6,15 +6,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
+  php:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         # Each row pins the Testbench and Pest majors compatible with that
-        # PHP/Laravel pair.
+        # PHP/Laravel pair. The first two rows exist to actually exercise the
+        # floor declared in composer.json — previously the matrix started at
+        # PHP 8.1 / Laravel 10 while the package advertised PHP 8.0 / Laravel 8.
         include:
+          - php: '8.0'
+            laravel: 8
+            testbench: 6
+            pest: 1
+          - php: '8.1'
+            laravel: 9
+            testbench: 7
+            pest: 2
           - php: '8.1'
             laravel: 10
             testbench: 8
@@ -71,3 +81,53 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest
+
+  # The runtime holds essentially all of the package's behaviour, so it gets the
+  # same gate the PHP does.
+  javascript:
+    runs-on: ubuntu-latest
+    name: JavaScript
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Execute tests
+        run: npm test
+
+      # The minified stylesheet is committed because ToastMagic::styles() links
+      # to it and Composer installs never run a build. This proves the committed
+      # file is exactly what the source produces.
+      - name: Verify the minified assets are in sync
+        run: npm run build:check
+
+  # A parse check on the lowest supported PHP. Catches syntax that only newer
+  # versions accept — typed class constants, for instance, parse on 8.3+ and
+  # fatal everywhere below.
+  syntax:
+    runs-on: ubuntu-latest
+    name: Syntax (PHP 8.0 floor)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          coverage: none
+
+      - name: Lint every PHP file
+        run: find src tests -name '*.php' -print0 | xargs -0 -n1 php -l

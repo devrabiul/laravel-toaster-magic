@@ -1,0 +1,21 @@
+{
+  "name": "laravel-toaster-magic",
+  "version": "2.6.0",
+  "private": true,
+  "description": "Build and test tooling for the devrabiul/laravel-toaster-magic front-end assets. Not published to npm — the package is distributed via Composer.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "node build/build.mjs",
+    "build:check": "node build/build.mjs --check",
+    "lint": "eslint assets/js build tests-js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "eslint": "^9.0.0",
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.0"
+  }
+}
