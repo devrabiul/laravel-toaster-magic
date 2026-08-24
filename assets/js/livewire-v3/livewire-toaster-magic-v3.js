@@ -84,6 +84,9 @@
             timeOut: options.timeOut !== undefined ? options.timeOut : null,
             showDuration: options.showDuration !== undefined ? options.showDuration : null,
             avatar: options.avatar || "",
+            // Forwarded verbatim; the shared runtime validates it against the
+            // preset registry, so the bridge keeps no list of its own.
+            preset: options.preset || "",
             html: options.html === true
         });
 

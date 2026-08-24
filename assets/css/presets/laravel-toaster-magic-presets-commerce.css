@@ -1,0 +1,1206 @@
+/*!
+ * Laravel Toaster Magic — preset pack styles: commerce
+ *
+ * Palettes and motion for the commerce presets. The shared animation
+ * vocabulary lives in the core stylesheet, which must be loaded first.
+ */
+
+.toast-body-icon-container.tm-preset-cart-add       { --tm-i1: #475569; --tm-i2: #f59e0b; }
+.toast-body-icon-container.tm-preset-wishlist-add   { --tm-i1: #be123c; --tm-i2: #fb7185; }
+.toast-body-icon-container.tm-preset-wishlist-remove{ --tm-i1: #64748b; --tm-i2: #f43f5e; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-order-placed   { --tm-i1: #b45309; --tm-i2: #f59e0b; --tm-i3: #fbbf24; }
+.toast-body-icon-container.tm-preset-payment-success{ --tm-i1: #047857; --tm-i2: #f59e0b; --tm-i3: #6ee7b7; }
+.toast-body-icon-container.tm-preset-payment-failed { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-item-removed   { --tm-i1: #475569; --tm-i2: #ef4444; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-out-of-stock     { --tm-i1: #78716c; --tm-i2: #dc2626; --tm-i3: #a8a29e; }
+.toast-body-icon-container.tm-preset-back-in-stock    { --tm-i1: #0f766e; --tm-i2: #f59e0b; --tm-i3: #5eead4; }
+.toast-body-icon-container.tm-preset-coupon-applied   { --tm-i1: #7c3aed; --tm-i2: #f59e0b; }
+.toast-body-icon-container.tm-preset-order-shipped     { --tm-i1: #1d4ed8; --tm-i2: #f59e0b; --tm-i3: #60a5fa; }
+.toast-body-icon-container.tm-preset-order-delivered   { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fbbf24; }
+.toast-body-icon-container.tm-preset-refund-issued     { --tm-i1: #475569; --tm-i2: #f59e0b; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-cart-update       { --tm-i1: #475569; --tm-i2: #0ea5e9; --tm-i3: #f59e0b; }
+.toast-body-icon-container.tm-preset-cart-remove       { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #f59e0b; }
+.toast-body-icon-container.tm-preset-points-earned     { --tm-i1: #a16207; --tm-i2: #dc2626; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-wallet-topped-up  { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-invoice-paid      { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #f1f5f9; }
+.toast-body-icon-container.tm-preset-gift-sent         { --tm-i1: #be123c; --tm-i2: #fbbf24; --tm-i3: #fecdd3; }
+.toast-body-icon-container.tm-preset-checkout-started  { --tm-i1: #475569; --tm-i2: #f59e0b; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-order-cancelled   { --tm-i1: #b91c1c; --tm-i2: #dc2626; --tm-i3: #fee2e2; }
+.toast-body-icon-container.tm-preset-return-requested  { --tm-i1: #64748b; --tm-i2: #f59e0b; }
+.toast-body-icon-container.tm-preset-price-dropped     { --tm-i1: #15803d; --tm-i2: #22c55e; }
+.toast-body-icon-container.tm-preset-stock-low         { --tm-i1: #78716c; --tm-i2: #f59e0b; --tm-i3: #a8a29e; }
+.toast-body-icon-container.tm-preset-product-added     { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fbbf24; }
+.toast-body-icon-container.tm-preset-inventory-updated { --tm-i1: #475569; --tm-i2: #0ea5e9; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-compare-added     { --tm-i1: #475569; --tm-i2: #7c3aed; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-free-shipping-unlocked { --tm-i1: #15803d; --tm-i2: #ffffff; --tm-i3: #22c55e; }
+.toast-body-icon-container.tm-preset-gift-card-applied { --tm-i1: #be123c; --tm-i2: #fbbf24; --tm-i3: #fecdd3; }
+.toast-body-icon-container.tm-preset-barcode-scanned   { --tm-i1: #64748b; --tm-i2: #0ea5e9; }
+.toast-body-icon-container.tm-preset-preorder-placed   { --tm-i1: #475569; --tm-i2: #7c3aed; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-out-for-delivery  { --tm-i1: #1d4ed8; --tm-i2: #f59e0b; --tm-i3: #60a5fa; }
+.toast-body-icon-container.tm-preset-pickup-ready      { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-product-published { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-product-unpublished { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-size-guide-opened { --tm-i1: #b45309; --tm-i2: #78350f; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-currency-changed  { --tm-i1: #a16207; --tm-i2: #78350f; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-payout-sent       { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-dispute-opened    { --tm-i1: #78716c; --tm-i2: #b91c1c; --tm-i3: #a8a29e; }
+.toast-body-icon-container.tm-preset-order-on-hold     { --tm-i1: #b45309; --tm-i2: #f59e0b; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-warranty-registered { --tm-i1: #1d4ed8; --tm-i2: #ffffff; --tm-i3: #3b82f6; }
+.toast-body-icon-container.tm-preset-eco-delivery      { --tm-i1: #15803d; --tm-i2: #78350f; --tm-i3: #86efac; }
+.toast-body-icon-container.tm-preset-delivery-failed   { --tm-i1: #b91c1c; --tm-i2: #dc2626; --tm-i3: #fecaca; }
+.toast-body-icon-container.tm-preset-payment-pending { --tm-i1: #475569; --tm-i2: #f59e0b; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-payment-method-added { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-payment-method-removed { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-payment-retry { --tm-i1: #475569; --tm-i2: #0ea5e9; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-card-expiring { --tm-i1: #b45309; --tm-i2: #f59e0b; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-installment-selected { --tm-i1: #475569; --tm-i2: #7c3aed; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-refund-declined { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-address-verified { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-address-invalid { --tm-i1: #b91c1c; --tm-i2: #dc2626; --tm-i3: #fecaca; }
+.toast-body-icon-container.tm-preset-tracking-added { --tm-i1: #b45309; --tm-i2: #0ea5e9; --tm-i3: #fbbf24; }
+.toast-body-icon-container.tm-preset-partial-shipment { --tm-i1: #475569; --tm-i2: #f59e0b; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-international-shipping { --tm-i1: #1d4ed8; --tm-i2: #60a5fa; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-customs-cleared { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-signature-required { --tm-i1: #475569; --tm-i2: #7c3aed; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-shipping-calculated { --tm-i1: #475569; --tm-i2: #0ea5e9; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-tag-added { --tm-i1: #7c3aed; --tm-i2: #fbbf24; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-category-created { --tm-i1: #b45309; --tm-i2: #f59e0b; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-bundle-created { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-variant-added { --tm-i1: #7c3aed; --tm-i2: #f59e0b; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-seo-updated { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-bulk-edit-applied { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-stocktake-completed { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-flash-sale-started { --tm-i1: #c2410c; --tm-i2: #f97316; --tm-i3: #fed7aa; }
+.toast-body-icon-container.tm-preset-sale-ended { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-coupon-expired { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-coupon-invalid { --tm-i1: #b45309; --tm-i2: #dc2626; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-reward-redeemed { --tm-i1: #a16207; --tm-i2: #fbbf24; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-referral-earned { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-stock-notify-requested { --tm-i1: #0f766e; --tm-i2: #16a34a; --tm-i3: #5eead4; }
+.toast-body-icon-container.tm-preset-cart-merged { --tm-i1: #475569; --tm-i2: #0ea5e9; }
+.toast-body-icon-container.tm-preset-cart-expired { --tm-i1: #64748b; --tm-i2: #b45309; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-order-issue-reported { --tm-i1: #b91c1c; --tm-i2: #dc2626; --tm-i3: #fee2e2; }
+.toast-body-icon-container.tm-preset-store-closed { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cart-add       { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-wishlist-add   { --tm-i1: #fb7185; --tm-i2: #f43f5e; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-wishlist-remove{ --tm-i1: #94a3b8; --tm-i2: #fb7185; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-order-placed   { --tm-i1: #fbbf24; --tm-i2: #fcd34d; --tm-i3: #fde68a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-payment-success{ --tm-i1: #6ee7b7; --tm-i2: #fbbf24; --tm-i3: #a7f3d0; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-payment-failed { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-item-removed   { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #94a3b8; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-out-of-stock     { --tm-i1: #d6d3d1; --tm-i2: #f87171; --tm-i3: #a8a29e; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-back-in-stock    { --tm-i1: #5eead4; --tm-i2: #fbbf24; --tm-i3: #0f766e; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-coupon-applied   { --tm-i1: #c4b5fd; --tm-i2: #fbbf24; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-order-shipped     { --tm-i1: #60a5fa; --tm-i2: #fbbf24; --tm-i3: #93c5fd; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-order-delivered   { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #fcd34d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-refund-issued     { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #94a3b8; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cart-update       { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #fbbf24; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cart-remove       { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #fbbf24; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-points-earned     { --tm-i1: #fcd34d; --tm-i2: #f87171; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-wallet-topped-up  { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-invoice-paid      { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-gift-sent         { --tm-i1: #fb7185; --tm-i2: #fcd34d; --tm-i3: #7f1d1d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-checkout-started  { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-order-cancelled   { --tm-i1: #fca5a5; --tm-i2: #f87171; --tm-i3: #7f1d1d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-return-requested  { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-price-dropped     { --tm-i1: #4ade80; --tm-i2: #86efac; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-stock-low         { --tm-i1: #d6d3d1; --tm-i2: #fbbf24; --tm-i3: #a8a29e; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-product-added     { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #fcd34d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-inventory-updated { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-compare-added     { --tm-i1: #cbd5e1; --tm-i2: #c4b5fd; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-free-shipping-unlocked { --tm-i1: #4ade80; --tm-i2: #14261b; --tm-i3: #166534; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-gift-card-applied { --tm-i1: #fb7185; --tm-i2: #fcd34d; --tm-i3: #7f1d1d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-barcode-scanned   { --tm-i1: #94a3b8; --tm-i2: #38bdf8; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-preorder-placed   { --tm-i1: #cbd5e1; --tm-i2: #c4b5fd; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-out-for-delivery  { --tm-i1: #60a5fa; --tm-i2: #fbbf24; --tm-i3: #93c5fd; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-pickup-ready      { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-product-published { --tm-i1: #4ade80; --tm-i2: #86efac; --tm-i3: #14261b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-product-unpublished { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-size-guide-opened { --tm-i1: #fbbf24; --tm-i2: #fde68a; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-currency-changed  { --tm-i1: #fcd34d; --tm-i2: #fde68a; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-payout-sent       { --tm-i1: #4ade80; --tm-i2: #86efac; --tm-i3: #14261b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-dispute-opened    { --tm-i1: #d6d3d1; --tm-i2: #f87171; --tm-i3: #a8a29e; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-order-on-hold     { --tm-i1: #fbbf24; --tm-i2: #fcd34d; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-warranty-registered { --tm-i1: #60a5fa; --tm-i2: #0f172a; --tm-i3: #93c5fd; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-eco-delivery      { --tm-i1: #4ade80; --tm-i2: #fbbf24; --tm-i3: #166534; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-delivery-failed   { --tm-i1: #fca5a5; --tm-i2: #f87171; --tm-i3: #7f1d1d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-payment-pending { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-payment-method-added { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #14261b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-payment-method-removed { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-payment-retry { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-card-expiring { --tm-i1: #fbbf24; --tm-i2: #fcd34d; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-installment-selected { --tm-i1: #cbd5e1; --tm-i2: #c4b5fd; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-refund-declined { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-address-verified { --tm-i1: #4ade80; --tm-i2: #86efac; --tm-i3: #14261b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-address-invalid { --tm-i1: #fca5a5; --tm-i2: #f87171; --tm-i3: #7f1d1d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-tracking-added { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #fcd34d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-partial-shipment { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-international-shipping { --tm-i1: #60a5fa; --tm-i2: #93c5fd; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-customs-cleared { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-signature-required { --tm-i1: #cbd5e1; --tm-i2: #c4b5fd; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-shipping-calculated { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-tag-added { --tm-i1: #c4b5fd; --tm-i2: #fcd34d; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-category-created { --tm-i1: #fbbf24; --tm-i2: #fcd34d; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bundle-created { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-variant-added { --tm-i1: #c4b5fd; --tm-i2: #fbbf24; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-seo-updated { --tm-i1: #4ade80; --tm-i2: #86efac; --tm-i3: #14261b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bulk-edit-applied { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-stocktake-completed { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-flash-sale-started { --tm-i1: #fb923c; --tm-i2: #fdba74; --tm-i3: #7c2d12; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-sale-ended { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-coupon-expired { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-coupon-invalid { --tm-i1: #fbbf24; --tm-i2: #f87171; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-reward-redeemed { --tm-i1: #fcd34d; --tm-i2: #fde68a; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-referral-earned { --tm-i1: #4ade80; --tm-i2: #86efac; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-stock-notify-requested { --tm-i1: #5eead4; --tm-i2: #4ade80; --tm-i3: #0f766e; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cart-merged { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cart-expired { --tm-i1: #94a3b8; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-order-issue-reported { --tm-i1: #fca5a5; --tm-i2: #f87171; --tm-i3: #7f1d1d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-store-closed { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #64748b; }
+
+
+/* ----- bounce (cart-add) ----- */
+.toast-container .toast-item.show .tm-anim-bounce .tm-icon-base {
+    animation: tmPresetBob .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bounce .tm-icon-base circle:nth-of-type(1) {
+    animation: tmPresetPartPulse .5s ease-in-out .16s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bounce .tm-icon-base circle:nth-of-type(2) {
+    animation: tmPresetPartPulse .5s ease-in-out .28s 2;
+}
+
+/* ----- pop-particles (wishlist-add) ----- */
+/* A real double-thump rather than a single scale, and the particles stay a
+   one-shot burst — a repeating burst would read as a glitch. */
+.toast-container .toast-item.show .tm-anim-pop-particles .tm-icon-base {
+    animation: tmPresetHeartbeat .8s ease-in-out .08s 2;
+}
+
+@keyframes tmPresetHeartbeat {
+    0%, 100% { transform: scale(1); }
+    18% { transform: scale(1.24); }
+    36% { transform: scale(1.01); }
+    54% { transform: scale(1.15); }
+    72% { transform: scale(1); }
+}
+
+.toast-body-icon-container.tm-preset .tm-particle {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: currentColor;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toast-container .toast-item.show .tm-anim-pop-particles .tm-particle {
+    animation: tmPresetParticle .65s ease-out .14s both;
+}
+
+/* Travel is kept to 10px — the toast's own padding — so a particle never
+   reaches the clipping edge. Children are [icon, particle x 6]. */
+.tm-anim-pop-particles .tm-particle:nth-child(2) { --tm-px: 0px; --tm-py: -10px; }
+.tm-anim-pop-particles .tm-particle:nth-child(3) { --tm-px: 9px; --tm-py: -5px; }
+.tm-anim-pop-particles .tm-particle:nth-child(4) { --tm-px: 9px; --tm-py: 5px; }
+.tm-anim-pop-particles .tm-particle:nth-child(5) { --tm-px: 0px; --tm-py: 10px; }
+.tm-anim-pop-particles .tm-particle:nth-child(6) { --tm-px: -9px; --tm-py: 5px; }
+.tm-anim-pop-particles .tm-particle:nth-child(7) { --tm-px: -9px; --tm-py: -5px; }
+
+@keyframes tmPresetParticle {
+    0% { transform: translate(-50%, -50%) scale(.2); opacity: 0; }
+    25% { opacity: 1; }
+    100% {
+        transform: translate(-50%, -50%) translate(var(--tm-px, 0), var(--tm-py, 0)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* ----- heart-break (wishlist-remove) ----- */
+/* The heart shudders twice; the crack is drawn once, since a break only
+   happens the once. */
+.toast-container .toast-item.show .tm-anim-heart-break .tm-icon-base {
+    animation: tmPresetShudder .6s ease-in-out .08s 2;
+}
+
+.tm-anim-heart-break .tm-icon-base path:nth-of-type(2) {
+    stroke-dasharray: 15;
+    stroke-dashoffset: 15;
+}
+
+.toast-container .toast-item.show .tm-anim-heart-break .tm-icon-base path:nth-of-type(2) {
+    animation: tmPresetCrack .3s ease-out .26s forwards;
+}
+
+@keyframes tmPresetShudder {
+    0%, 100% { transform: rotate(0) scale(1); }
+    25% { transform: rotate(-6deg) scale(.94); }
+    60% { transform: rotate(4deg) scale(1.03); }
+}
+
+@keyframes tmPresetCrack {
+    from { stroke-dashoffset: 15; }
+    to { stroke-dashoffset: 0; }
+}
+
+/* ----- box-drop (order-placed) ----- */
+.toast-container .toast-item.show .tm-anim-box-drop .tm-icon-base {
+    animation: tmPresetBob .58s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-box-drop .tm-icon-base path:nth-of-type(3) {
+    animation: tmPresetStrokePulse .55s ease-in-out .2s 2;
+}
+
+/* ----- note-swipe (payment-success) ----- */
+.toast-container .toast-item.show .tm-anim-note-swipe .tm-icon-base {
+    animation: tmPresetTilt .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-note-swipe .tm-icon-base circle {
+    animation: tmPresetPartPulse .5s ease-in-out .18s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-note-swipe .tm-icon-base path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .5s ease-in-out .3s 2;
+}
+
+/* ----- card-strike (payment-failed) ----- */
+/* The strike is drawn once; the stripe under it flashes twice while the toast
+   content shakes (see `shake` below). */
+.tm-anim-card-strike .tm-icon-base path:nth-of-type(2) {
+    stroke-dasharray: 29;
+    stroke-dashoffset: 29;
+}
+
+.toast-container .toast-item.show .tm-anim-card-strike .tm-icon-base path:nth-of-type(2) {
+    animation: tmPresetStrike .32s ease-out .12s forwards;
+}
+
+.toast-container .toast-item.show .tm-anim-card-strike .tm-icon-base path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .45s ease-in-out .2s 2;
+}
+
+@keyframes tmPresetStrike {
+    from { stroke-dashoffset: 29; }
+    to { stroke-dashoffset: 0; }
+}
+
+/* ----- lid-lift (item-removed) ----- */
+/* `transform-box: fill-box` makes the origin resolve against the group's own
+   box, so the lid pivots on its own left edge. */
+.tm-anim-lid-lift .tm-lid {
+    transform-origin: left center;
+}
+
+.toast-container .toast-item.show .tm-anim-lid-lift .tm-lid {
+    animation: tmPresetLidLift .62s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-lid-lift .tm-icon-base path:nth-of-type(2) {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-lid-lift .tm-icon-base path:nth-of-type(3) {
+    animation: tmPresetStrokePulse .5s ease-in-out .3s 2;
+}
+
+@keyframes tmPresetLidLift {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    45% { transform: translateY(-3px) rotate(-22deg); }
+}
+
+/* ----- stock-out (out-of-stock) ----- */
+/* The parcel sags and the cross flashes. */
+.toast-container .toast-item.show .tm-anim-stock-out .tm-icon-base {
+    animation: tmPresetSag .65s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-stock-out .tm-x {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+@keyframes tmPresetSag {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(2px) rotate(-3deg); }
+}
+
+/* ----- bell-ring (back-in-stock) ----- */
+/* The bell rocks and the two ring strokes swing with it. */
+.toast-container .toast-item.show .tm-anim-bell-ring .tm-icon-base {
+    animation: tmPresetRock .5s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bell-ring .tm-ring {
+    animation: tmPresetPartPulse .5s ease-in-out .16s 2;
+}
+
+@keyframes tmPresetRock {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-11deg); }
+    75% { transform: rotate(9deg); }
+}
+
+/* ----- ticket-punch (coupon-applied) ----- */
+/* The ticket presses in as if punched; the percent mark pops. */
+.toast-container .toast-item.show .tm-anim-ticket-punch .tm-icon-base {
+    animation: tmPresetPunch .55s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-ticket-punch .tm-percent {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+@keyframes tmPresetPunch {
+    0%, 100% { transform: scale(1); }
+    40% { transform: scale(.88); }
+    70% { transform: scale(1.06); }
+}
+
+/* ----- truck-drive (order-shipped) ----- */
+/* The cab rocks as if moving and the wheels spin with it. */
+.toast-container .toast-item.show .tm-anim-truck-drive .tm-icon-base {
+    animation: tmPresetDrive .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-truck-drive .tm-wheels {
+    animation: tmPresetPartPulse .5s ease-in-out .16s 2;
+}
+
+@keyframes tmPresetDrive {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    30% { transform: translateX(-2px) rotate(-2.5deg); }
+    70% { transform: translateX(2px) rotate(1.5deg); }
+}
+
+/* ----- parcel-open (order-delivered) ----- */
+/* The lid lifts off the carton and settles back. */
+.tm-anim-parcel-open .tm-flaps {
+    transform-origin: center bottom;
+}
+
+.toast-container .toast-item.show .tm-anim-parcel-open .tm-flaps {
+    animation: tmPresetFlapLift .65s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+@keyframes tmPresetFlapLift {
+    0%, 100% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-2.5px) scale(1.06); }
+}
+
+/* ----- coins-return (refund-issued) ----- */
+/* The hand tips back and the coins bob — money going the other way. */
+.toast-container .toast-item.show .tm-anim-coins-return .tm-icon-base {
+    animation: tmPresetTipBack .65s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-coins-return .tm-coins {
+    animation: tmPresetPartPulse .5s ease-in-out .18s 2;
+}
+
+@keyframes tmPresetTipBack {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    50% { transform: translateX(-2px) rotate(-5deg); }
+}
+
+/* ----- cart-swap (cart-update) ----- */
+/* The basket bobs and the two quantity arrows fire in opposition, so the change
+   of amount reads rather than just "something happened to the cart". */
+.toast-container .toast-item.show .tm-anim-cart-swap .tm-icon-base {
+    animation: tmPresetBob .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-cart-swap .tm-qty path:nth-of-type(1) {
+    animation: tmPresetNudgeUp .5s ease-in-out .14s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-cart-swap .tm-qty path:nth-of-type(2) {
+    animation: tmPresetNudgeDown .5s ease-in-out .3s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-cart-swap .tm-wheels {
+    animation: tmPresetStrokePulse .5s ease-in-out .22s 2;
+}
+
+@keyframes tmPresetNudgeUp {
+    0%, 100% { transform: translateY(0); opacity: .6; }
+    50% { transform: translateY(-2px); opacity: 1; }
+}
+
+@keyframes tmPresetNudgeDown {
+    0%, 100% { transform: translateY(0); opacity: .6; }
+    50% { transform: translateY(2px); opacity: 1; }
+}
+
+/* ----- cart-out (cart-remove) ----- */
+/* The basket tips back as if tipping something out, and the minus flashes. */
+.tm-anim-cart-out .tm-minus {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.toast-container .toast-item.show .tm-anim-cart-out .tm-icon-base {
+    animation: tmPresetTipBack .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-cart-out .tm-minus {
+    animation: tmPresetPartPulse .5s ease-in-out .18s 2;
+}
+
+/* ----- award-shine (points-earned) ----- */
+.toast-container .toast-item.show .tm-anim-award-shine .tm-icon-base {
+    animation: tmPresetRise .65s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-award-shine .tm-ribbon {
+    animation: tmPresetSway .6s ease-in-out .2s 2;
+}
+
+@keyframes tmPresetSway {
+    0%, 100% { transform: rotate(0); }
+    35% { transform: rotate(-5deg); }
+    70% { transform: rotate(4deg); }
+}
+
+/* ----- wallet-fill (wallet-topped-up) ----- */
+.toast-container .toast-item.show .tm-anim-wallet-fill .tm-icon-base {
+    animation: tmPresetBob .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-wallet-fill .tm-slot {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+/* ----- receipt-stamp (invoice-paid) ----- */
+/* The slip presses down as if stamped, and the amount glyph flashes. */
+.toast-container .toast-item.show .tm-anim-receipt-stamp .tm-icon-base {
+    animation: tmPresetStamp .55s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-receipt-stamp .tm-glyph {
+    animation: tmPresetStrokePulse .5s ease-in-out .22s 2;
+}
+
+@keyframes tmPresetStamp {
+    0%, 100% { transform: scale(1) rotate(0); }
+    40% { transform: scale(.9) rotate(-3deg); }
+    70% { transform: scale(1.04) rotate(1.5deg); }
+}
+
+/* ----- gift-shake (gift-sent) ----- */
+.toast-container .toast-item.show .tm-anim-gift-shake .tm-icon-base {
+    animation: tmPresetRock .5s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-gift-shake .tm-ribbon {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+/* ----- bag-swing (checkout-started) ----- */
+.toast-container .toast-item.show .tm-anim-bag-swing .tm-icon-base {
+    animation: tmPresetRock .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bag-swing .tm-handle {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+/* ----- order-void (order-cancelled) ----- */
+/* The bar is drawn across the disc while the toast shakes. */
+.tm-anim-order-void .tm-slash {
+    stroke-dasharray: 21;
+    stroke-dashoffset: 21;
+}
+
+.toast-container .toast-item.show .tm-anim-order-void .tm-slash {
+    animation: tmPresetVoidStrike .32s ease-out .12s forwards;
+}
+
+.toast-container .toast-item.show .tm-anim-order-void .tm-icon-base circle {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+@keyframes tmPresetVoidStrike {
+    from { stroke-dashoffset: 21; }
+    to { stroke-dashoffset: 0; }
+}
+
+/* ----- return-arc (return-requested) ----- */
+/* The arrowhead travels back along its own arc — goods heading the other way. */
+.toast-container .toast-item.show .tm-anim-return-arc .tm-head {
+    animation: tmPresetNudgeBack .55s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-return-arc .tm-icon-base path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .55s ease-in-out .24s 2;
+}
+
+/* ----- price-fall (price-dropped) ----- */
+/* The whole trend slides down its own slope, which is the good news here. */
+.toast-container .toast-item.show .tm-anim-price-fall .tm-icon-base {
+    animation: tmPresetSlideDown .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-price-fall .tm-head {
+    animation: tmPresetPartPulse .5s ease-in-out .24s 2;
+}
+
+@keyframes tmPresetSlideDown {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(1.5px, 2px); }
+}
+
+/* ----- stock-dip (stock-low) ----- */
+.toast-container .toast-item.show .tm-anim-stock-dip .tm-icon-base {
+    animation: tmPresetSag .65s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-stock-dip .tm-minus {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+/* ----- product-add (product-added) ----- */
+.toast-container .toast-item.show .tm-anim-product-add .tm-icon-base {
+    animation: tmPresetBob .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-product-add .tm-plus {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+/* ----- stack-shuffle (inventory-updated) ----- */
+/* The lower tiers settle in sequence, as if the stack were restacked. */
+.toast-container .toast-item.show .tm-anim-stack-shuffle .tm-mid {
+    animation: tmPresetTierSettle .55s ease-in-out .12s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-stack-shuffle .tm-low {
+    animation: tmPresetTierSettle .55s ease-in-out .28s 2;
+}
+
+@keyframes tmPresetTierSettle {
+    0%, 100% { transform: translateY(0); opacity: .6; }
+    50% { transform: translateY(1.5px); opacity: 1; }
+}
+
+/* ----- scale-tip (compare-added) ----- */
+/* The pans tip against each other, which is the comparison. */
+.tm-anim-scale-tip .tm-panL,
+.tm-anim-scale-tip .tm-panR {
+    transform-box: fill-box;
+    transform-origin: center top;
+}
+
+.toast-container .toast-item.show .tm-anim-scale-tip .tm-panL {
+    animation: tmPresetTipDown .65s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-scale-tip .tm-panR {
+    animation: tmPresetTipUp .65s ease-in-out .1s 2;
+}
+
+@keyframes tmPresetTipDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(2px); }
+}
+
+@keyframes tmPresetTipUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+}
+
+/* ----- perk-unlock (free-shipping-unlocked) ----- */
+.toast-container .toast-item.show .tm-anim-perk-unlock .tm-icon-base {
+    animation: tmPresetPop .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-perk-unlock .tm-percent {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+/* ----- card-flip (gift-card-applied) ----- */
+/* A half-turn on Y so the card reads as being presented. */
+.toast-container .toast-item.show .tm-anim-card-flip .tm-icon-base {
+    animation: tmPresetFlipY .7s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-card-flip .tm-notch {
+    animation: tmPresetStrokePulse .5s ease-in-out .28s 2;
+}
+
+@keyframes tmPresetFlipY {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(.5); }
+}
+
+/* ----- scan-line (barcode-scanned) ----- */
+/* The bars light left to right, like a beam passing over them. */
+.toast-container .toast-item.show .tm-anim-scan-line .tm-bars path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .4s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-scan-line .tm-bars path:nth-of-type(2) {
+    animation: tmPresetStrokePulse .4s ease-in-out .2s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-scan-line .tm-bars path:nth-of-type(3) {
+    animation: tmPresetStrokePulse .4s ease-in-out .32s 2;
+}
+
+/* ----- preorder-hold (preorder-placed) ----- */
+/* The date is set; the clock hands sweep the wait. */
+.tm-anim-preorder-hold .tm-hands {
+    transform-box: fill-box;
+    transform-origin: 0% 100%;
+}
+
+.toast-container .toast-item.show .tm-anim-preorder-hold .tm-hands {
+    animation: tmPresetSweep .9s cubic-bezier(0.45, 0.05, 0.55, 0.95) .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-preorder-hold .tm-icon-base circle {
+    animation: tmPresetStrokePulse .6s ease-in-out .24s 2;
+}
+
+/* ----- courier-ride (out-for-delivery) ----- */
+/* The frame rocks forward while both wheels turn. */
+.toast-container .toast-item.show .tm-anim-courier-ride .tm-icon-base {
+    animation: tmPresetDrive .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-courier-ride .tm-wheels {
+    animation: tmPresetStrokePulse .5s ease-in-out .16s 2;
+}
+
+/* ----- store-open (pickup-ready) ----- */
+/* The awning ripples and the door brightens — the shop is ready for you. */
+.toast-container .toast-item.show .tm-anim-store-open .tm-awning {
+    animation: tmPresetStrokePulse .55s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-store-open .tm-door {
+    animation: tmPresetGrowUp .6s cubic-bezier(0.175, 0.885, 0.32, 1.275) .24s 2;
+}
+
+@keyframes tmPresetGrowUp {
+    0%, 100% { transform: scaleY(1); opacity: .6; }
+    50% { transform: scaleY(1.14); opacity: 1; }
+}
+
+/* ----- eye-open (product-published) ----- */
+.toast-container .toast-item.show .tm-anim-eye-open .tm-icon-base {
+    animation: tmPresetBlink .7s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-eye-open .tm-pupil {
+    animation: tmPresetPartPulse .5s ease-in-out .22s 2;
+}
+
+@keyframes tmPresetBlink {
+    0%, 100% { transform: scaleY(1); }
+    45% { transform: scaleY(.55); }
+}
+
+/* ----- eye-shut (product-unpublished) ----- */
+.tm-anim-eye-shut .tm-slash {
+    stroke-dasharray: 29;
+    stroke-dashoffset: 29;
+}
+
+.toast-container .toast-item.show .tm-anim-eye-shut .tm-slash {
+    animation: tmPresetStrike .32s ease-out .12s forwards;
+}
+
+.toast-container .toast-item.show .tm-anim-eye-shut .tm-icon-base path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .55s ease-in-out .2s 2;
+}
+
+/* ----- ruler-measure (size-guide-opened) ----- */
+/* The graduations light along the rule, as if being read off. */
+.toast-container .toast-item.show .tm-anim-ruler-measure .tm-icon-base {
+    animation: tmPresetTilt .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-ruler-measure .tm-ticks path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .4s ease-in-out .12s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-ruler-measure .tm-ticks path:nth-of-type(2) {
+    animation: tmPresetStrokePulse .4s ease-in-out .22s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-ruler-measure .tm-ticks path:nth-of-type(3) {
+    animation: tmPresetStrokePulse .4s ease-in-out .32s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-ruler-measure .tm-ticks path:nth-of-type(4) {
+    animation: tmPresetStrokePulse .4s ease-in-out .42s 2;
+}
+
+/* ----- coin-spin (currency-changed) ----- */
+/* A half-turn on Y, so the coin reads as flipping to another face. */
+.toast-container .toast-item.show .tm-anim-coin-spin .tm-icon-base {
+    animation: tmPresetFlipY .7s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-coin-spin .tm-glyph {
+    animation: tmPresetStrokePulse .5s ease-in-out .3s 2;
+}
+
+/* ----- bank-transfer (payout-sent) ----- */
+/* The columns light left to right, money moving through the building. */
+.toast-container .toast-item.show .tm-anim-bank-transfer .tm-roof {
+    animation: tmPresetStrokePulse .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bank-transfer .tm-cols path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .4s ease-in-out .16s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bank-transfer .tm-cols path:nth-of-type(2) {
+    animation: tmPresetStrokePulse .4s ease-in-out .26s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bank-transfer .tm-cols path:nth-of-type(3) {
+    animation: tmPresetStrokePulse .4s ease-in-out .36s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bank-transfer .tm-cols path:nth-of-type(4) {
+    animation: tmPresetStrokePulse .4s ease-in-out .46s 2;
+}
+
+/* ----- gavel-strike (dispute-opened) ----- */
+/* The mallet swings down on its own head while the toast shakes. */
+.tm-anim-gavel-strike .tm-mallet {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.toast-container .toast-item.show .tm-anim-gavel-strike .tm-mallet {
+    animation: tmPresetStrikeDown .5s cubic-bezier(0.45, 0.05, 0.55, 0.95) .1s 2;
+}
+
+@keyframes tmPresetStrikeDown {
+    0%, 100% { transform: rotate(0); }
+    40% { transform: rotate(-16deg); }
+    70% { transform: rotate(6deg); }
+}
+
+/* ----- hold-pulse (order-on-hold) ----- */
+.toast-container .toast-item.show .tm-anim-hold-pulse .tm-bars {
+    animation: tmPresetPartPulse .6s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-hold-pulse .tm-icon-base circle {
+    animation: tmPresetStrokePulse .6s ease-in-out .26s 2;
+}
+
+/* ----- warranty-seal (warranty-registered) ----- */
+.toast-container .toast-item.show .tm-anim-warranty-seal .tm-icon-base {
+    animation: tmPresetPop .55s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-warranty-seal .tm-plus {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+/* ----- leaf-sway (eco-delivery) ----- */
+.toast-container .toast-item.show .tm-anim-leaf-sway .tm-icon-base {
+    animation: tmPresetSway .7s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-leaf-sway .tm-stem {
+    animation: tmPresetStrokePulse .55s ease-in-out .22s 2;
+}
+
+/* ----- drop-miss (delivery-failed) ----- */
+/* The pin drops for the delivery, the cross flashes for the miss. */
+.toast-container .toast-item.show .tm-anim-drop-miss .tm-icon-base {
+    animation: tmPresetDropIn .6s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-drop-miss .tm-x {
+    animation: tmPresetPartPulse .5s ease-in-out .22s 2;
+}
+
+/* ===== Commerce depth (v2.6) =====
+   Badge-style presets share a composition: a base icon plus a small glyph in
+   the bottom-right corner. The base carries a slow beat and the badge a sharper
+   pulse just behind it, so the eye lands on the badge — which is the part that
+   says what actually happened. */
+.toast-container .toast-item.show .tm-anim-card-wait .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-card-add .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-card-drop .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-card-retry .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-card-expire .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-pin-verify .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-pin-alert .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-star-approve .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-star-reject .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-coupon-void .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-coupon-warn .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-mail-join .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-mail-leave .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-bell-subscribe .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-account-open .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-answer-mark .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-cart-lapse .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-refund-void .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-seo-check .tm-icon-base,
+.toast-container .toast-item.show .tm-anim-tally-done .tm-icon-base {
+    animation: tmPresetBob .58s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-card-wait .tm-badge,
+.toast-container .toast-item.show .tm-anim-card-add .tm-plus,
+.toast-container .toast-item.show .tm-anim-card-drop .tm-minus,
+.toast-container .toast-item.show .tm-anim-card-retry .tm-heads,
+.toast-container .toast-item.show .tm-anim-card-expire .tm-bang,
+.toast-container .toast-item.show .tm-anim-pin-verify .tm-tick,
+.toast-container .toast-item.show .tm-anim-pin-alert .tm-bang,
+.toast-container .toast-item.show .tm-anim-star-approve .tm-tick,
+.toast-container .toast-item.show .tm-anim-star-reject .tm-x,
+.toast-container .toast-item.show .tm-anim-coupon-void .tm-x,
+.toast-container .toast-item.show .tm-anim-coupon-warn .tm-bang,
+.toast-container .toast-item.show .tm-anim-mail-join .tm-plus,
+.toast-container .toast-item.show .tm-anim-mail-leave .tm-minus,
+.toast-container .toast-item.show .tm-anim-bell-subscribe .tm-plus,
+.toast-container .toast-item.show .tm-anim-account-open .tm-tick,
+.toast-container .toast-item.show .tm-anim-answer-mark .tm-tick,
+.toast-container .toast-item.show .tm-anim-cart-lapse .tm-badge,
+.toast-container .toast-item.show .tm-anim-refund-void .tm-x,
+.toast-container .toast-item.show .tm-anim-seo-check .tm-tick,
+.toast-container .toast-item.show .tm-anim-tally-done .tm-tick {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+/* ----- slice-fill (installment-selected) ----- */
+/* The wedge holds while the remaining arc sweeps — payments still to come. */
+.toast-container .toast-item.show .tm-anim-slice-fill .tm-icon-base {
+    animation: tmPresetTilt .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-slice-fill .tm-arc {
+    animation: tmPresetStrokePulse .55s ease-in-out .2s 2;
+}
+
+/* ----- parcel-scan (tracking-added) ----- */
+.toast-container .toast-item.show .tm-anim-parcel-scan .tm-icon-base {
+    animation: tmPresetBob .58s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-parcel-scan .tm-lens {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+/* ----- parcel-split (partial-shipment) ----- */
+/* The two forks light in turn — one consignment becoming two. */
+.toast-container .toast-item.show .tm-anim-parcel-split .tm-forks path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .5s ease-in-out .12s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-parcel-split .tm-forks path:nth-of-type(2),
+.toast-container .toast-item.show .tm-anim-parcel-split .tm-forks path:nth-of-type(3) {
+    animation: tmPresetStrokePulse .5s ease-in-out .28s 2;
+}
+
+/* ----- globe-spin (international-shipping) ----- */
+.toast-container .toast-item.show .tm-anim-globe-spin .tm-meridians {
+    animation: tmPresetFlipY .9s ease-in-out .08s 2;
+}
+
+/* ----- customs-stamp (customs-cleared) ----- */
+.toast-container .toast-item.show .tm-anim-customs-stamp .tm-icon-base {
+    animation: tmPresetStamp .55s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-customs-stamp .tm-pad {
+    animation: tmPresetStrokePulse .5s ease-in-out .24s 2;
+}
+
+/* ----- sign-line (signature-required) ----- */
+/* The flourish draws itself, which is the signature being written. */
+.tm-anim-sign-line .tm-nib {
+    stroke-dasharray: 46;
+    stroke-dashoffset: 46;
+}
+
+.toast-container .toast-item.show .tm-anim-sign-line .tm-nib {
+    animation: tmPresetSign .7s ease-out .12s forwards;
+}
+
+/* The flourish is drawn once — a signature happens the once — so the baseline
+   under it carries the repeating beat the other presets have. */
+.toast-container .toast-item.show .tm-anim-sign-line .tm-icon-base path:nth-of-type(2) {
+    animation: tmPresetStrokePulse .55s ease-in-out .3s 2;
+}
+
+@keyframes tmPresetSign {
+    from { stroke-dashoffset: 46; }
+    to { stroke-dashoffset: 0; }
+}
+
+/* ----- calc-tally (shipping-calculated) ----- */
+.toast-container .toast-item.show .tm-anim-calc-tally .tm-keys path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .45s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-calc-tally .tm-keys path:nth-of-type(2) {
+    animation: tmPresetStrokePulse .45s ease-in-out .22s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-calc-tally .tm-keys path:nth-of-type(3) {
+    animation: tmPresetStrokePulse .45s ease-in-out .34s 2;
+}
+
+/* ----- tag-flip (tag-added) ----- */
+.toast-container .toast-item.show .tm-anim-tag-flip .tm-icon-base {
+    animation: tmPresetTilt .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-tag-flip .tm-hole {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+/* ----- tree-grow (category-created) ----- */
+/* Branches settle top-down, the way a tree renders. */
+.toast-container .toast-item.show .tm-anim-tree-grow .tm-nodeA {
+    animation: tmPresetSlideOn .5s ease-in-out .12s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-tree-grow .tm-nodeB {
+    animation: tmPresetSlideOn .5s ease-in-out .3s 2;
+}
+
+/* ----- bundle-bind (bundle-created) ----- */
+.toast-container .toast-item.show .tm-anim-bundle-bind .tm-icon-base {
+    animation: tmPresetBob .58s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-bundle-bind .tm-band {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+/* ----- swatch-cycle (variant-added) ----- */
+/* The four swatches light round the palette in order. */
+.toast-container .toast-item.show .tm-anim-swatch-cycle .tm-swatches circle:nth-of-type(1) {
+    animation: tmPresetPartPulse .4s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-swatch-cycle .tm-swatches circle:nth-of-type(2) {
+    animation: tmPresetPartPulse .4s ease-in-out .18s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-swatch-cycle .tm-swatches circle:nth-of-type(3) {
+    animation: tmPresetPartPulse .4s ease-in-out .28s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-swatch-cycle .tm-swatches circle:nth-of-type(4) {
+    animation: tmPresetPartPulse .4s ease-in-out .38s 2;
+}
+
+/* ----- list-tick (bulk-edit-applied) ----- */
+/* Both ticks land in sequence, which is what "applied to many" looks like. */
+.toast-container .toast-item.show .tm-anim-list-tick .tm-ticks path:nth-of-type(1) {
+    animation: tmPresetPartPulse .45s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-list-tick .tm-ticks path:nth-of-type(2) {
+    animation: tmPresetPartPulse .45s ease-in-out .26s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-list-tick .tm-lines {
+    animation: tmPresetStrokePulse .55s ease-in-out .18s 2;
+}
+
+/* ----- flame-flicker (flash-sale-started) ----- */
+.toast-container .toast-item.show .tm-anim-flame-flicker .tm-icon-base {
+    animation: tmPresetFlicker .5s ease-in-out .08s 2;
+}
+
+@keyframes tmPresetFlicker {
+    0%, 100% { transform: scaleY(1) scaleX(1) rotate(0); }
+    30% { transform: scaleY(1.12) scaleX(.94) rotate(-3deg); }
+    65% { transform: scaleY(.96) scaleX(1.05) rotate(3deg); }
+}
+
+/* ----- timer-stop (sale-ended) ----- */
+.tm-anim-timer-stop .tm-slash {
+    stroke-dasharray: 29;
+    stroke-dashoffset: 29;
+}
+
+.toast-container .toast-item.show .tm-anim-timer-stop .tm-slash {
+    animation: tmPresetStrike .32s ease-out .12s forwards;
+}
+
+.toast-container .toast-item.show .tm-anim-timer-stop .tm-icon-base path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .55s ease-in-out .2s 2;
+}
+
+/* ----- spark-burst (reward-redeemed) ----- */
+.toast-container .toast-item.show .tm-anim-spark-burst .tm-icon-base {
+    animation: tmPresetTwinkle .7s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-spark-burst .tm-sparks {
+    animation: tmPresetPartPulse .5s ease-in-out .24s 2;
+}
+
+/* ----- hands-meet (referral-earned) ----- */
+/* The two hands close on each other — the referral connecting. */
+.tm-anim-hands-meet .tm-left,
+.tm-anim-hands-meet .tm-right {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.toast-container .toast-item.show .tm-anim-hands-meet .tm-left {
+    animation: tmPresetReachRight .6s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-hands-meet .tm-right {
+    animation: tmPresetReachLeft .6s ease-in-out .1s 2;
+}
+
+@keyframes tmPresetReachRight {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(1.5px); }
+}
+
+@keyframes tmPresetReachLeft {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-1.5px); }
+}
+
+/* ----- merge-join (cart-merged) ----- */
+.toast-container .toast-item.show .tm-anim-merge-join .tm-icon-base {
+    animation: tmPresetBob .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-merge-join .tm-heads {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+/* ----- issue-flag (order-issue-reported) ----- */
+.toast-container .toast-item.show .tm-anim-issue-flag .tm-bang {
+    animation: tmPresetPartPulse .5s ease-in-out .12s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-issue-flag .tm-icon-base circle {
+    animation: tmPresetStrokePulse .55s ease-in-out .26s 2;
+}
+
+/* ----- store-shut (store-closed) ----- */
+.tm-anim-store-shut .tm-slash {
+    stroke-dasharray: 29;
+    stroke-dashoffset: 29;
+}
+
+.toast-container .toast-item.show .tm-anim-store-shut .tm-slash {
+    animation: tmPresetStrike .32s ease-out .12s forwards;
+}
+
+.toast-container .toast-item.show .tm-anim-store-shut .tm-icon-base path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .55s ease-in-out .2s 2;
+}
+
+/* ----- v2.6 expansion -----
+   Palettes only: the motion is the shared `badge` rule in the core
+   stylesheet, so these presets add no animation CSS of their own. */
+.toast-body-icon-container.tm-preset-store-visited { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-branch-opened { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-branch-closed { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-courier-assigned { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-courier-unavailable { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-fleet-dispatched { --tm-i1: #1d4ed8; --tm-i2: #0284c7; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-delivery-window-set { --tm-i1: #1d4ed8; --tm-i2: #0284c7; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-delivery-rescheduled { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-pickup-scheduled { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-zone-added { --tm-i1: #0f766e; --tm-i2: #16a34a; --tm-i3: #ccfbf1; }
+.toast-body-icon-container.tm-preset-zone-unsupported { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-supplier-added { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-supplier-approved { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-supplier-suspended { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-purchase-order-raised { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-purchase-order-approved { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-goods-received { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-goods-rejected { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-sales-target-met { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-sales-target-missed { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-revenue-up { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-revenue-report-ready { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-margin-alert { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-loyalty-tier-up { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-customer-added { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-customer-verified { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-customer-blocked { --tm-i1: #b45309; --tm-i2: #dc2626; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-callback-requested { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-catalogue-synced { --tm-i1: #0e7490; --tm-i2: #16a34a; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-catalogue-import-failed { --tm-i1: #b45309; --tm-i2: #dc2626; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-shipment-consolidated { --tm-i1: #0f766e; --tm-i2: #16a34a; --tm-i3: #ccfbf1; }
+.toast-body-icon-container.tm-preset-shipment-split { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-warehouse-added { --tm-i1: #0f766e; --tm-i2: #16a34a; --tm-i3: #ccfbf1; }
+.toast-body-icon-container.tm-preset-warehouse-full { --tm-i1: #be123c; --tm-i2: #d97706; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-restock-scheduled { --tm-i1: #0f766e; --tm-i2: #0284c7; --tm-i3: #ccfbf1; }
+.toast-body-icon-container.tm-preset-restock-received { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-markdown-applied { --tm-i1: #c2410c; --tm-i2: #0284c7; --tm-i3: #ffedd5; }
+.toast-body-icon-container.tm-preset-bestseller-flagged { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-gift-wrap-added { --tm-i1: #be123c; --tm-i2: #16a34a; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-gift-message-added { --tm-i1: #be123c; --tm-i2: #0284c7; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-driver-rated { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-route-optimised { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-fuel-surcharge { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-customs-duty-due { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-export-licence-ready { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+
+body[theme="dark"] .toast-body-icon-container.tm-preset-store-visited { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-branch-opened { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-branch-closed { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-courier-assigned { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-courier-unavailable { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-fleet-dispatched { --tm-i1: #60a5fa; --tm-i2: #38bdf8; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-delivery-window-set { --tm-i1: #60a5fa; --tm-i2: #38bdf8; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-delivery-rescheduled { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-pickup-scheduled { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-zone-added { --tm-i1: #5eead4; --tm-i2: #4ade80; --tm-i3: #134e4a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-zone-unsupported { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-supplier-added { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-supplier-approved { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-supplier-suspended { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-purchase-order-raised { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-purchase-order-approved { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-goods-received { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-goods-rejected { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-sales-target-met { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-sales-target-missed { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-revenue-up { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-revenue-report-ready { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-margin-alert { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-loyalty-tier-up { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-customer-added { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-customer-verified { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-customer-blocked { --tm-i1: #fbbf24; --tm-i2: #f87171; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-callback-requested { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-catalogue-synced { --tm-i1: #22d3ee; --tm-i2: #4ade80; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-catalogue-import-failed { --tm-i1: #fbbf24; --tm-i2: #f87171; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-shipment-consolidated { --tm-i1: #5eead4; --tm-i2: #4ade80; --tm-i3: #134e4a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-shipment-split { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-warehouse-added { --tm-i1: #5eead4; --tm-i2: #4ade80; --tm-i3: #134e4a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-warehouse-full { --tm-i1: #fb7185; --tm-i2: #fbbf24; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-restock-scheduled { --tm-i1: #5eead4; --tm-i2: #38bdf8; --tm-i3: #134e4a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-restock-received { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-markdown-applied { --tm-i1: #fb923c; --tm-i2: #38bdf8; --tm-i3: #7c2d12; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bestseller-flagged { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-gift-wrap-added { --tm-i1: #fb7185; --tm-i2: #4ade80; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-gift-message-added { --tm-i1: #fb7185; --tm-i2: #38bdf8; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-driver-rated { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-route-optimised { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-fuel-surcharge { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-customs-duty-due { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-export-licence-ready { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }

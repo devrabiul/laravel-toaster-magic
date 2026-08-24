@@ -21,3 +21,7 @@
 /release.md         export-ignore
 /vitest.config.mjs  export-ignore
 /eslint.config.mjs  export-ignore
+/scratchpad         export-ignore
+/PRESETS.md         export-ignore
+/THEMES.md          export-ignore
+/SECURITY.md        export-ignore

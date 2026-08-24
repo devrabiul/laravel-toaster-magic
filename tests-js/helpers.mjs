@@ -15,8 +15,21 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const RUNTIME = join(root, "assets/js/laravel-toaster-magic.js");
 const BRIDGE = join(root, "assets/js/livewire-v3/livewire-toaster-magic-v3.js");
 
+/** Preset packs, in the order ToastMagic::PRESET_PACKS emits them. */
+export const PACKS = [
+    "general", "commerce", "saas", "social", "devops", "media", "files",
+    "health", "travel", "education", "crm",
+];
+
 export const runtimeSource = () => readFileSync(RUNTIME, "utf8");
 export const bridgeSource = () => readFileSync(BRIDGE, "utf8");
+export const packSource = (pack) =>
+    readFileSync(join(root, `assets/js/presets/toast-magic-presets-${pack}.js`), "utf8");
+export const packStylesheet = (pack) =>
+    readFileSync(join(root, `assets/css/presets/laravel-toaster-magic-presets-${pack}.css`), "utf8");
+export const coreSource = () => readFileSync(RUNTIME, "utf8");
+export const coreStylesheet = () =>
+    readFileSync(join(root, "assets/css/laravel-toaster-magic.css"), "utf8");
 
 /**
  * Evaluate a source file in the current jsdom window.
@@ -32,8 +45,10 @@ function evaluate(source) {
  * @param {object} styleVars Value for `window.toastMagicStyleVars`.
  * @param {string} bodyHtml Markup to place in the body *before* the runtime is
  *   evaluated, for testing what it does with pre-existing DOM.
+ * @param {string[]} packs Preset packs to register after the runtime. Defaults
+ *   to all of them, mirroring `'presets' => 'all'`.
  */
-export function loadRuntime(config = {}, styleVars = {}, bodyHtml = "") {
+export function loadRuntime(config = {}, styleVars = {}, bodyHtml = "", packs = PACKS) {
     document.body.innerHTML = bodyHtml;
     document.head.innerHTML = "";
 
@@ -60,7 +75,15 @@ export function loadRuntime(config = {}, styleVars = {}, bodyHtml = "") {
         window.matchMedia = () => ({ matches: false, addListener() {}, removeListener() {} });
     }
 
+    delete window.ToastMagicPresets;
+
     evaluate(runtimeSource());
+
+    // Packs register into the runtime, so they must follow it — exactly the
+    // order ToastMagic::scriptsPath() emits the tags in.
+    for (const pack of packs) {
+        evaluate(packSource(pack));
+    }
 
     return window.toastMagic;
 }

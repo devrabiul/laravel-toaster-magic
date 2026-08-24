@@ -1,0 +1,69 @@
+/*!
+ * Laravel Toaster Magic — preset pack styles: health
+ *
+ * Clinical and wellbeing flows: appointments, prescriptions, vitals, lab work.
+ *
+ * Palettes for this pack. The animation vocabulary lives in the core
+ * stylesheet, which must be loaded first.
+ */
+
+/* ----- v2.6 expansion -----
+   Palettes only: the motion is the shared `badge` rule in the core
+   stylesheet, so these presets add no animation CSS of their own. */
+.toast-body-icon-container.tm-preset-appointment-confirmed { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-appointment-cancelled { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-appointment-rescheduled { --tm-i1: #1d4ed8; --tm-i2: #d97706; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-prescription-ready { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-prescription-expired { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-refill-requested { --tm-i1: #6d28d9; --tm-i2: #0284c7; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-vitals-recorded { --tm-i1: #be123c; --tm-i2: #16a34a; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-vitals-abnormal { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-consultation-booked { --tm-i1: #0f766e; --tm-i2: #16a34a; --tm-i3: #ccfbf1; }
+.toast-body-icon-container.tm-preset-consultation-started { --tm-i1: #0f766e; --tm-i2: #0284c7; --tm-i3: #ccfbf1; }
+.toast-body-icon-container.tm-preset-vaccination-recorded { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-vaccination-due { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-temperature-high { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-temperature-normal { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-activity-goal-met { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-activity-goal-missed { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-first-aid-logged { --tm-i1: #be123c; --tm-i2: #16a34a; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-injury-reported { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-ambulance-dispatched { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-ambulance-arrived { --tm-i1: #be123c; --tm-i2: #16a34a; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-admission-recorded { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-discharge-recorded { --tm-i1: #1d4ed8; --tm-i2: #0284c7; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-lab-result-ready { --tm-i1: #0e7490; --tm-i2: #16a34a; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-lab-result-pending { --tm-i1: #0e7490; --tm-i2: #d97706; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-sample-collected { --tm-i1: #0e7490; --tm-i2: #0284c7; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-screening-complete { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-genetic-report-ready { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-assessment-complete { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+
+body[theme="dark"] .toast-body-icon-container.tm-preset-appointment-confirmed { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-appointment-cancelled { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-appointment-rescheduled { --tm-i1: #60a5fa; --tm-i2: #fbbf24; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-prescription-ready { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-prescription-expired { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-refill-requested { --tm-i1: #c4b5fd; --tm-i2: #38bdf8; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-vitals-recorded { --tm-i1: #fb7185; --tm-i2: #4ade80; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-vitals-abnormal { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-consultation-booked { --tm-i1: #5eead4; --tm-i2: #4ade80; --tm-i3: #134e4a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-consultation-started { --tm-i1: #5eead4; --tm-i2: #38bdf8; --tm-i3: #134e4a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-vaccination-recorded { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-vaccination-due { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-temperature-high { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-temperature-normal { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-activity-goal-met { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-activity-goal-missed { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-first-aid-logged { --tm-i1: #fb7185; --tm-i2: #4ade80; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-injury-reported { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-ambulance-dispatched { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-ambulance-arrived { --tm-i1: #fb7185; --tm-i2: #4ade80; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-admission-recorded { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-discharge-recorded { --tm-i1: #60a5fa; --tm-i2: #38bdf8; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-lab-result-ready { --tm-i1: #22d3ee; --tm-i2: #4ade80; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-lab-result-pending { --tm-i1: #22d3ee; --tm-i2: #fbbf24; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-sample-collected { --tm-i1: #22d3ee; --tm-i2: #38bdf8; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-screening-complete { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-genetic-report-ready { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-assessment-complete { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }

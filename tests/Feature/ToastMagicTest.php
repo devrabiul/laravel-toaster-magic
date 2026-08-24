@@ -313,6 +313,154 @@ it('emits the avatar URL in the toast call', function () {
 });
 
 // ---------------------------------------------------------------------------
+// Animated icon presets
+// ---------------------------------------------------------------------------
+
+it('emits a registered preset in the toast call', function () {
+    config()->set('laravel-toaster-magic.presets', ['commerce']);
+    ToastMagic::success('Added to cart', 'Nike Air Max ×1', ['preset' => 'cart-add']);
+
+    expect(toastCalls()[0]['options']['preset'])->toBe('cart-add');
+});
+
+it('keeps the toast type when a preset is applied', function () {
+    // A preset is a layer on top of the type, never a replacement for it.
+    config()->set('laravel-toaster-magic.presets', ['commerce']);
+    ToastMagic::error('Payment failed', 'Your card was declined.', [
+        'preset' => 'payment-failed',
+    ]);
+
+    expect(toastCalls()[0]['type'])->toBe('error')
+        ->and(toastCalls()[0]['options']['preset'])->toBe('payment-failed');
+});
+
+it('emits every preset in every pack', function (string $preset) {
+    config()->set('laravel-toaster-magic.presets', 'all');
+    ToastMagic::success('Hi', null, ['preset' => $preset]);
+
+    expect(toastCalls()[0]['options']['preset'])->toBe($preset);
+})->with(ToastMagicService::allPresets());
+
+it('drops an unregistered preset', function () {
+    config()->set('laravel-toaster-magic.presets', 'all');
+    ToastMagic::success('Added to cart', null, ['preset' => 'cart-added']);
+
+    expect(toastCalls()[0]['options'])->not->toHaveKey('preset')
+        ->and(toastCalls()[0]['type'])->toBe('success');
+});
+
+it('drops a non-string preset', function (mixed $preset) {
+    ToastMagic::success('Hi', null, ['preset' => $preset]);
+
+    expect(toastCalls()[0]['options'])->not->toHaveKey('preset');
+    // Each case is wrapped: a bare array dataset entry would be unpacked as the
+    // argument list, quietly turning ['cart-add'] into the valid string.
+})->with([[true], [42], [['cart-add']], [null]]);
+
+it('omits the preset key when none is provided', function () {
+    ToastMagic::success('Hi');
+
+    expect(toastCalls()[0]['options'])->not->toHaveKey('preset');
+});
+
+it('never lets a preset reach the payload unvalidated', function () {
+    // The value ends up as a class name in the DOM, so it gets the same
+    // allowlist treatment as the theme, animation and position.
+    ToastMagic::success('Hi', null, ['preset' => 'cart-add" onload="alert(1)']);
+
+    expect(toastCalls()[0]['options'])->not->toHaveKey('preset');
+});
+
+it('composes a preset with the other per-toast options', function () {
+    config()->set('laravel-toaster-magic.presets', ['commerce']);
+    ToastMagic::success('Added to cart', 'Nike Air Max ×1', [
+        'preset' => 'cart-add',
+        'showCloseBtn' => true,
+        'customBtnText' => 'View cart',
+        'customBtnLink' => '/cart',
+        'timeOut' => 8000,
+    ]);
+
+    $options = toastCalls()[0]['options'];
+
+    expect($options['preset'])->toBe('cart-add')
+        ->and($options['showCloseBtn'])->toBeTrue()
+        ->and($options['customBtnText'])->toBe('View cart')
+        ->and($options['timeOut'])->toBe(8000);
+});
+
+it('keeps the PHP manifest in step with the JavaScript packs', function (string $pack) {
+    // Two registries, one source of truth. A preset added to a pack file and
+    // forgotten in the manifest would be dropped server-side and never render.
+    $js = file_get_contents(__DIR__ . "/../../assets/js/presets/toast-magic-presets-{$pack}.js");
+
+    preg_match_all('/"([a-z0-9-]+)":\s*\{\s*icon:/', $js, $names);
+
+    expect($names[1])->not->toBeEmpty()
+        ->and($names[1])->toEqualCanonicalizing(ToastMagicService::presetManifest()[$pack]);
+})->with(ToastMagicService::PRESET_PACKS);
+
+it('ships a script and a stylesheet for every pack', function (string $pack) {
+    expect(file_exists(__DIR__ . "/../../assets/js/presets/toast-magic-presets-{$pack}.js"))->toBeTrue()
+        ->and(file_exists(__DIR__ . "/../../assets/css/presets/laravel-toaster-magic-presets-{$pack}.css"))->toBeTrue()
+        ->and(file_exists(__DIR__ . "/../../assets/css/presets/laravel-toaster-magic-presets-{$pack}.min.css"))->toBeTrue();
+})->with(ToastMagicService::PRESET_PACKS);
+
+it('loads only the packs that are enabled', function () {
+    config()->set('laravel-toaster-magic.presets', ['commerce', 'media']);
+    $html = ToastMagic::scripts() . ToastMagic::styles();
+
+    expect($html)->toContain('toast-magic-presets-commerce.js')
+        ->and($html)->toContain('toast-magic-presets-media.js')
+        ->and($html)->toContain('laravel-toaster-magic-presets-commerce.min.css')
+        ->and($html)->not->toContain('toast-magic-presets-general.js')
+        ->and($html)->not->toContain('toast-magic-presets-saas.js');
+});
+
+it('loads no pack assets when presets are switched off', function () {
+    config()->set('laravel-toaster-magic.presets', []);
+    $html = ToastMagic::scripts() . ToastMagic::styles();
+
+    expect($html)->toContain('laravel-toaster-magic.js')
+        ->and($html)->not->toContain('toast-magic-presets-');
+});
+
+it('loads every pack for the all shorthand', function () {
+    config()->set('laravel-toaster-magic.presets', 'all');
+    $html = ToastMagic::scripts();
+
+    foreach (ToastMagicService::PRESET_PACKS as $pack) {
+        expect($html)->toContain("toast-magic-presets-{$pack}.js");
+    }
+});
+
+it('ignores an unknown pack name', function () {
+    config()->set('laravel-toaster-magic.presets', ['commerce', 'nope', '../evil']);
+
+    expect(ToastMagic::enabledPacks())->toBe(['commerce'])
+        ->and(ToastMagic::scripts())->not->toContain('evil');
+});
+
+it('emits the packs in a stable order whatever the config order', function () {
+    config()->set('laravel-toaster-magic.presets', ['files', 'commerce', 'general']);
+
+    expect(ToastMagic::enabledPacks())->toBe(['general', 'commerce', 'files']);
+});
+
+it('drops a preset whose pack is not enabled', function () {
+    // The runtime would not know the name either, so the toast would render
+    // with its type icon. Failing in one place is clearer than failing in two.
+    config()->set('laravel-toaster-magic.presets', ['general']);
+    ToastMagic::success('Added to cart', null, ['preset' => 'cart-add']);
+
+    expect(toastCalls()[0]['options'])->not->toHaveKey('preset');
+});
+
+it('defaults to the general pack only', function () {
+    expect(ToastMagic::enabledPacks())->toBe(['general']);
+});
+
+// ---------------------------------------------------------------------------
 // Runtime config object
 // ---------------------------------------------------------------------------
 

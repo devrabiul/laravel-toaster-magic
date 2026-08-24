@@ -20,9 +20,20 @@ import { fileURLToPath } from "node:url";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const checkOnly = process.argv.includes("--check");
 
+/** Preset packs. Each ships its own stylesheet so a project pays only for the
+ *  packs it enables. Keep in step with ToastMagic::PRESET_PACKS. */
+const PACKS = [
+    "general", "commerce", "saas", "social", "devops", "media", "files",
+    "health", "travel", "education", "crm",
+];
+
 /** Files to minify: [source, output]. */
 const TARGETS = [
     ["assets/css/laravel-toaster-magic.css", "assets/css/laravel-toaster-magic.min.css"],
+    ...PACKS.map((pack) => [
+        `assets/css/presets/laravel-toaster-magic-presets-${pack}.css`,
+        `assets/css/presets/laravel-toaster-magic-presets-${pack}.min.css`,
+    ]),
 ];
 
 async function minify(sourcePath) {

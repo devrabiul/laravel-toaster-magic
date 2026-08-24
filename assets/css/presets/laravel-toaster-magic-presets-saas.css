@@ -1,0 +1,179 @@
+/*!
+ * Laravel Toaster Magic — preset pack styles: saas
+ *
+ * Palettes and motion for the saas presets. The shared animation
+ * vocabulary lives in the core stylesheet, which must be loaded first.
+ */
+
+.toast-body-icon-container.tm-preset-subscription-upgraded { --tm-i1: #a16207; --tm-i2: #fcd34d; --tm-i3: #b45309; }
+.toast-body-icon-container.tm-preset-trial-ending      { --tm-i1: #b45309; --tm-i2: #f59e0b; --tm-i3: #fbbf24; }
+.toast-body-icon-container.tm-preset-invite-sent       { --tm-i1: #3b82f6; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-rate-limited      { --tm-i1: #b45309; --tm-i2: #dc2626; }
+.toast-body-icon-container.tm-preset-subscription-renewed { --tm-i1: #475569; --tm-i2: #16a34a; }
+.toast-body-icon-container.tm-preset-subscription-cancelled { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-newsletter-subscribed { --tm-i1: #2563eb; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-newsletter-unsubscribed { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-subscription-upgraded { --tm-i1: #fcd34d; --tm-i2: #fde68a; --tm-i3: #fbbf24; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-trial-ending      { --tm-i1: #fbbf24; --tm-i2: #fcd34d; --tm-i3: #fde68a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-invite-sent       { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-rate-limited      { --tm-i1: #fbbf24; --tm-i2: #f87171; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-subscription-renewed { --tm-i1: #cbd5e1; --tm-i2: #4ade80; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-subscription-cancelled { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-newsletter-subscribed { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-newsletter-unsubscribed { --tm-i1: #94a3b8; --tm-i2: #f87171; --tm-i3: #334155; }
+
+
+/* ----- crown-rise (subscription-upgraded) ----- */
+.toast-container .toast-item.show .tm-anim-crown-rise .tm-icon-base {
+    animation: tmPresetRise .65s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+@keyframes tmPresetRise {
+    0%, 100% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-3px) scale(1.08); }
+}
+
+/* ----- sand-fall (trial-ending) ----- */
+/* The glass turns over; the sand keeps running. */
+.toast-container .toast-item.show .tm-anim-sand-fall .tm-icon-base {
+    animation: tmPresetFlip 1s cubic-bezier(0.45, 0.05, 0.55, 0.95) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-sand-fall .tm-sand {
+    animation: tmPresetStrokePulse .5s ease-in-out .2s 2;
+}
+
+@keyframes tmPresetFlip {
+    0%, 45% { transform: rotate(0); }
+    75%, 100% { transform: rotate(180deg); }
+}
+
+/* ----- invite-wave (invite-sent) ----- */
+/* The second figure arrives after the first, which is the invitation. */
+.toast-container .toast-item.show .tm-anim-invite-wave .tm-icon-base circle {
+    animation: tmPresetPartPulse .5s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-invite-wave .tm-second {
+    animation: tmPresetSlideOn .55s cubic-bezier(0.22, 0.61, 0.36, 1) .24s 2;
+}
+
+@keyframes tmPresetSlideOn {
+    0%, 100% { transform: translateX(0); opacity: .5; }
+    50% { transform: translateX(1.5px); opacity: 1; }
+}
+
+/* ----- gauge-swing (rate-limited) ----- */
+/* The needle swings up against the limit and falls back. */
+.tm-anim-gauge-swing .tm-needle {
+    transform-box: fill-box;
+    transform-origin: 0% 100%;
+}
+
+.toast-container .toast-item.show .tm-anim-gauge-swing .tm-needle {
+    animation: tmPresetSwing .7s cubic-bezier(0.45, 0.05, 0.55, 0.95) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-gauge-swing .tm-icon-base path:nth-of-type(1) {
+    animation: tmPresetStrokePulse .6s ease-in-out .24s 2;
+}
+
+@keyframes tmPresetSwing {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(52deg); }
+}
+
+/* ----- renew-loop (subscription-renewed) ----- */
+.toast-container .toast-item.show .tm-anim-renew-loop .tm-icon-base {
+    animation: tmPresetBob .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-renew-loop .tm-heads {
+    animation: tmPresetPartPulse .5s ease-in-out .18s 2;
+}
+
+/* ----- plan-void (subscription-cancelled) ----- */
+.toast-container .toast-item.show .tm-anim-plan-void .tm-x {
+    animation: tmPresetPartPulse .5s ease-in-out .12s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-plan-void .tm-icon-base rect {
+    animation: tmPresetStrokePulse .55s ease-in-out .26s 2;
+}
+
+/* ----- v2.6 expansion -----
+   Palettes only: the motion is the shared `badge` rule in the core
+   stylesheet, so these presets add no animation CSS of their own. */
+.toast-body-icon-container.tm-preset-workspace-created { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-workspace-archived { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-workspace-switched { --tm-i1: #1d4ed8; --tm-i2: #0284c7; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-seat-added { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-seat-removed { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-seat-limit-reached { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-plan-compared { --tm-i1: #6d28d9; --tm-i2: #0284c7; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-usage-threshold { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-usage-reset { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-usage-report-ready { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-quota-increased { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-quota-exhausted { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-billing-date-changed { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-billing-updated { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-organisation-created { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-organisation-verified { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-domain-verified { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-domain-failed { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-sso-enabled { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-audit-log-exported { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-integration-connected { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-integration-disconnected { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-sandbox-reset { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-onboarding-complete { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-support-ticket-opened { --tm-i1: #1d4ed8; --tm-i2: #0284c7; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-support-ticket-resolved { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-feature-enabled { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-feature-disabled { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-beta-joined { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-maintenance-scheduled { --tm-i1: #1d4ed8; --tm-i2: #d97706; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-api-quota-warning { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-api-key-rotated { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-rate-plan-changed { --tm-i1: #6d28d9; --tm-i2: #0284c7; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-data-export-ready { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-data-retention-warning { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-region-changed { --tm-i1: #0e7490; --tm-i2: #0284c7; --tm-i3: #cffafe; }
+
+body[theme="dark"] .toast-body-icon-container.tm-preset-workspace-created { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-workspace-archived { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-workspace-switched { --tm-i1: #60a5fa; --tm-i2: #38bdf8; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-seat-added { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-seat-removed { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-seat-limit-reached { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-plan-compared { --tm-i1: #c4b5fd; --tm-i2: #38bdf8; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-usage-threshold { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-usage-reset { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-usage-report-ready { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-quota-increased { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-quota-exhausted { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-billing-date-changed { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-billing-updated { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-organisation-created { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-organisation-verified { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-domain-verified { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-domain-failed { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-sso-enabled { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-audit-log-exported { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-integration-connected { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-integration-disconnected { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-sandbox-reset { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-onboarding-complete { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-support-ticket-opened { --tm-i1: #60a5fa; --tm-i2: #38bdf8; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-support-ticket-resolved { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-feature-enabled { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-feature-disabled { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-beta-joined { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-maintenance-scheduled { --tm-i1: #60a5fa; --tm-i2: #fbbf24; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-api-quota-warning { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-api-key-rotated { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-rate-plan-changed { --tm-i1: #c4b5fd; --tm-i2: #38bdf8; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-data-export-ready { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-data-retention-warning { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-region-changed { --tm-i1: #22d3ee; --tm-i2: #38bdf8; --tm-i3: #164e63; }

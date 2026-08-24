@@ -90,6 +90,22 @@ describe("Livewire bridge", () => {
         expect(toast.querySelector(".toast-body").classList.contains("toast-body-avatar")).toBe(true);
     });
 
+    it("passes a preset through to the shared runtime", () => {
+        dispatch({ status: "success", title: "Added", options: { preset: "cart-add" } });
+
+        const icon = onlyToast().querySelector(".toast-body-icon-container");
+        expect(icon.classList.contains("tm-preset-cart-add")).toBe(true);
+        expect(icon.classList.contains("tm-anim-bounce")).toBe(true);
+    });
+
+    it("leaves preset validation to the shared runtime", () => {
+        // The bridge forwards the value verbatim rather than keeping its own
+        // copy of the preset list, which is what kept the type list in sync.
+        dispatch({ status: "success", title: "Added", options: { preset: "nope" } });
+
+        expect(onlyToast().querySelector(".toast-body-icon-container").classList.contains("tm-preset")).toBe(false);
+    });
+
     it("escapes event content by default", () => {
         dispatch({ status: "info", title: "<img src=x onerror=alert(1)>" });
 

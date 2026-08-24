@@ -109,6 +109,38 @@ return [
     ],
 
     // ─────────────────────────────────────────────────
+    // Animated icon presets
+    // ─────────────────────────────────────────────────
+    // Preset packs to load. Each pack is a separate script
+    // and stylesheet, so a project ships only the icons it
+    // actually uses — the core runtime contains none.
+    //
+    //   general   loading, connectivity, auth, clipboard,
+    //             preferences                     (51)
+    //   commerce  carts, orders, payments, shipping,
+    //             catalogue, promotions, stock   (106)
+    //   saas      subscriptions, workspaces, seats,
+    //             usage, integrations             (38)
+    //   social    messages, posts, connections,
+    //             moderation                      (38)
+    //   devops    builds, deploys, source control,
+    //             infrastructure, incidents       (51)
+    //   media     capture, encoding, publishing,
+    //             playback                        (30)
+    //   files     documents, storage, backups      (31)
+    //   health    appointments, prescriptions,
+    //             vitals, lab work                (28)
+    //   travel    flights, stays, transport        (26)
+    //   education courses, assignments, grading    (25)
+    //   crm       leads, deals, accounts, calls     (25)
+    //
+    // Use 'all' for every pack, or [] for none.
+    //
+    // A preset from a pack that is not listed here is
+    // ignored, and the toast renders with its type icon.
+    'presets' => ['general'],
+
+    // ─────────────────────────────────────────────────
     // Livewire integration
     // ─────────────────────────────────────────────────
     // Loads the event bridge alongside the shared runtime.
