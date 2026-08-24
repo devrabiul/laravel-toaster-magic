@@ -116,23 +116,25 @@ return [
     // actually uses — the core runtime contains none.
     //
     //   general   loading, connectivity, auth, clipboard,
-    //             preferences                     (51)
+    //             preferences                     (76)
     //   commerce  carts, orders, payments, shipping,
-    //             catalogue, promotions, stock   (106)
+    //             catalogue, promotions, stock   (121)
     //   saas      subscriptions, workspaces, seats,
-    //             usage, integrations             (38)
+    //             usage, integrations             (44)
     //   social    messages, posts, connections,
     //             moderation                      (38)
     //   devops    builds, deploys, source control,
-    //             infrastructure, incidents       (51)
+    //             infrastructure, incidents       (61)
     //   media     capture, encoding, publishing,
-    //             playback                        (30)
-    //   files     documents, storage, backups      (31)
+    //             playback                        (36)
+    //   files     documents, storage, backups      (37)
     //   health    appointments, prescriptions,
     //             vitals, lab work                (28)
     //   travel    flights, stays, transport        (26)
     //   education courses, assignments, grading    (25)
     //   crm       leads, deals, accounts, calls     (25)
+    //                                             ----
+    //                                              517
     //
     // Use 'all' for every pack, or [] for none.
     //

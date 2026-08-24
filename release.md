@@ -1,247 +1,161 @@
-# 🍞 Laravel Toaster Magic — v2.5.0 Release Notes
+# 🍞 Laravel Toaster Magic — v2.6.0 Release Notes
 
-**Release date:** 2026-08-23
-**Type:** Minor release — **one deliberate behavioral change**, see the Upgrade Guide below
+**Release date:** 2026-08-24
+**Type:** Minor release — **one removed option and two changed defaults**, see the Upgrade Guide below
 
-v2.5.0 is a **"Safe by default"** release, and the largest one so far. It fixes a **cross-site
-scripting vulnerability**, makes message escaping the default, and adds the things people kept
-asking for: a **compact theme**, and **global spacing and typography options** that work with any
-theme. Under the surface it also removes a per-request filesystem loop that could serve 404s for the
-package's own CSS, and consolidates the two JavaScript runtimes into one.
+v2.6.0 is an **"Animated presets"** release. A toast can now carry a `preset` — an animated,
+multi-coloured icon layered on top of the type it already has — chosen from **517 presets across 11
+opt-in packs**. Packs ship as separate files, so a project downloads only the icons it actually uses
+and the core runtime carries none of them.
 
-> ⚠️ **Please read the Security Fixes section below.** If you pass user-supplied values to a
-> toast — a name, an avatar URL, a link — you were exposed to XSS in v2.4 and earlier.
+It also caps how many toasts can stack on screen, slows the queue into a cascade rather than a
+burst, fixes the two centre positions — which were never actually centred — and removes the global
+shadow toggle added in 2.5.
+
+> ℹ️ **Nothing changes for existing calls.** `preset` has no default and no global switch. A toast
+> without one renders exactly as before, and the four type icons are untouched.
 
 ---
 
 ## ✨ Highlights
 
-- 🔒 **XSS vulnerability fixed** *(high severity)* — reachable through `avatar`, `customBtnLink`,
-  Livewire event options and `data-toast-btn-link`.
-- 🛡️ **Message content is now escaped by default**, with an explicit `['html' => true]` opt-in.
-- 🧷 **New `compact` theme** — smaller, denser, deliberately plain.
-- 📏 **Global `spacing` and `typography`** — padding, gaps and font sizes, configurable per app.
-- ♿ **Accessibility overhaul** — announcements that actually announce, <kbd>Esc</kbd> to dismiss,
-  WCAG AA contrast fixes, real touch targets.
-- ⚡ **No more per-request asset churn** — publishing converges instead of re-copying every request.
-- 🧪 **148 JavaScript tests + a reproducible asset build** where there was previously neither.
-- 📦 **~140 KB published payload**, down from ~1.6 MB.
+- 🎬 **517 animated icon presets** across 11 opt-in packs — carts, deploys, payments, appointments,
+  flights and more.
+- 🧩 **Opt-in by pack** — `'presets' => ['general']` ships by default; unlisted packs are never
+  loaded.
+- 🎨 **Multi-coloured icons** driven by CSS custom properties, with a light and a dark palette per
+  preset and a dedicated one for `neon`.
+- 🛑 **`maxVisible`** — caps the stack (default **15**) so a burst of flashed messages can no longer
+  push toasts off-screen.
+- 🌊 **`stagger` now 800 ms** (was 250 ms) — queued toasts cascade instead of overlapping.
+- 🎯 **Centre positions actually centre** — `toast-top-center` and `toast-bottom-center` were
+  anchored to the edge.
+- 🧹 **`shadow_enable` removed** — see the Upgrade Guide.
+- 🧪 **335 JavaScript tests** (up from 148) and 734 PHP tests.
 
 ---
 
-## 🔒 Security Fixes
+## 🎬 Animated Icon Presets
 
-### Cross-site scripting in `sanitizeUrl()` — high severity
-
-The URL sanitiser validated only the *prefix* of a URL and never escaped quotes, and its result was
-interpolated into an `innerHTML` string. A value such as:
-
-```
-/a" onerror="alert(1)
-```
-
-passed the prefix check, closed the `src`/`href` attribute, and injected an event handler.
-
-It was reachable through the `avatar` option — **the README's own example passed a user profile
-field** — as well as `customBtnLink`, Livewire event options and `data-toast-btn-link`.
-
-URLs are now parsed with `new URL()`, checked against a protocol allowlist (`http:`, `https:`,
-`mailto:`, `tel:`; `javascript:` and `data:` are rejected), and applied with `setAttribute()` — which
-makes attribute breakout *structurally impossible* rather than merely filtered.
-
-### Escaping is now the default
-
-Headings, descriptions and action button labels are written with `textContent`. Newlines still
-become real `<br>` elements, inserted **after** escaping, so multi-line messages keep working.
+A **preset** is a presentation layer on top of an existing toast type. It does not replace the type
+and it is not a new type — the type still decides the accent colour, the progress bar, the theme
+treatment and, because urgency derives from the type alone, how the toast is announced.
 
 ```php
-// Escaped — safe with any user input
-ToastMagic::success('Welcome, ' . $user->name);
-
-// Opt in per toast when you genuinely mean HTML
-ToastMagic::success('Welcome, <strong>' . e($user->name) . '</strong>', null, ['html' => true]);
+ToastMagic::success('Added to cart', 'Nike Air Max ×1', ['preset' => 'cart-add']);
 ```
 
-### Also hardened
+Available from the facade, JavaScript, Livewire options and a `data-toast-preset` attribute.
 
-- **Config values are validated against allowlists.** `theme`, `positionClass` and `animation`
-  outside the known sets fall back to their defaults instead of being concatenated into output.
-- **The emitted JSON is hardened** with `JSON_HEX_TAG`/`HEX_AMP`/`HEX_APOS`/`HEX_QUOT`, so a
-  `</script>` inside any value cannot terminate the script block early.
-- **Content-Security-Policy support** — `ToastMagic::nonce($nonce)` or the `csp_nonce` config value
-  applies a nonce to both inline script blocks. There was previously no way to run this package
-  under a policy without `'unsafe-inline'`.
+### Opt in by pack
 
----
-
-## 🚀 What's New
-
-### 🧷 The Compact theme
+Each pack is a separate script and stylesheet. The core runtime contains **no** preset icons, so a
+project ships only what it lists:
 
 ```php
 // config/laravel-toaster-magic.php
-'options' => [
-    'theme' => 'compact',
-],
+'presets' => ['general'],          // default
+'presets' => ['general', 'commerce'],
+'presets' => 'all',                // every pack
+'presets' => [],                   // none
 ```
 
-![Compact theme — light and dark mode](art/theme-compact.png)
+A preset from a pack that is not listed is ignored, and the toast renders with its type icon —
+matching how theme, animation and position already degrade.
 
-A smaller, denser take on the default toast, for interfaces where a notification should stay out of
-the way. Padding, the icon-to-text gap, the title/description gap and the space around the controls
-are all pulled in; the close and action buttons share a single row; the progress bar is slimmed to
-2px; and the track narrows from 370px to 320px.
+### The packs
 
-Deliberately plain — a solid surface, a hairline border and semantic accents, with **no gradients,
-blur or glass effects**. Supports every toast type, avatar toasts, color mode, animations, dark mode
-and RTL.
+| Pack | Covers | Presets |
+|------|--------|---------|
+| `general` | loading, connectivity, auth, clipboard, preferences | 76 |
+| `commerce` | carts, orders, payments, shipping, catalogue, promotions, stock | 121 |
+| `devops` | builds, deploys, source control, infrastructure, incidents | 61 |
+| `saas` | subscriptions, workspaces, seats, usage, integrations | 44 |
+| `social` | messages, posts, connections, moderation | 38 |
+| `files` | documents, storage, backups | 37 |
+| `media` | capture, encoding, publishing, playback | 36 |
+| `health` | appointments, prescriptions, vitals, lab work | 28 |
+| `travel` | flights, stays, transport | 26 |
+| `education` | courses, assignments, grading | 25 |
+| `crm` | leads, deals, accounts, calls | 25 |
+| | **Total** | **517** |
 
-### 📏 Global spacing and typography
+See **[PRESETS.md](PRESETS.md)** for the full catalogue with every preset name.
 
-Two new sections that work with **any** theme, not just `compact`:
+### How they animate
+
+Every preset animates its own icon and keeps moving. Parts of the icon move in sequence and the
+motion runs twice before resting, rather than a one-shot entrance that freezes. Keyframes open and
+close on the same frame so the two passes read as one continuous movement, and every icon idles at
+full size and full opacity. No preset replaces the icon with a checkmark part-way through.
+
+Tests assert that no two presets share an animation, that every animation has a rule behind it, that
+the motion repeats, and that a preset never renders a second icon over the first.
+
+### Colour
+
+Each icon is painted from custom properties (`--tm-i1` / `--tm-i2` / `--tm-i3`), with a light and a
+dark palette per preset and a dedicated one for `neon`. Every property falls back to `currentColor`,
+so resetting them returns the whole set to monochrome tracking the toast type. Tests assert no
+preset ships a literal colour or a missing palette.
+
+Motion is neutralised under `prefers-reduced-motion: reduce` — the icons still render, they just do
+not move.
+
+### Registry
+
+`ToastMagic::PRESETS` exposes the registered names, and the runtime exposes the same registry on
+`window.ToastMagicInternals.TOAST_PRESETS`. A test asserts the two stay in step, so a preset added to
+one and forgotten in the other fails CI rather than being silently dropped.
+
+Icon geometry is [Lucide](https://lucide.dev) v1.33.0 (ISC; `check`, `download`, `upload` and
+`trash-2` derive from Feather, MIT). Both licences permit redistribution, unlike the animated-icon
+libraries that would otherwise be the obvious source. Animation is plain CSS — no Lottie player, so
+the zero-dependency promise holds.
+
+---
+
+## 🚀 Also New
+
+### 🛑 `maxVisible` — cap the stack
 
 ```php
 'options' => [
-    'spacing' => [
-        'enable'      => true,
-        'container'   => '10px 12px', // Padding inside the toast
-        'icon_gap'    => '8px',       // Icon <-> content
-        'content_gap' => '2px',       // Title <-> description
-        'close_gap'   => '6px',       // Content <-> close/action controls
-    ],
-
-    'typography' => [
-        'enable'           => true,
-        'title_size'       => '14px',
-        'description_size' => '13px',
-        // Optional: 'title_weight', 'description_weight', 'line_height'
-    ],
+    'maxVisible' => 15,  // 0 = no limit
 ],
 ```
 
-Each value is resolved into a CSS custom property set on the toast container, and **every theme
-declares its own value as that property's fallback**. So:
+The container is fixed positioned, so without a cap a burst of flashed messages pushed toasts past
+the bottom of the viewport, where they could not be read or dismissed. The oldest is now dismissed
+to make room.
 
-- `'enable' => false` → that whole section falls back to the active theme's own values.
-- An omitted or `null` value → *that value alone* falls back, while the rest still apply.
-- A value you set → overrides every theme, with no `!important` wars and no theme-specific config.
+### 🌊 `stagger` — 800 ms, up from 250 ms
 
-Want the toast tighter than `compact` ships? Turn the numbers down:
+The entrance animation runs for 500 ms, so the previous 250 ms gap overlapped consecutive toasts
+into what read as a burst. At 800 ms they cascade, and a full stack lands within
+`maxVisible * stagger`.
 
-```php
-'spacing' => [
-    'enable'      => true,
-    'container'   => '6px 8px',
-    'icon_gap'    => '5px',
-    'content_gap' => '0px',
-    'close_gap'   => '4px',
-],
-```
-
-You can also set the same properties directly in a stylesheet if you prefer CSS over config:
-
-```css
-.toast-container {
-    --tm-space-container: 6px 8px;
-    --tm-font-title-size: 14px;
-}
-```
-
-### 🧰 Smaller additions
-
-| Option | What it does |
-|--------|--------------|
-| `['html' => true]` | Renders that toast's text as HTML (per toast) |
-| `escape_html` | Global escaping switch — off is not recommended |
-| `stagger` | Delay between consecutive queued toasts. Was hardcoded at 1000 ms; now configurable, default **800 ms** |
-| `maxVisible` | Most toasts on screen at once (default **15**); the oldest is dismissed to make room. `0` = no limit |
-| `closeButtonLabel` | Accessible name for the close button |
-| `containerLabel` | Accessible name for the toast region |
-| `csp_nonce` | CSP nonce for the inline script blocks |
-| `asset_path_prefix` | Explicit asset path, replacing the old IP-address heuristic |
+Existing published configs keep whatever value they already set — only the packaged default moved.
 
 ---
 
-## ♿ Accessibility
+## 🐛 Fixed
 
-- **Announcements now work.** Toasts were given `role="alert"` and inserted with their content
-  already present — which assistive technology frequently does not announce at all. Text is now
-  written into persistent live regions: polite for success/info/warning, assertive for errors.
-- **The close button has an accessible name** (default *"Close notification"*); it previously
-  announced as just "button". Decorative icons are `aria-hidden`.
-- **<kbd>Esc</kbd> dismisses the most recent toast**, so dismissal no longer depends on the close
-  button being enabled.
-- **Keyboard focus pauses the dismiss timer**, regardless of `pauseOnHover`.
-- **`timeOut => 0` keeps a toast until dismissed** (WCAG 2.2.1).
-- **`prefers-reduced-motion` is honoured throughout** — entrances, exits, the iOS bounce and the
-  progress bars, not just the stack reflow.
-- **WCAG AA contrast failures fixed.** Color mode forced white text onto every accent: white on the
-  amber measured **1.63:1** and on the cyan **1.96:1**, against a 4.5:1 requirement. Warning and info
-  now take a dark foreground.
-- **Close-button touch targets** are at least 24×24 px, and 32×32 px on coarse pointers.
-- Added dark-mode treatments for `glassmorphism` and `minimal`.
+- **`toast-top-center` and `toast-bottom-center` were not centred.** Both rules set
+  `inset-inline-start: 0` and then re-declared `left: auto` a line later. `inset-inline-start` *is*
+  the physical `left` in LTR, so the later declaration won and left `left: auto; right: 0` —
+  anchoring the container to the right edge (the left edge under RTL) instead of centring it, with
+  `margin-inline: auto` unable to help a box that was no longer over-constrained. Removing the
+  redundant physical inset restores both. A test now asserts neither centre rule re-declares a
+  physical inset.
 
 ---
 
-## 🐛 Notable Fixes
+## 🧹 Removed
 
-- **Assets are no longer deleted and re-copied on every request.** When the installed version could
-  not be resolved — a `dev-*` constraint, a branch alias, a path repository — the check treated
-  "unknown" as "republish" and never converged. Every request re-copied the whole asset directory,
-  and concurrent requests served **404s for the package's own CSS** out of the gap. Publishing is now
-  atomic and converges.
-- **`composer.lock` is no longer read on every request.**
-- **Published configs now receive new options.** Previously the defaults loaded *only* when no
-  published config existed, silently withholding every option added after you published yours.
-- **The runtime now reads its configuration.** The config object was emitted *after* the runtime
-  `<script>`, so theme, position and close-button settings all stayed on their built-in defaults.
-- **`showCloseBtn` works server-side** — documented since v2.2 while only `closeButton` was read.
-- **`vendor:publish --tag=toast-magic-assets` exists** — documented for several releases without the
-  tag ever being registered.
-- **The `slide` animation exists** — it was offered in the config with no CSS behind it.
-- **The progress bar tracks the real dismiss time** instead of a hardcoded 3s, and pauses with the
-  timer.
-- **Asset URLs no longer branch on the client's IP address**, which reported `127.0.0.1` in
-  production behind any reverse proxy.
-- **`toast-top-end` no longer left-aligns on small screens.**
-- **Heading-only toasts no longer leave blank space under the title** — the text block stretched to
-  the icon's height and pinned the title to the top, most visible on `ios` with its 38px icon puck.
-- **`data-toast-type` is validated** — any truthy property name (`constructor`, `show`, `clear`) was
-  previously invoked, throwing an uncaught `TypeError`.
-
----
-
-## 🔧 Changed
-
-- **One JavaScript runtime.** The Livewire build's 343-line hand-maintained copy had already drifted
-  from the standard build in four places. It is **removed**; Livewire now loads the shared runtime
-  plus a ~90-line event bridge, and tests assert both paths produce byte-identical markup.
-- **Removed the dead `livewire_version` config key** — nothing ever read it. One bridge serves both
-  Livewire v3 and v4.
-- **`MessageBag` flattening uses newlines instead of `<br>`.** With escaping on, a literal `<br>`
-  would display as text. This changes the string stored in the session, not what renders.
-- **Marketing images moved out of `assets/`** into `art/`. They were being copied into every
-  consuming application's public directory — **1.5 MB of the 1.6 MB published**. The payload is now
-  ~140 KB.
-- **`useVite()` and `nonce()` return `$this`** for chaining.
-- **The leaked global `.position-relative` utility** — a Bootstrap name — is now
-  `.toast-magic-relative`.
-- **Declared previously implicit dependencies** on `illuminate/config`, `illuminate/session`,
-  `illuminate/filesystem` and `illuminate/cache`.
-- **Removed the `version` field from `composer.json`** so the git tag is authoritative.
-
----
-
-## 🧪 Quality
-
-- **148 JavaScript tests** covering rendering, escaping, URL sanitising, timers, the data-attribute
-  API, the Livewire bridge and accessibility. The runtime holds essentially all of this package's
-  behaviour and previously had **no tests at all**.
-- **A reproducible asset build** — `npm run build` regenerates the minified stylesheet, and
-  `npm run build:check` fails CI if the committed file drifts from the source.
-- **ESLint**, plus CI jobs for the JavaScript suite, the build check and a PHP 8.0 syntax gate.
-- **CI now covers the declared floor** (PHP 8.0 / Laravel 8) rather than starting at PHP 8.1 /
-  Laravel 10 while advertising lower.
+- **The global `shadow_enable` option, added in 2.5.0.** Removed from the PHP config, the JS
+  container class toggling and the stylesheet's shadow-disable rules, along with its dedicated test
+  suite. See the Upgrade Guide.
 
 ---
 
@@ -264,45 +178,51 @@ php artisan vendor:publish --tag=toast-magic-assets --force
 
 Republishing is required — **both the CSS and the JS changed.**
 
-### 1. Toast text containing HTML now renders as text
+### 1. If your config sets `shadow_enable`
 
-This is the one behavioral change likely to be noticed, and it is deliberate: the previous default
-turned any user-supplied value into an XSS hole. If a call intentionally passed markup, opt in:
+The key is now **inert** — it is silently ignored rather than raising an error, and shadows follow
+the active theme. Delete it from your published config.
 
-```php
-// Before (v2.4) — HTML was rendered
-ToastMagic::success('Saved <strong>successfully</strong>');
+To suppress shadows now, override the variable in your own CSS:
 
-// After (v2.5) — opt in explicitly
-ToastMagic::success('Saved <strong>successfully</strong>', null, ['html' => true]);
+```css
+.toast-container {
+    --toast-magic-box-shadow: none;
+}
 ```
 
-Search your codebase for toast calls containing `<`. Plain-text messages need no changes.
+Or pick a theme whose depth you want — `minimal` and `compact` are the flattest.
 
-### 2. The new spacing/typography defaults are enabled
+### 2. Toasts now cap at 15 on screen
 
-`spacing` and `typography` ship **enabled**, and slightly tighter than the historical `default`
-theme (10px 12px padding instead of 1.25rem; a 2px title/description gap instead of 4px). Published
-configs are merged over the packaged defaults, so this applies on upgrade too.
-
-To keep every theme's original spacing and font sizes exactly as they were in v2.4:
+If your application deliberately shows more than 15 at once, raise or disable the cap:
 
 ```php
 'options' => [
-    'spacing'    => ['enable' => false],
-    'typography' => ['enable' => false],
+    'maxVisible' => 0,  // no limit, the pre-2.6 behaviour
 ],
 ```
 
-### 3. If you install from a branch or path repository
+### 3. Queued toasts appear more slowly
 
-Auto-publishing no longer treats an unresolvable version as "republish". Run the
-`vendor:publish` command above after each update. **Tagged releases are unaffected.**
+`stagger` moved from 250 ms to 800 ms. If you published your config **before 2.6**, your own value
+is preserved and nothing changes. To restore the old pacing explicitly:
 
-### 4. If you referenced `.position-relative` or `livewire_version`
+```php
+'options' => [
+    'stagger' => 250,
+],
+```
 
-The utility class is now `.toast-magic-relative`, and the `livewire_version` config key has been
-removed — nothing ever read it, so you can simply delete it from your published config.
+### 4. To use presets, opt a pack in
+
+Presets are off unless listed. The default published config enables `general` only:
+
+```php
+'presets' => ['general', 'commerce'],
+```
+
+Nothing else is required — a toast without a `preset` is unaffected either way.
 
 ---
 

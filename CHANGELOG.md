@@ -49,6 +49,30 @@ multi-coloured icon layered on top of its type — chosen from 517 presets acros
   exposes the same registry on `window.ToastMagicInternals.TOAST_PRESETS`. A test
   asserts the two stay in step, so a preset added to one and forgotten in the
   other fails CI rather than being silently dropped.
+- **`maxVisible` option** (default `15`) — caps how many toasts sit on screen at
+  once, dismissing the oldest to make room. The container is fixed positioned, so
+  without a cap a burst of flashed messages pushed toasts past the bottom of the
+  viewport where they could not be read or dismissed. Set `0` for no limit.
+
+### Changed
+
+- **`stagger` now defaults to 800 ms, up from 250 ms.** The entrance animation
+  runs for 500 ms, so the previous gap overlapped consecutive toasts into what
+  read as a burst rather than a cascade. Paired with `maxVisible`, a full stack
+  now lands within `maxVisible * stagger`. Existing published configs keep
+  whatever value they already set; only the packaged default moved.
+
+### Removed
+
+- **The global `shadow_enable` option, added in 2.5.0, is gone.** It was removed
+  from the PHP config, the JS container class toggling and the stylesheet's
+  shadow-disable rules, along with its dedicated test suite.
+
+  **If your published config sets `'shadow_enable'`, the key is now inert** — it
+  is silently ignored rather than erroring, and shadows follow the active theme.
+  Remove the key when you upgrade. To suppress shadows now, override
+  `--toast-magic-box-shadow` in your own CSS, or pick a theme whose depth you
+  want.
 
 ### Fixed
 
@@ -104,8 +128,8 @@ php artisan vendor:publish --tag=toast-magic-assets --force
 
 ## [2.5.0] - 2026-08-23
 
-A **"Safe by default"** release. It adds the compact theme and global spacing/typography
-options — and fixes a cross-site scripting vulnerability, makes message
+A **"Safe by default"** release. It adds the compact theme, a global shadow toggle and global
+spacing/typography options — and fixes a cross-site scripting vulnerability, makes message
 escaping the default, removes a per-request filesystem loop and consolidates the two JavaScript
 runtimes into one.
 
@@ -215,6 +239,13 @@ php artisan vendor:publish --tag=toast-magic-assets --force
   2px and the track narrows from 370px to 320px. Deliberately plain — a solid surface, a hairline
   border and semantic accents, with no gradients, blur or glass effects. Supports every toast type,
   avatar toasts, color mode, animations, dark mode and RTL.
+- **Global shadow toggle.** A new `'shadow_enable'` option (default `true`). Setting it to `false`
+  removes every box-shadow inside the toast — the surface, the icon puck, the close button and the
+  action button, in their hover and pressed states — for whichever theme is active, including themes
+  whose depth is hardcoded (`ios`, `glassmorphism`, `neon`, `minimal`) or built from shadows
+  (`neumorphism`, `neumorphic`). Borders and background colors are left alone. The rule is
+  theme-agnostic, so future themes are covered without extra CSS.
+  *(Removed again in 2.6.0 — see that entry.)*
 - **Global spacing options.** A new `'spacing'` section (`enable`, `container`, `icon_gap`,
   `content_gap`, `close_gap`) controls the toast's padding, the icon-to-text gap, the
   title-to-description gap and the space around the close/action controls — for any theme, not just
@@ -224,8 +255,9 @@ php artisan vendor:publish --tag=toast-magic-assets --force
 - **Global typography options.** A new `'typography'` section (`enable`, `title_size`,
   `description_size`, plus optional `title_weight`, `description_weight` and `line_height`) works
   the same way, with the same per-value fallback behavior.
-- **Test coverage** for the compact theme and for the spacing/typography options across every
-  built-in theme, including their interaction with color mode and gradient mode.
+- **Test coverage** for the compact theme, for the shadow toggle and for the spacing/typography
+  options across every built-in theme, including their interaction with color mode and gradient
+  mode, and the shadow toggle's presence in both JavaScript runtimes.
 - **`html` option per toast** — `['html' => true]` renders that toast's text as HTML.
   The global `escape_html` option turns escaping off everywhere, but is not recommended.
 - **`stagger` option** — the delay between consecutive queued toasts, previously a
@@ -287,6 +319,8 @@ php artisan vendor:publish --tag=toast-magic-assets --force
 
 ### Notes on the new defaults
 
+- Existing config files are unaffected: `shadow_enable` has to be set to `false` explicitly, so a
+  config published before this release keeps its shadows.
 - The shipped `spacing`/`typography` defaults are enabled and slightly tighter than the historical
   `default` theme (10px 12px padding instead of 1.25rem, a 2px title/description gap instead of
   4px). Published configs are merged over the packaged defaults, so this applies on upgrade too —
