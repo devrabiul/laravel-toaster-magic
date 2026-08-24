@@ -309,8 +309,124 @@
     // ===============================
     // Utility: Icon markup
     // ===============================
+    // Preset icons (v2.6). Stroke-based rather than filled, so individual parts
+    // can be moved and drawn on with stroke-dashoffset — the four type icons
+    // below are filled paths and are deliberately left exactly as they were.
+    //
+    // Like every other icon in this file these are package constants. The
+    // registry is keyed by name and a caller can only ever supply a *key*, never
+    // markup, so the trusted-icon parser gains no new attack surface.
+    // Icon parts are painted from four custom properties rather than a single
+    // `currentColor`, which is what makes a preset icon multi-coloured:
+    //
+    //   --tm-i1   primary stroke (the body of the icon)
+    //   --tm-i2   accent        (wheels, stripes, the filled part)
+    //   --tm-i3   secondary accent
+    //   --tm-ic   reserved for a preset's fourth part
+    //
+    // Every one falls back to `currentColor`, so an icon with no palette behind
+    // it still renders in the type accent exactly as the built-in icons do —
+    // and setting them all back to `currentColor` returns the whole set to
+    // monochrome. The palettes live in the stylesheet, per preset, with dark
+    // mode variants.
+    var ICON_ATTRS = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" '
+        + 'fill="none" stroke="var(--tm-i1, currentColor)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+
+    // Shorthands for the per-part paint attributes.
+    var S2 = ' stroke="var(--tm-i2, currentColor)"';
+    var S3 = ' stroke="var(--tm-i3, currentColor)"';
+    var F2 = ' fill="var(--tm-i2, currentColor)"' + S2;
+    var F3 = ' fill="var(--tm-i3, currentColor)"' + S3;
+
+    // Icon geometry is Lucide v1.33.0, used unmodified except where an animation
+    // needs a part addressable on its own (see `trash` and `download` below).
+    //
+    //   Lucide — ISC License, Copyright (c) 2026 Lucide Icons and Contributors
+    //   `check`, `download`, `upload` and `trash-2` derive from Feather —
+    //   MIT License, Copyright (c) 2013-present Cole Bemis
+    //
+    // Both licences permit redistribution, which is what makes these safe to
+    // ship inside an MIT package. Icon sets that forbid redistribution or
+    // require attribution from *your* end users deliberately are not used here.
+    var PRESET_ICONS = {};
+
+    // ===============================
+    // Preset registry
+    // ===============================
+    // A preset is a presentation layer *on top of* a type: it swaps the icon and
+    // gives it motion. The type still owns colour, the progress bar, the theme
+    // treatment and — importantly — screen-reader urgency, which is why nothing
+    // here can change how a toast is announced.
+    //
+    // Closed registry by design. A name that is not a key here is ignored and the
+    // toast falls back to its type icon, matching how every other enumerated
+    // value in this package degrades.
+    // Filled by preset packs, which are separate files loaded after this one.
+    // The core runtime ships no presets: a project that uses none pays nothing
+    // for them, and a project loads only the packs it asks for in config.
+    var TOAST_PRESETS = {};
+
+    // ===============================
+    // Preset pack registration
+    // ===============================
+    // A pack is a plain script that calls register() with its own icons and
+    // preset definitions. The paint shorthands are handed back out so a pack
+    // does not have to restate them, and so every pack paints from the same
+    // four custom properties the core documents.
+    //
+    // Registering is additive and last-write-wins per key, which lets an
+    // application ship its own pack that overrides one preset without having to
+    // replace the whole file.
+    // Which pack each preset came from. Not used for rendering — it exists so a
+    // page can report what it actually loaded, rather than trusting a list that
+    // drifts from the files.
+    var PRESET_PACK_OF = {};
+
+    window.ToastMagicPresets = {
+        attrs: ICON_ATTRS,
+        s2: S2,
+        s3: S3,
+        f2: F2,
+        f3: F3,
+
+        register: function (icons, presets, pack) {
+            var name;
+
+            for (name in icons) {
+                if (Object.prototype.hasOwnProperty.call(icons, name)) {
+                    PRESET_ICONS[name] = icons[name];
+                }
+            }
+
+            for (name in presets) {
+                if (Object.prototype.hasOwnProperty.call(presets, name)) {
+                    TOAST_PRESETS[name] = presets[name];
+                    if (pack) PRESET_PACK_OF[name] = String(pack);
+                }
+            }
+        }
+    };
+
+    // Returns the preset definition, or null for anything unregistered. The
+    // hasOwnProperty guard keeps inherited property names ("constructor",
+    // "toString") from resolving to something that is not a preset.
+    function resolvePreset(name) {
+        if (typeof name !== "string" || name === "") return null;
+
+        return Object.prototype.hasOwnProperty.call(TOAST_PRESETS, name)
+            ? TOAST_PRESETS[name]
+            : null;
+    }
+
     function getToasterIcon(key) {
-        switch (String(key)) {
+        var name = String(key);
+
+        // Preset icons first; the type and close icons keep their own markup.
+        if (Object.prototype.hasOwnProperty.call(PRESET_ICONS, name)) {
+            return PRESET_ICONS[name];
+        }
+
+        switch (name) {
             case "success":
                 return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path fill="currentColor" d="M405.333,0H106.667C47.786,0.071,0.071,47.786,0,106.667v298.667C0.071,464.214,47.786,511.93,106.667,512h298.667C464.214,511.93,511.93,464.214,512,405.333V106.667C511.93,47.786,464.214,0.071,405.333,0z M426.667,172.352L229.248,369.771c-16.659,16.666-43.674,16.671-60.34,0.012c-0.004-0.004-0.008-0.008-0.012-0.012l-83.563-83.541c-8.348-8.348-8.348-21.882,0-30.229s21.882-8.348,30.229,0l83.541,83.541l197.44-197.419c8.348-8.318,21.858-8.294,30.176,0.053C435.038,150.524,435.014,164.034,426.667,172.352z"/></svg>';
             case "error":
@@ -450,9 +566,18 @@
             var customBtnLink = settings.customBtnLink ? String(settings.customBtnLink) : "";
             var avatar = settings.avatar ? String(settings.avatar) : "";
 
+            // An unregistered preset is ignored rather than rejected: the toast
+            // still renders, with its type icon and no icon animation.
+            var preset = resolvePreset(settings.preset);
+            var presetName = preset ? String(settings.preset) : "";
+
             // Skip rendering if an identical toast is already visible and
             // duplicate prevention is enabled in the config.
-            var duplicateKey = type + "|" + heading + "|" + description;
+            //
+            // The preset is part of the key: "Saved" as `settings-saved` and
+            // "Saved" as `clipboard-copy` are different toasts, and collapsing
+            // them would silently drop the second one's icon.
+            var duplicateKey = type + "|" + presetName + "|" + heading + "|" + description;
             if (config.preventDuplicates) {
                 var existing = Array.prototype.slice.call(container.querySelectorAll(".toast-item"));
                 for (var d = 0; d < existing.length; d++) {
@@ -482,6 +607,8 @@
                 customBtnText: customBtnText,
                 customBtnLink: customBtnLink,
                 avatar: avatar,
+                preset: preset,
+                presetName: presetName,
                 duplicateKey: duplicateKey,
                 timeOut: timeOut,
                 showDuration: showDuration
@@ -562,6 +689,16 @@
             var positionRelative = document.createElement("div");
             positionRelative.className = "toast-magic-relative";
 
+            // `shake` is the one preset animation that moves more than the icon.
+            // It cannot live on .toast-item: `transform` there is owned by the
+            // entrance/exit transition and `translate` by the FLIP stack reflow,
+            // so a third animation would fight both. This inner wrapper is not
+            // transformed by anything, and leaving .toast-item alone keeps the
+            // progress bar (a pseudo-element on it) steady while the content moves.
+            if (spec.preset && spec.preset.shake) {
+                positionRelative.classList.add("tm-anim-shake");
+            }
+
             var content = document.createElement("div");
             content.className = "toast-item-content-center";
 
@@ -581,8 +718,35 @@
                 iconContainer.appendChild(img);
             } else {
                 if (spec.avatar) body.classList.remove("toast-body-avatar");
-                var icon = buildIcon(getToasterIcon(spec.type));
+
+                // A preset swaps the type icon for its own. Note the order: an
+                // avatar still wins, so a rejected avatar URL falls back to the
+                // preset icon when there is one and to the type icon otherwise.
+                var icon = buildIcon(getToasterIcon(spec.preset ? spec.preset.icon : spec.type));
+
+                if (spec.preset) {
+                    iconContainer.classList.add(
+                        "tm-preset",
+                        "tm-preset-" + spec.presetName,
+                        "tm-anim-" + spec.preset.anim
+                    );
+
+                    // setAttribute rather than classList: SVGAnimatedString is
+                    // read-only for `className` in older engines, and these
+                    // elements carry no class of their own to preserve.
+                    if (icon) icon.setAttribute("class", "tm-icon-base");
+                }
+
                 if (icon) iconContainer.appendChild(icon);
+
+                if (spec.preset && spec.preset.particles) {
+                    for (var p = 0; p < spec.preset.particles; p++) {
+                        var particle = document.createElement("i");
+                        particle.className = "tm-particle";
+                        particle.setAttribute("aria-hidden", "true");
+                        iconContainer.appendChild(particle);
+                    }
+                }
             }
 
             var bodyContainer = document.createElement("div");
@@ -767,7 +931,10 @@
                 showCloseBtn: trigger.hasAttribute("data-toast-close-btn"),
                 customBtnText: trigger.getAttribute("data-toast-btn-text") || "",
                 customBtnLink: trigger.getAttribute("data-toast-btn-link") || "",
-                avatar: trigger.getAttribute("data-toast-avatar") || ""
+                avatar: trigger.getAttribute("data-toast-avatar") || "",
+                // Validated in show() against the preset registry, so an
+                // unregistered name here is ignored rather than rendered.
+                preset: trigger.getAttribute("data-toast-preset") || ""
             });
         });
 
@@ -803,6 +970,11 @@
         closeToast: closeToastMagicItem,
         TOAST_TYPES: TOAST_TYPES,
         LINK_PROTOCOLS: LINK_PROTOCOLS,
-        IMAGE_PROTOCOLS: IMAGE_PROTOCOLS
+        IMAGE_PROTOCOLS: IMAGE_PROTOCOLS,
+        // The Livewire bridge reads this rather than keeping its own copy of the
+        // preset list, so the two cannot drift apart.
+        TOAST_PRESETS: TOAST_PRESETS,
+        PRESET_PACK_OF: PRESET_PACK_OF,
+        resolvePreset: resolvePreset
     };
 })();

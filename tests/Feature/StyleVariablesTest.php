@@ -153,7 +153,7 @@ it('keeps each theme own value as the fallback so an unset property is a no-op',
 
     expect($css)
         // Shared defaults.
-        ->toContain('padding: var(--tm-space-container, 1.25rem) !important')
+        ->toContain('padding: var(--tm-space-container, .85rem) !important')
         ->toContain('gap: var(--tm-space-close-gap, .5rem) !important')
         ->toContain('gap: var(--tm-space-icon-gap, .5rem) !important')
         ->toContain('gap: var(--tm-space-content-gap, .25rem)')

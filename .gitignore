@@ -15,3 +15,9 @@ dist
 /.phpunit.cache
 /.phpunit.result.cache
 /coverage
+
+# Local scratch space — demo pages, throwaway scripts, notes. Never shipped.
+/scratchpad
+
+# Byte-code from the preset generator
+__pycache__/

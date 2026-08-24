@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🍞 Laravel Toaster Magic — v2.5
+# 🍞 Laravel Toaster Magic — v2.6
 
 Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
 
@@ -36,6 +36,7 @@ Laravel Toaster Magic provides elegant, fully customizable toast notifications f
 - 🎞️ **Entrance/Exit Animations** — Choose how toasts enter and leave: `slide`, `fade`, `pop`, or `bounce`.
 - 🪄 **Smooth Stack Reflow** — Remaining toasts glide into place (FLIP) when one is added or dismissed.
 - 🖼️ **Avatar Toasts** — Render an image in place of the type icon for notification-style toasts.
+- 🎬 **Animated Icon Presets** — 517 multi-colour animated icons across 11 opt-in packs, layered on top of the existing types. Load only the packs you need. See [PRESETS.md](PRESETS.md).
 - ⚡ **Livewire Ready** — Livewire v3 & v4 via a thin event bridge over the same runtime the standard build uses.
 - 🔒 **Safe by Default** — Toast text is escaped, URLs are protocol-checked, and HTML is opt-in per toast. See [Security](#-security).
 - ♿ **Accessible** — Live-region announcements, a labelled close button, Escape to dismiss, pause on focus, and full `prefers-reduced-motion` support.
@@ -152,6 +153,55 @@ ToastMagic::info('New message', 'Hey, are you free to chat?', [
 ]);
 ```
 
+#### 🎬 Animated icon presets
+
+Pass a `preset` to swap the type icon for an animated one. A preset sits **on
+top of** the type — `success` still owns the colour, the progress bar and how
+the toast is announced:
+
+```php
+ToastMagic::success('Added to cart', 'Nike Air Max ×1', [
+    'preset' => 'cart-add',
+]);
+```
+
+* **Type** = `success` · **Preset** = `cart-add` · **Icon** = cart · **Animation** = bounce
+
+517 presets ship across 11 packs. Enable the ones your project needs:
+
+```php
+// config/laravel-toaster-magic.php
+'presets' => ['general', 'commerce'],   // or 'all', or [] for none
+```
+
+| Pack | Presets | Covers |
+|---|---:|---|
+| `general` | 76 | Loading, connectivity, auth, clipboard, preferences, device state |
+| `commerce` | 121 | Carts, orders, payments, shipping, catalogue, promotions, stock |
+| `saas` | 44 | Subscriptions, workspaces, seats, usage, integrations |
+| `social` | 38 | Messages, posts, connections, reviews, moderation |
+| `devops` | 61 | Builds, deploys, source control, infrastructure, incidents |
+| `media` | 36 | Capture, encoding, publishing, playback |
+| `files` | 37 | Documents, storage, backups, scanning |
+| `health` | 28 | Appointments, prescriptions, vitals, lab work |
+| `travel` | 26 | Flights, stays, ground transport, itineraries |
+| `education` | 25 | Courses, lessons, assignments, grading, library |
+| `crm` | 25 | Leads, deals, accounts, calls, forecasting |
+
+Only the packs you list are loaded — a project pays for nothing else. The core
+runtime ships no presets at all.
+
+Omit `preset` and every existing call renders exactly as before. An unrecognised
+preset is ignored and the toast falls back to its type icon.
+
+For the full list with icons, animations and per-preset examples, see
+[PRESETS.md](PRESETS.md).
+
+> Multi-coloured, with light and dark palettes you can retint per preset or
+> across the set. Geometry is [Lucide](https://lucide.dev) (ISC), animated with
+> CSS — no Lottie player and no runtime dependency.
+> See [colour](PRESETS.md#colour) and [why not Lottie](PRESETS.md#-why-not-lottie).
+
 ---
 
 ### 2. JavaScript Usage
@@ -174,6 +224,9 @@ toastMagic.info({
     showDuration: 300,
     html: false,      // true renders the text as HTML — you own its safety
 });
+
+// Animated icon preset, layered on top of the type
+toastMagic.success({ heading: 'Added to cart', preset: 'cart-add' });
 
 // Programmatically dismiss all visible toasts
 toastMagic.clear();      // or toastMagic.dismissAll();
@@ -211,6 +264,7 @@ Any element carrying `data-toast-type` raises a toast when clicked — no JavaSc
 | `data-toast-btn-text` | Action button label. |
 | `data-toast-btn-link` | Action button URL (protocol-checked). |
 | `data-toast-avatar` | Image URL shown in place of the type icon. |
+| `data-toast-preset` | Animated icon preset. An unregistered name is ignored. |
 
 Attribute content is escaped like any other toast text.
 

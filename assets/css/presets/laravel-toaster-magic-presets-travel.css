@@ -1,0 +1,65 @@
+/*!
+ * Laravel Toaster Magic — preset pack styles: travel
+ *
+ * Flights, stays, ground transport and itineraries.
+ *
+ * Palettes for this pack. The animation vocabulary lives in the core
+ * stylesheet, which must be loaded first.
+ */
+
+/* ----- v2.6 expansion -----
+   Palettes only: the motion is the shared `badge` rule in the core
+   stylesheet, so these presets add no animation CSS of their own. */
+.toast-body-icon-container.tm-preset-flight-booked { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-flight-cancelled { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-flight-delayed { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-check-in-open { --tm-i1: #1d4ed8; --tm-i2: #0284c7; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-boarding-started { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-baggage-checked { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-baggage-lost { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-baggage-extra-added { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-hotel-booked { --tm-i1: #0f766e; --tm-i2: #16a34a; --tm-i3: #ccfbf1; }
+.toast-body-icon-container.tm-preset-hotel-cancelled { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-checkout-reminder { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-route-saved { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-route-changed { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-directions-ready { --tm-i1: #0e7490; --tm-i2: #0284c7; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-ride-booked { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-ride-cancelled { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-driver-arriving { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-bus-departing { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-bus-booked { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-train-booked { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-train-delayed { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-ferry-booked { --tm-i1: #0e7490; --tm-i2: #16a34a; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-campsite-reserved { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-weather-clear { --tm-i1: #b45309; --tm-i2: #16a34a; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-weather-warning { --tm-i1: #475569; --tm-i2: #d97706; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-packing-list-ready { --tm-i1: #c2410c; --tm-i2: #16a34a; --tm-i3: #ffedd5; }
+
+body[theme="dark"] .toast-body-icon-container.tm-preset-flight-booked { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-flight-cancelled { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-flight-delayed { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-check-in-open { --tm-i1: #60a5fa; --tm-i2: #38bdf8; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-boarding-started { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-baggage-checked { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-baggage-lost { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-baggage-extra-added { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-hotel-booked { --tm-i1: #5eead4; --tm-i2: #4ade80; --tm-i3: #134e4a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-hotel-cancelled { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-checkout-reminder { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-route-saved { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-route-changed { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-directions-ready { --tm-i1: #22d3ee; --tm-i2: #38bdf8; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-ride-booked { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-ride-cancelled { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-driver-arriving { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bus-departing { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bus-booked { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-train-booked { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-train-delayed { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-ferry-booked { --tm-i1: #22d3ee; --tm-i2: #4ade80; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-campsite-reserved { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-weather-clear { --tm-i1: #fbbf24; --tm-i2: #4ade80; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-weather-warning { --tm-i1: #cbd5e1; --tm-i2: #fbbf24; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-packing-list-ready { --tm-i1: #fb923c; --tm-i2: #4ade80; --tm-i3: #7c2d12; }

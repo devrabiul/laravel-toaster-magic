@@ -102,13 +102,18 @@ body[theme="dark"] {
    block for its `position: fixed` descendants, and the runtime pins a closing
    toast with `position: fixed` at its viewport coordinates — so the transform
    made dismissal jump in the two centre positions. Auto margins centre the
-   max-content container just as well and leave the containing block alone. */
+   max-content container just as well and leave the containing block alone.
+
+   Do not add `left: auto` to either centre rule. `inset-inline-start` *is* the
+   physical `left` in LTR, so a later `left` declaration in the same rule wins
+   and leaves `left: auto; right: 0` — which anchors the container to the right
+   edge instead of centring it, and to the left edge under RTL. Both centre
+   positions were pinned to a corner that way. */
 .toast-container.toast-top-center {
     inset-block-start: 30px;
     inset-block-end: auto;
     inset-inline-start: 0;
     inset-inline-end: 0;
-    left: auto;
     margin-inline: auto;
     align-items: center;
 }
@@ -136,7 +141,6 @@ body[theme="dark"] {
     inset-block-start: auto;
     inset-inline-start: 0;
     inset-inline-end: 0;
-    left: auto;
     margin-inline: auto;
     align-items: center;
 }
@@ -158,7 +162,7 @@ body[theme="dark"] {
     border: 1px solid transparent;
     box-shadow: var(--toast-magic-box-shadow);
     border-radius: .5rem;
-    padding: var(--tm-space-container, 1.25rem) !important;
+    padding: var(--tm-space-container, .85rem) !important;
     align-items: center !important;
 }
 
@@ -1619,4 +1623,197 @@ body[theme="dark"] .toast-container.theme-compact .toast-item {
     .toast-container .toast-item.hide {
         opacity: 0;
     }
+}
+
+/* ===== Animated icon presets (v2.6) ===== */
+/* A preset is a presentation layer on top of a type: it swaps the icon in the
+   existing `.toast-body-icon-container` slot and gives it motion. Nothing here
+   touches the toast surface, the progress bar or the type colour, so every
+   theme, colour mode, gradient mode, dark mode and RTL keep working untouched.
+
+   Every animation is gated on `.toast-item.show` so it starts when the toast
+   becomes visible rather than when it is inserted — the runtime adds `show`
+   after `showDuration`, so an ungated animation would play behind the scenes
+   and be over before the toast arrived.
+
+   Reduced motion needs no per-preset work: the block at the end of this file
+   already neutralises `.toast-item *` with !important, which wins regardless of
+   source order. Icons still render; they simply do not move. */
+
+.toast-item-content-center .toast-body-icon-container.tm-preset {
+    position: relative;
+    /* Lets the wishlist particles leave the 25px icon box. They are still
+       clipped by `.toast-item { overflow: hidden }`, which is what keeps them
+       inside the toast. */
+    overflow: visible;
+}
+
+.toast-body-icon-container.tm-preset .tm-icon-base {
+    display: block;
+}
+
+/* ===== Preset icon palettes (v2.6) =====
+   Each preset paints its icon from four custom properties (see PRESET_ICONS in
+   the runtime). Every one falls back to `currentColor`, so an icon with no
+   palette still renders in the type accent — which is what the four built-in
+   type icons keep doing.
+
+   Want the whole set monochrome again? One rule undoes all of this:
+
+     .toast-body-icon-container.tm-preset {
+         --tm-i1: currentColor; --tm-i2: currentColor;
+         --tm-i3: currentColor;
+     }
+
+   Dark-mode variants are lifted rather than inverted: the same hue, raised in
+   lightness so it holds contrast against a dark toast surface.                */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* The neon theme puts icons on a dark glowing puck in either colour mode, so it
+   takes the dark palette regardless of the page theme. */
+.toast-container.theme-neon .toast-body-icon-container.tm-preset {
+    --tm-i1: #cbd5e1;
+}
+
+/* ===== Preset icon motion (v2.6) =====
+   Every preset follows the same recipe: parts of the icon move, staggered, and
+   the animation runs twice before coming to rest. Keyframes start and end on
+   the same frame so the second pass continues smoothly instead of snapping.
+
+   That means the icon is at full size and full opacity when idle — these are
+   not entrance animations, and nothing fades in from nothing or settles at a
+   different size than it started. Under `prefers-reduced-motion` the block
+   above pins the iteration count to 1 and the duration to nothing, so an icon
+   simply sits at that resting state.                                         */
+
+/* Shared vocabulary. `PartPulse` and `StrokePulse` are the workhorses: the
+   first scales a shape, the second brightens a stroke that cannot be scaled
+   without shifting off its own centre. */
+@keyframes tmPresetPartPulse {
+    0%, 100% { transform: scale(1); opacity: .65; }
+    50% { transform: scale(1.32); opacity: 1; }
+}
+
+@keyframes tmPresetStrokePulse {
+    0%, 100% { opacity: .55; }
+    50% { opacity: 1; }
+}
+
+@keyframes tmPresetBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2.5px); }
+}
+
+@keyframes tmPresetTilt {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(-5deg); }
+}
+
+/* Scaling or rotating a child of an <svg> resolves against the viewport unless
+   the box is switched to the element's own bounds. */
+.toast-body-icon-container.tm-preset .tm-icon-base circle,
+.toast-body-icon-container.tm-preset .tm-icon-base rect,
+.toast-body-icon-container.tm-preset .tm-icon-base g {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+/* ----- shake (payment-failed) ----- */
+/* Applied to the inner wrapper, never to `.toast-item`: `transform` there is
+   owned by the entrance/exit transition and `translate` by the FLIP reflow.
+   Shaking the wrapper also leaves the progress bar — a pseudo-element on
+   `.toast-item` — steady while the content moves. */
+.toast-container .toast-item.show .toast-magic-relative.tm-anim-shake {
+    animation: tmPresetShake .5s ease-in-out .1s both;
+}
+
+@keyframes tmPresetShake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-5px); }
+    30% { transform: translateX(4px); }
+    45% { transform: translateX(-3px); }
+    60% { transform: translateX(2px); }
+    75% { transform: translateX(-1px); }
+}
+
+/* ----- struck-through icons -----
+   `mic-cut`, `lens-cut` and `pin-lift` all draw a diagonal across the icon. The
+   path carries a `tm-slash` class rather than being addressed by index, so the
+   rule survives an icon gaining or losing a part. */
+.tm-anim-mic-cut .tm-slash,
+.tm-anim-lens-cut .tm-slash,
+.tm-anim-pin-lift .tm-slash {
+    stroke-dasharray: 29;
+    stroke-dashoffset: 29;
+}
+
+.toast-container .toast-item.show .tm-anim-mic-cut .tm-slash,
+.toast-container .toast-item.show .tm-anim-lens-cut .tm-slash,
+.toast-container .toast-item.show .tm-anim-pin-lift .tm-slash {
+    animation: tmPresetStrike .32s ease-out .12s forwards;
+}
+
+/* ===== Shared preset motion (v2.6) =====
+   Presets composed as "base icon + corner badge" all use the `badge`
+   animation: the base carries a slow beat and the badge a sharper pulse just
+   behind it, so the eye lands on the part that says what happened. One pair of
+   rules covers every badge preset in every pack — the icon is what tells them
+   apart, not the motion.
+
+   The badge-less shapes share a small vocabulary chosen for the form: `pulse`
+   for anything with a beat, `spin` for radial shapes, `drive` for vehicles,
+   `rise` for achievement, `flick` for a blink or a toggle. */
+.toast-container .toast-item.show .tm-anim-badge .tm-icon-base {
+    animation: tmPresetBob .58s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-badge .tm-badge-glyph {
+    animation: tmPresetPartPulse .5s ease-in-out .2s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-pulse .tm-accent {
+    animation: tmPresetStrokePulse .55s ease-in-out .1s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-pulse .tm-icon-base {
+    animation: tmPresetBob .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-spin .tm-icon-base {
+    animation: tmPresetSpin .9s cubic-bezier(0.45, 0.05, 0.55, 0.95) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-drive .tm-icon-base {
+    animation: tmPresetDrive .6s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-drive .tm-wheels {
+    animation: tmPresetStrokePulse .5s ease-in-out .16s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-rise .tm-icon-base {
+    animation: tmPresetRise .65s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-flick .tm-icon-base {
+    animation: tmPresetFlash .5s ease-in-out .08s 2;
 }

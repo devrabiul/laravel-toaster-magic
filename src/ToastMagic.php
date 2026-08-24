@@ -59,6 +59,53 @@ class ToastMagic
     public const ANIMATIONS = ['default', 'slide', 'fade', 'pop', 'bounce'];
 
     /**
+     * Preset packs shipped with the package.
+     *
+     * A preset is a presentation layer on top of a type, not a type of its own:
+     * it swaps the icon and gives it motion while `success`/`error`/`warning`/
+     * `info` keep owning colour, the progress bar, theme styling and — since it
+     * is derived from the type alone — how the toast is announced.
+     *
+     * Packs are opt-in through the `presets` config key, so a project ships only
+     * the icons it uses. The core runtime contains no presets at all.
+     *
+     * @var list<string>
+     */
+    public const PRESET_PACKS = [
+        'general', 'commerce', 'saas', 'social', 'devops', 'media', 'files',
+        'health', 'travel', 'education', 'crm',
+    ];
+
+    /**
+     * Every preset in every pack, keyed by pack.
+     *
+     * @return array<string, list<string>>
+     */
+    public static function presetManifest(): array
+    {
+        static $manifest = null;
+
+        if ($manifest === null) {
+            $manifest = (array)require __DIR__ . '/presets.php';
+        }
+
+        return $manifest;
+    }
+
+    /**
+     * Every preset name the package knows about, across all packs.
+     *
+     * Useful for tests and for building a picker. It is deliberately *not* what
+     * a toast is validated against — see {@see enabledPresets()}.
+     *
+     * @return list<string>
+     */
+    public static function allPresets(): array
+    {
+        return array_merge(...array_values(self::presetManifest()));
+    }
+
+    /**
      * The session manager.
      */
     protected Session $session;
@@ -104,9 +151,24 @@ class ToastMagic
      */
     public function styles(): string
     {
-        $stylePath = 'packages/devrabiul/laravel-toaster-magic/css/laravel-toaster-magic.min.css';
+        $base = 'packages/devrabiul/laravel-toaster-magic/css/';
+        $html = $this->styleTag($base . 'laravel-toaster-magic.min.css');
 
-        return '<link rel="stylesheet" href="' . $this->escapeAttribute($this->getDynamicAsset($stylePath)) . '">';
+        // Each enabled pack adds its own palettes and motion. The shared
+        // animation vocabulary is in the core stylesheet above.
+        foreach ($this->enabledPacks() as $pack) {
+            $html .= $this->styleTag($base . 'presets/laravel-toaster-magic-presets-' . $pack . '.min.css');
+        }
+
+        return $html;
+    }
+
+    /**
+     * Build a `<link rel=stylesheet>` tag for a published asset path.
+     */
+    private function styleTag(string $href): string
+    {
+        return '<link rel="stylesheet" href="' . $this->escapeAttribute($this->getDynamicAsset($href)) . '">';
     }
 
     /**
@@ -121,6 +183,11 @@ class ToastMagic
     {
         $base = 'packages/devrabiul/laravel-toaster-magic/js/';
         $scripts = $this->scriptTag($base . 'laravel-toaster-magic.js');
+
+        // Packs register into the runtime, so they must follow it.
+        foreach ($this->enabledPacks() as $pack) {
+            $scripts .= $this->scriptTag($base . 'presets/toast-magic-presets-' . $pack . '.js');
+        }
 
         if (!empty($this->config->get('laravel-toaster-magic.livewire_enabled'))) {
             $scripts .= $this->scriptTag($base . 'livewire-v3/livewire-toaster-magic-v3.js');
@@ -295,6 +362,17 @@ class ToastMagic
             $payload['avatar'] = (string)$messageOptions['avatar'];
         }
 
+        // An unregistered preset — or one from a pack this application has not
+        // enabled — is dropped rather than forwarded, so the toast renders
+        // normally with its type icon. Non-string values (true, 42, an array)
+        // fail the check and are treated as absent.
+        if (isset($messageOptions['preset'])
+            && is_string($messageOptions['preset'])
+            && in_array($messageOptions['preset'], $this->enabledPresets(), true)
+        ) {
+            $payload['preset'] = $messageOptions['preset'];
+        }
+
         // `timeOut => 0` is meaningful (never auto-dismiss), so isset() rather
         // than empty() decides whether the override was supplied.
         if (isset($messageOptions['timeOut']) && is_numeric($messageOptions['timeOut'])) {
@@ -372,6 +450,58 @@ class ToastMagic
             'closeButtonLabel' => (string)($options['closeButtonLabel'] ?? 'Close notification'),
             'containerLabel' => (string)($options['containerLabel'] ?? 'Notifications'),
         ];
+    }
+
+    /**
+     * The preset packs enabled for this application.
+     *
+     * Unknown pack names are ignored rather than concatenated into a script URL,
+     * the same allowlist discipline applied to the theme and position.
+     *
+     * @return list<string>
+     */
+    public function enabledPacks(): array
+    {
+        $configured = $this->config->get('laravel-toaster-magic.presets', ['general']);
+
+        if (is_string($configured)) {
+            $configured = $configured === 'all' ? self::PRESET_PACKS : [$configured];
+        }
+
+        if (!is_array($configured)) {
+            return [];
+        }
+
+        // Ordered by PRESET_PACKS rather than by the config, so the emitted tags
+        // are stable whatever order the developer listed them in.
+        return array_values(array_filter(
+            self::PRESET_PACKS,
+            static fn (string $pack): bool => in_array($pack, $configured, true)
+        ));
+    }
+
+    /**
+     * The presets a toast may actually use, given the enabled packs.
+     *
+     * A preset from a pack that is not loaded is dropped here rather than
+     * emitted, because the runtime would not recognise it either — the toast
+     * would silently render with its type icon. Failing in one place is clearer
+     * than failing in two.
+     *
+     * @return list<string>
+     */
+    public function enabledPresets(): array
+    {
+        $manifest = self::presetManifest();
+        $enabled = [];
+
+        foreach ($this->enabledPacks() as $pack) {
+            foreach ($manifest[$pack] ?? [] as $preset) {
+                $enabled[] = $preset;
+            }
+        }
+
+        return $enabled;
     }
 
     /**

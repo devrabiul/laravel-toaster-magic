@@ -6,5 +6,5 @@
  * git tag; see AssetsServiceProvider::resolveAssetIdentity().
  */
 return [
-    'version' => 'v2.5',
+    'version' => 'v2.6.0',
 ];

@@ -1,5 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { loadRuntime, onlyToast, stubAnimationFrame, toasts } from "./helpers.mjs";
+
+const stylesheet = () => readFileSync(
+    join(dirname(dirname(fileURLToPath(import.meta.url))), "assets/css/laravel-toaster-magic.css"),
+    "utf8",
+);
 
 describe("toast rendering", () => {
     beforeEach(() => {
@@ -333,4 +341,27 @@ describe("toasts are not triggers", () => {
         expect(toasts()[0].dataset.tmClosing).toBe("1");
         expect(toasts()).toHaveLength(1);
     });
+
+    it.each(["toast-top-center", "toast-bottom-center"])(
+        "centres %s without a physical inset overriding the logical one",
+        (position) => {
+            // `inset-inline-start` compiles to `left` in LTR. A `left` declared
+            // later in the same rule wins, leaving `left: auto; right: 0` — the
+            // container ends up pinned to the right edge (left edge in RTL)
+            // rather than centred, and margin-inline: auto cannot rescue a box
+            // that is no longer over-constrained.
+            const css = stylesheet();
+            const rule = css.match(
+                new RegExp(`\\.toast-container\\.${position}\\s*\\{([^}]*)\\}`),
+            );
+
+            expect(rule, `${position} rule not found`).not.toBeNull();
+            expect(rule[1]).toContain("inset-inline-start: 0");
+            expect(rule[1]).toContain("inset-inline-end: 0");
+            expect(rule[1]).toContain("margin-inline: auto");
+            expect(rule[1], `${position} re-declares a physical inset`).not.toMatch(
+                /(^|[\s;])(left|right)\s*:/,
+            );
+        },
+    );
 });

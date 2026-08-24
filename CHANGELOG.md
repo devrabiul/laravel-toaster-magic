@@ -5,6 +5,103 @@ All notable changes to `laravel-toaster-magic` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-08-24
+
+An **"Animated presets"** release. A toast can now carry a `preset` — an animated,
+multi-coloured icon layered on top of its type — chosen from 517 presets across
+11 opt-in packs. Also fixes the two centre positions, which were not centred.
+
+### Added
+
+- **Animated icon presets.** A new per-toast `preset` option swaps the type icon
+  for one of 517 animated icons, covering carts and wishlists, orders
+  through to delivery, payments and refunds, clipboard and sharing, profile,
+  settings and auth, transfers and sync, connection state, stock, coupons,
+  subscriptions, messaging, reviews, bookmarks, scheduling, search and
+  permissions, file validation, exports and printing, 2FA and API keys,
+  archiving, backups and trials, moderation and invites, deploys and
+  maintenance, preferences, rewards and wallets, media capture, pinning,
+  scheduling and rate limits, plus a deep commerce set covering checkout,
+  cancellations and returns, pricing and stock, catalogue and inventory,
+  comparison, gift cards and subscription lifecycle, fulfilment and pickup,
+  catalogue visibility, payouts and disputes, payment methods and installments,
+  address validation and customs, categories, bundles and variants, promotions
+  and rewards, newsletters, review moderation and guest checkout.
+  See [PRESETS.md](PRESETS.md)
+  for the full table.
+
+  Three of them describe a *state* rather than a result — `loading`,
+  `connection-lost` and `session-expiring` — so pair those with `timeOut => 0`
+  and dismiss them when the state changes. `loading` is also the only preset
+  whose animation never stops.
+
+  A preset is a presentation layer **on top of** a type, not a new type: the
+  toast is still `success`/`error`/`warning`/`info`, which keeps owning the
+  colour, the progress bar, the theme treatment and — because urgency is derived
+  from the type alone — how the toast is announced. Available from the facade,
+  JavaScript, Livewire options and a `data-toast-preset` attribute.
+
+  ```php
+  ToastMagic::success('Added to cart', 'Nike Air Max ×1', ['preset' => 'cart-add']);
+  ```
+
+- `ToastMagic::PRESETS` exposes the registered preset names, and the runtime
+  exposes the same registry on `window.ToastMagicInternals.TOAST_PRESETS`. A test
+  asserts the two stay in step, so a preset added to one and forgotten in the
+  other fails CI rather than being silently dropped.
+
+### Fixed
+
+- **`toast-top-center` and `toast-bottom-center` were not centred.** Both rules
+  set `inset-inline-start: 0` and then re-declared `left: auto` a line later.
+  `inset-inline-start` *is* the physical `left` in LTR, so the later declaration
+  won and left `left: auto; right: 0` — anchoring the container to the right
+  edge (the left edge under RTL) instead of centring it, with `margin-inline:
+  auto` unable to help a box that was no longer over-constrained. Removing the
+  redundant physical inset restores both. A test now asserts neither centre rule
+  re-declares a physical inset.
+
+### Notes
+
+- **Nothing changes for existing calls.** `preset` has no default and no global
+  switch; a toast without one renders exactly as before, and the four type icons
+  are untouched. An unregistered or non-string preset is ignored and the toast
+  falls back to its type icon, matching how the theme, animation and position
+  already degrade.
+- Preset icons are stroke-based SVGs drawn from a keyed, closed registry —
+  callers supply a *name*, never markup, so the trusted-icon parser gains no new
+  attack surface.
+- **Every preset animates its own icon, and keeps moving.** All fourteen have a
+  distinct animation built the same way: parts of the icon move in sequence and
+  the motion runs twice before resting, rather than a one-shot entrance that
+  freezes. Keyframes open and close on the same frame so the two passes read as
+  one continuous movement, and every icon idles at full size and full opacity.
+  No preset replaces the icon with a checkmark part-way through. Tests assert
+  that no two presets share an animation, that every animation has a rule behind
+  it, that the motion repeats, and that a preset never renders a second icon
+  over the first.
+- **Icons are multi-coloured.** Each is painted from four custom properties
+  (`--tm-i1`/`--tm-i2`/`--tm-i3`), with
+  a light and a dark palette per preset and a dedicated one for `neon`. Every
+  property falls back to `currentColor`, so resetting them returns the whole set
+  to monochrome tracking the toast type. Tests assert no preset ships a literal
+  colour or a missing palette.
+- Icon geometry is [Lucide](https://lucide.dev) v1.33.0 (ISC; `check`,
+  `download`, `upload` and `trash-2` derive from Feather, MIT). Both licences
+  permit redistribution, unlike the animated-icon libraries that would otherwise
+  be the obvious source. Animation is plain CSS — no Lottie player, so the
+  zero-dependency promise and the 13.8 KB gzipped runtime both hold.
+- Every preset animation is neutralised under `prefers-reduced-motion: reduce`;
+  the icons still render, they just do not move.
+
+**Upgrading:** republish the assets — the CSS and JS both changed.
+
+```bash
+php artisan vendor:publish --tag=toast-magic-assets --force
+```
+
+---
+
 ## [2.5.0] - 2026-08-23
 
 A **"Safe by default"** release. It adds the compact theme and global spacing/typography

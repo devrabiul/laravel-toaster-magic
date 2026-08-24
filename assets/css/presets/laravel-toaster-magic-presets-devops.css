@@ -1,0 +1,202 @@
+/*!
+ * Laravel Toaster Magic — preset pack styles: devops
+ *
+ * Palettes and motion for the devops presets. The shared animation
+ * vocabulary lives in the core stylesheet, which must be loaded first.
+ */
+
+.toast-body-icon-container.tm-preset-sync-complete     { --tm-i1: #475569; --tm-i2: #0ea5e9; }
+.toast-body-icon-container.tm-preset-backup-complete   { --tm-i1: #475569; --tm-i2: #0ea5e9; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-cache-cleared     { --tm-i1: #a16207; --tm-i2: #fcd34d; }
+.toast-body-icon-container.tm-preset-deploy-succeeded  { --tm-i1: #475569; --tm-i2: #f97316; --tm-i3: #94a3b8; }
+.toast-body-icon-container.tm-preset-maintenance-mode  { --tm-i1: #b45309; --tm-i3: #fde68a; }
+.toast-body-icon-container.tm-preset-deploy-failed     { --tm-i1: #64748b; --tm-i2: #dc2626; --tm-i3: #94a3b8; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-sync-complete     { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-backup-complete   { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cache-cleared     { --tm-i1: #fcd34d; --tm-i2: #fde68a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-deploy-succeeded  { --tm-i1: #cbd5e1; --tm-i2: #fb923c; --tm-i3: #64748b; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-maintenance-mode  { --tm-i1: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-deploy-failed     { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #64748b; }
+
+
+/* ----- sync-turn (sync-complete) ----- */
+.toast-container .toast-item.show .tm-anim-sync-turn .tm-icon-base {
+    animation: tmPresetSpin .8s cubic-bezier(0.45, 0.05, 0.55, 0.95) .08s 2;
+}
+
+/* ----- disk-stack (backup-complete) ----- */
+/* The top platter settles onto the stack, which pulses as it lands. */
+.tm-anim-disk-stack .tm-disk {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.toast-container .toast-item.show .tm-anim-disk-stack .tm-disk {
+    animation: tmPresetSettle .6s cubic-bezier(0.175, 0.885, 0.32, 1.275) .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-disk-stack .tm-icon-base path:nth-of-type(2) {
+    animation: tmPresetStrokePulse .55s ease-in-out .24s 2;
+}
+
+@keyframes tmPresetSettle {
+    0%, 100% { transform: translateY(0) scaleX(1); }
+    45% { transform: translateY(-2.5px) scaleX(1.06); }
+}
+
+/* ----- bolt-flash (cache-cleared) ----- */
+.toast-container .toast-item.show .tm-anim-bolt-flash .tm-icon-base {
+    animation: tmPresetFlash .5s ease-in-out .08s 2;
+}
+
+@keyframes tmPresetFlash {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    30% { transform: scale(1.22); opacity: .55; }
+    60% { transform: scale(.96); opacity: 1; }
+}
+
+/* ----- rocket-launch (deploy-succeeded) ----- */
+/* The whole craft lifts along its own diagonal while the exhaust flares. */
+.toast-container .toast-item.show .tm-anim-rocket-launch .tm-icon-base {
+    animation: tmPresetLiftOff .7s ease-in-out .08s 2;
+}
+
+.toast-container .toast-item.show .tm-anim-rocket-launch .tm-flame {
+    animation: tmPresetPartPulse .45s ease-in-out .18s 2;
+}
+
+@keyframes tmPresetLiftOff {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(2px, -3px) scale(1.05); }
+}
+
+/* ----- wrench-turn (maintenance-mode) ----- */
+.toast-container .toast-item.show .tm-anim-wrench-turn .tm-icon-base {
+    animation: tmPresetTurnBack .7s ease-in-out .08s 2;
+}
+
+@keyframes tmPresetTurnBack {
+    0%, 100% { transform: rotate(0); }
+    35% { transform: rotate(-24deg); }
+    70% { transform: rotate(10deg); }
+}
+
+/* ----- crash-shake (deploy-failed) ----- */
+.toast-container .toast-item.show .tm-anim-crash-shake .tm-bolt {
+    animation: tmPresetPartPulse .45s ease-in-out .16s 2;
+}
+
+/* ----- v2.6 expansion -----
+   Palettes only: the motion is the shared `badge` rule in the core
+   stylesheet, so these presets add no animation CSS of their own. */
+.toast-body-icon-container.tm-preset-server-provisioned { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-server-decommissioned { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-server-unreachable { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-server-healthy { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-server-restarting { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-cluster-scaled-up { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-cluster-scaled-down { --tm-i1: #1d4ed8; --tm-i2: #0284c7; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-container-started { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-container-stopped { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-container-crashed { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-image-pushed { --tm-i1: #0e7490; --tm-i2: #16a34a; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-branch-created { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-branch-deleted { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-branch-protected { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-merge-completed { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-merge-conflict { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-pull-request-opened { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-pull-request-merged { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-pull-request-closed { --tm-i1: #475569; --tm-i2: #0284c7; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-review-requested { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-build-passed { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-build-failed { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-build-queued { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-command-completed { --tm-i1: #475569; --tm-i2: #16a34a; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-bug-reported { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-bug-fixed { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-bug-reopened { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-webhook-delivered { --tm-i1: #0e7490; --tm-i2: #16a34a; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-webhook-failed { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-webhook-registered { --tm-i1: #0e7490; --tm-i2: #16a34a; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-cpu-threshold { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-cpu-normal { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-disk-space-low { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-disk-space-critical { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-disk-healthy { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-cloud-synced { --tm-i1: #0e7490; --tm-i2: #16a34a; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-cloud-offline { --tm-i1: #475569; --tm-i2: #dc2626; --tm-i3: #e2e8f0; }
+.toast-body-icon-container.tm-preset-cloud-migrating { --tm-i1: #b45309; --tm-i2: #0284c7; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-snapshot-created { --tm-i1: #1d4ed8; --tm-i2: #16a34a; --tm-i3: #dbeafe; }
+.toast-body-icon-container.tm-preset-rollback-started { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-incident-opened { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-incident-resolved { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-monitoring-enabled { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-monitoring-alert { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+.toast-body-icon-container.tm-preset-uptime-restored { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-environment-promoted { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-environment-locked { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-secret-rotated { --tm-i1: #6d28d9; --tm-i2: #16a34a; --tm-i3: #ede9fe; }
+.toast-body-icon-container.tm-preset-certificate-expiring { --tm-i1: #0e7490; --tm-i2: #d97706; --tm-i3: #cffafe; }
+.toast-body-icon-container.tm-preset-certificate-renewed { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-latency-spike { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-queue-backed-up { --tm-i1: #b45309; --tm-i2: #d97706; --tm-i3: #fef3c7; }
+.toast-body-icon-container.tm-preset-queue-drained { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-cron-succeeded { --tm-i1: #15803d; --tm-i2: #16a34a; --tm-i3: #dcfce7; }
+.toast-body-icon-container.tm-preset-cron-missed { --tm-i1: #be123c; --tm-i2: #dc2626; --tm-i3: #ffe4e6; }
+
+body[theme="dark"] .toast-body-icon-container.tm-preset-server-provisioned { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-server-decommissioned { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-server-unreachable { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-server-healthy { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-server-restarting { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cluster-scaled-up { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cluster-scaled-down { --tm-i1: #60a5fa; --tm-i2: #38bdf8; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-container-started { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-container-stopped { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-container-crashed { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-image-pushed { --tm-i1: #22d3ee; --tm-i2: #4ade80; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-branch-created { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-branch-deleted { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-branch-protected { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-merge-completed { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-merge-conflict { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-pull-request-opened { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-pull-request-merged { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-pull-request-closed { --tm-i1: #cbd5e1; --tm-i2: #38bdf8; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-review-requested { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-build-passed { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-build-failed { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-build-queued { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-command-completed { --tm-i1: #cbd5e1; --tm-i2: #4ade80; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bug-reported { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bug-fixed { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-bug-reopened { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-webhook-delivered { --tm-i1: #22d3ee; --tm-i2: #4ade80; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-webhook-failed { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-webhook-registered { --tm-i1: #22d3ee; --tm-i2: #4ade80; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cpu-threshold { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cpu-normal { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-disk-space-low { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-disk-space-critical { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-disk-healthy { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cloud-synced { --tm-i1: #22d3ee; --tm-i2: #4ade80; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cloud-offline { --tm-i1: #cbd5e1; --tm-i2: #f87171; --tm-i3: #334155; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cloud-migrating { --tm-i1: #fbbf24; --tm-i2: #38bdf8; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-snapshot-created { --tm-i1: #60a5fa; --tm-i2: #4ade80; --tm-i3: #1e3a8a; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-rollback-started { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-incident-opened { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-incident-resolved { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-monitoring-enabled { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-monitoring-alert { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-uptime-restored { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-environment-promoted { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-environment-locked { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-secret-rotated { --tm-i1: #c4b5fd; --tm-i2: #4ade80; --tm-i3: #4c1d95; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-certificate-expiring { --tm-i1: #22d3ee; --tm-i2: #fbbf24; --tm-i3: #164e63; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-certificate-renewed { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-latency-spike { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-queue-backed-up { --tm-i1: #fbbf24; --tm-i2: #fbbf24; --tm-i3: #78350f; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-queue-drained { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cron-succeeded { --tm-i1: #4ade80; --tm-i2: #4ade80; --tm-i3: #14532d; }
+body[theme="dark"] .toast-body-icon-container.tm-preset-cron-missed { --tm-i1: #fb7185; --tm-i2: #f87171; --tm-i3: #881337; }
