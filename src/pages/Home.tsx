@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toastMagic, type ToastMagicConfig } from "toaster-magic";
 import { CodeBlock } from "../components/CodeBlock";
+import { PresetShowcase } from "../components/PresetShowcase";
 import { Seo } from "../components/Seo";
 import type { DocsTheme } from "../data/reference";
 import { routeByPath } from "../data/routes";
@@ -43,12 +44,13 @@ const THEME_IDS = [
   "minimal",
   "neumorphism",
   "neumorphic",
+  "compact",
 ] as const;
 
 const FEATURES = [
   "⚡ Livewire v3 & v4",
-  "🎨 8 themes",
-  "🎬 4 animations",
+  "🎨 9 themes",
+  "🎬 517 animated presets",
   "🌙 Dark mode",
   "🌍 RTL support",
   "✅ Zero dependencies",
@@ -92,13 +94,13 @@ export default function Home() {
           </div>
 
           <div className="split-hero__copy">
-            <span className="hero__badge">🎉 v2.4 · Livewire v3 &amp; v4 · MIT licensed</span>
+            <span className="hero__badge">🎉 v2.6 · 517 animated presets · Livewire v3 &amp; v4</span>
             <h1 className="split-hero__title">
               Laravel toasts that feel <span className="grad">magic</span>
             </h1>
             <p className="split-hero__subtitle">
-              A lightweight, dependency-free toast package for Laravel — 8 themes, smooth animations,
-              and first-class Livewire support. No jQuery, Bootstrap, or Tailwind.
+              A lightweight, dependency-free toast package for Laravel — 9 themes, 517 animated
+              icon presets, and first-class Livewire support. No jQuery, Bootstrap, or Tailwind.
             </p>
             <div className="hero__cta">
               <Link className="btn btn--primary" to="/docs/getting-started">
@@ -198,9 +200,22 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Animated presets — the v2.6 headline feature */}
+        <section className="home-section home-section--presets">
+          <span className="home-section__eyebrow">New in v2.6</span>
+          <h2 className="home-section__title">
+            517 animated <span className="grad">presets</span>
+          </h2>
+          <p className="home-section__sub">
+            An animated, multi-coloured icon layered on top of the toast type you already use.
+            Pick a pack, click an icon — these are the real assets, firing a real toast.
+          </p>
+          <PresetShowcase />
+        </section>
+
         {/* Interactive theme row */}
         <section className="home-section">
-          <h2 className="home-section__title">Eight themes, one config line</h2>
+          <h2 className="home-section__title">Nine themes, one config line</h2>
           <p className="home-section__sub">
             Set <code>'theme'</code> in <code>config/laravel-toaster-magic.php</code> — or click one
             to preview it live.

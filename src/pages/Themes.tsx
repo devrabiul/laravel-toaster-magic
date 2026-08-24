@@ -24,6 +24,15 @@ const PER_TOAST = `use Devrabiul\\ToastMagic\\Facades\\ToastMagic;
 // The theme comes from config — every toast in the app shares it.
 ToastMagic::success('Saved', 'Your profile is up to date.');`;
 
+const COMPACT_CONFIG = `<?php
+
+// config/laravel-toaster-magic.php
+return [
+    'options' => [
+        'theme' => 'compact',
+    ],
+];`;
+
 const NEUMORPHIC_CONFIG = `<?php
 
 // config/laravel-toaster-magic.php
@@ -91,7 +100,7 @@ export default function Themes() {
       </p>
       <TypeButtons />
 
-      <H2 id="the-themes">The eight themes</H2>
+      <H2 id="the-themes">The nine themes</H2>
       <p>
         Every value below is a valid <code>'theme'</code> setting. Choose the one that best matches
         your application's design language.
@@ -165,6 +174,40 @@ export default function Themes() {
       <Callout kind="tip">
         Try it on the <Link to="/">home page</Link> — pick <code>neumorphic</code> from the theme row
         to fire a live toast in it.
+      </Callout>
+
+      <H2 id="compact">Compact</H2>
+      <p>
+        Added in <strong>v2.5</strong>, <code>compact</code> is a smaller, denser take on the default
+        toast — for interfaces where a notification should stay out of the way.
+      </p>
+      <CodeBlock code={COMPACT_CONFIG} language="php" filename="config/laravel-toaster-magic.php" />
+      <ul>
+        <li>
+          <strong>Tighter everywhere</strong> — padding, the icon-to-text gap, the title/description
+          gap and the space around the controls are all pulled in.
+        </li>
+        <li>
+          <strong>Single control row</strong> — the close and action buttons share one row instead of
+          stacking.
+        </li>
+        <li>
+          <strong>Slimmer furniture</strong> — the progress bar drops to 2px and the track narrows
+          from 370px to 320px.
+        </li>
+        <li>
+          <strong>Deliberately plain</strong> — a solid surface, a hairline border and semantic
+          accents, with no gradients, blur or glass effects.
+        </li>
+      </ul>
+      <p>
+        It supports every toast type, avatar toasts, color mode, animations, dark mode and RTL, like
+        any other theme.
+      </p>
+      <Callout kind="tip">
+        Want it tighter still — or want any <em>other</em> theme tightened? The global{" "}
+        <code>spacing</code> and <code>typography</code> options work with every theme, not just this
+        one. See <Link to="/docs/configuration">Configuration</Link>.
       </Callout>
 
       <H2 id="theme-reference">Theme reference table</H2>

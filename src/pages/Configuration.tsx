@@ -33,19 +33,40 @@ return [
         'color_mode'        => false,
         'pauseOnHover'      => true,
         'animation'         => 'default',
+
+        // Escape toast text. Leave this on — turning it off
+        // makes every toast render raw HTML.
+        'escape_html'       => true,
+
+        // Gap between consecutive queued toasts, in ms.
+        'stagger'           => 800,
+
+        // Most toasts on screen at once; 0 = no limit.
+        'maxVisible'        => 15,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Animated icon presets
+    |--------------------------------------------------------------------------
+    |
+    | Preset packs to load. Each pack is a separate script and stylesheet, so a
+    | project ships only the icons it actually uses — the core runtime contains
+    | none. Use 'all' for every pack, or [] for none.
+    |
+    */
+    'presets' => ['general'],
 
     /*
     |--------------------------------------------------------------------------
     | Livewire integration
     |--------------------------------------------------------------------------
     |
-    | Enable event-based dispatching from Livewire components. Set the version
-    | to match the Livewire major release your app runs ('v3' or 'v4').
+    | Enable event-based dispatching from Livewire components. One bridge serves
+    | both Livewire v3 and v4 — there is no version to select.
     |
     */
-    'livewire_enabled'  => false,
-    'livewire_version'  => 'v3',
+    'livewire_enabled' => false,
 ];`;
 
 const OVERRIDE = `use Devrabiul\\ToastMagic\\Facades\\ToastMagic;

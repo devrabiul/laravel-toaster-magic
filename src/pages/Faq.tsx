@@ -7,8 +7,7 @@ import { routeByPath } from "../data/routes";
 const PUBLISH = `php artisan vendor:publish --provider="Devrabiul\\ToastMagic\\ToastMagicServiceProvider"`;
 
 const LIVEWIRE = `// config/laravel-toaster-magic.php
-'livewire_enabled' => true,
-'livewire_version' => 'v3', // or 'v4'`;
+'livewire_enabled' => true, // one bridge serves both v3 and v4`;
 
 const ESCAPE = `ToastMagic::success('Welcome, ' . e($user->name) . '!');`;
 
@@ -76,7 +75,7 @@ export default function Faq() {
       <H2 id="theme-position">How do I change the theme or position?</H2>
       <p>
         Set <code>theme</code> and <code>positionClass</code> under the <code>options</code> key in the
-        config file (or override them per toast). There are eight themes and six positions:
+        config file (or override them per toast). There are nine themes and six positions:
       </p>
       <CodeBlock code={THEME} language="php" />
       <p>

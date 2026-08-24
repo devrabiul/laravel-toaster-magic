@@ -726,6 +726,488 @@ html.dark .page-meta__section {
   border-top: 1px solid var(--border);
 }
 
+/* Section eyebrow — small label above a home section title */
+.home-section__eyebrow {
+  /* .home-section itself is not centred — the title and sub each centre
+     themselves — so the eyebrow has to centre on its own. */
+  display: block;
+  width: fit-content;
+  margin: 0 auto 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--brand-ring);
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+html.dark .home-section__eyebrow {
+  color: var(--brand);
+}
+
+/* ---- Home: animated presets hero ------------------------------------------ */
+.presets-hero {
+  --tile-accent: var(--border-strong);
+  margin: 28px 0 0;
+  text-align: start;
+}
+
+/* Pack switcher */
+.presets-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.presets-hero__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.presets-hero__chip:hover {
+  border-color: var(--border-strong);
+}
+.presets-hero__chip.is-active {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+  font-weight: 700;
+}
+.presets-hero__chip-count {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.presets-hero__chip.is-active .presets-hero__chip-count {
+  color: inherit;
+}
+
+/* Icon wall */
+.presets-hero__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.presets-hero__tile {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 20px 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(115% 80% at 50% -25%, var(--tile-glow) 0%, transparent 60%),
+    var(--bg-elevated);
+  color: var(--text);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.presets-hero__tile::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--tile-accent), transparent);
+  opacity: 0.5;
+  transition: opacity 0.18s ease;
+}
+.presets-hero__tile:hover {
+  border-color: var(--tile-accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+}
+.presets-hero__tile:hover::before,
+.presets-hero__tile.is-fired::before {
+  opacity: 1;
+}
+.presets-hero__tile.is-fired {
+  border-color: var(--tile-accent);
+}
+.presets-hero__tile--success {
+  --tile-accent: #22c55e;
+  --tile-glow: color-mix(in srgb, #22c55e 13%, transparent);
+}
+.presets-hero__tile--error {
+  --tile-accent: #ef4444;
+  --tile-glow: color-mix(in srgb, #ef4444 13%, transparent);
+}
+.presets-hero__tile--warning {
+  --tile-accent: #f59e0b;
+  --tile-glow: color-mix(in srgb, #f59e0b 13%, transparent);
+}
+.presets-hero__tile--info {
+  --tile-accent: #0ea5e9;
+  --tile-glow: color-mix(in srgb, #0ea5e9 13%, transparent);
+}
+.presets-hero__icon {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.presets-hero__icon svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+.presets-hero__skeleton {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--border);
+  opacity: 0.7;
+}
+.presets-hero__name {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+.presets-hero__tile:hover .presets-hero__name,
+.presets-hero__tile.is-fired .presets-hero__name {
+  color: var(--text);
+}
+.presets-hero__hint {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-faint);
+}
+
+/* Code + stats footer */
+.presets-hero__footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  margin-top: 28px;
+}
+.presets-hero__code .code-block {
+  margin: 0;
+  height: 100%;
+}
+.presets-hero__cta {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+}
+.presets-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.presets-hero__stat {
+  display: grid;
+  gap: 2px;
+}
+.presets-hero__stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--brand-strong);
+  font-variant-numeric: tabular-nums;
+}
+html.dark .presets-hero__stat-value {
+  color: var(--brand);
+}
+.presets-hero__stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.presets-hero__blurb {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.presets-hero__cta .btn {
+  justify-self: start;
+}
+
+@media (max-width: 1000px) {
+  .presets-hero__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .presets-hero__footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .presets-hero__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .presets-hero__stats {
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presets-hero__tile:hover {
+    transform: none;
+  }
+}
+
+/* Live preset playground */
+.preset-lab {
+  --lab-pad: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  text-align: start;
+  /* Explicit bottom margin: overflow:hidden blocks margin collapse, so the
+     heading that follows on the docs page needs the gap declared here. */
+  margin: 28px 0;
+  overflow: hidden;
+}
+
+/* Toolbar — sits on its own tinted panel so the controls read as one group,
+   visually separated from the preset grid below. */
+.preset-lab__controls {
+  display: grid;
+  gap: 20px;
+  padding: var(--lab-pad);
+  background: var(--bg-subtle, var(--bg));
+  border-bottom: 1px solid var(--border);
+}
+.preset-lab__row {
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr);
+  gap: 20px 28px;
+  align-items: end;
+}
+.preset-lab__field {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  align-content: start;
+}
+.preset-lab__field--grow {
+  min-width: 0;
+}
+.preset-lab__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  line-height: 1;
+}
+.preset-lab__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preset-lab__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.preset-lab__chip:hover {
+  border-color: var(--brand);
+}
+.preset-lab__chip.is-active {
+  border-color: var(--brand);
+  background: var(--brand-soft, var(--bg-elevated));
+  color: var(--brand-strong);
+  font-weight: 700;
+}
+.preset-lab__chip-count {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.preset-lab__chip.is-active .preset-lab__chip-count {
+  color: inherit;
+}
+.preset-lab__search {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+.preset-lab__search::placeholder {
+  color: var(--text-faint);
+}
+.preset-lab__search:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 1px;
+}
+
+/* Results region */
+.preset-lab__results {
+  padding: 18px var(--lab-pad) var(--lab-pad);
+}
+.preset-lab__hint {
+  margin: 0 0 14px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.preset-lab__hint--after {
+  margin: 14px 0 0;
+}
+.preset-lab__error {
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border: 1px solid color-mix(in srgb, #dc3545 40%, var(--border));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, #dc3545 8%, transparent);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #dc3545;
+}
+/* Scroll shell — owns the "more below" fade so the grid itself stays a plain
+   scroll container. The fade only appears while there is actually more to
+   reach, so a short filtered list has no phantom gradient over its last row. */
+.preset-lab__scroll {
+  position: relative;
+}
+.preset-lab__scroll::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 56px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  background: linear-gradient(to bottom, transparent, var(--bg-elevated) 85%);
+}
+.preset-lab__scroll.has-more::after {
+  opacity: 1;
+}
+.preset-lab__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+  /* 7 rows of 40px plus their 10px gaps — a whole number of rows, so the
+     scroll edge never slices a button in half. */
+  max-height: 354px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Keeps the focus ring and hover lift off the scrollbar. */
+  padding: 2px 8px 2px 2px;
+  margin: 0 -8px 0 -2px;
+}
+.preset-lab__preset {
+  min-height: 40px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.25;
+  text-align: start;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+.preset-lab__preset:hover:not(:disabled) {
+  border-color: var(--brand);
+  background: var(--bg-subtle, var(--bg-elevated));
+  transform: translateY(-1px);
+}
+.preset-lab__preset.is-fired {
+  border-color: var(--brand);
+  background: var(--brand-soft, var(--bg-elevated));
+  color: var(--brand-strong);
+  font-weight: 700;
+}
+.preset-lab__preset:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+.preset-lab__note {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-faint);
+}
+
+@media (max-width: 720px) {
+  .preset-lab {
+    --lab-pad: 18px;
+  }
+  .preset-lab__row {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .preset-lab__grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    max-height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preset-lab__preset:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+
 /* Interactive theme row */
 .themes-line__chips {
   display: flex;

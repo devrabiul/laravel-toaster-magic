@@ -18,7 +18,7 @@ export const ROUTES: RouteMeta[] = [
     title: "Laravel Toaster Magic — Elegant toast notifications for Laravel",
     label: "Introduction",
     description:
-      "A lightweight, dependency-free toast notification package for Laravel with 8 beautiful themes, smooth animations, and first-class Livewire v3 & v4 support.",
+      "A lightweight, dependency-free toast notification package for Laravel with 9 beautiful themes, 517 animated icon presets, and first-class Livewire v3 & v4 support.",
     section: "Overview",
     keywords: ["laravel", "toast", "notification", "livewire", "intro", "overview", "home"],
   },
@@ -56,7 +56,7 @@ export const ROUTES: RouteMeta[] = [
     path: "/docs/themes",
     title: "Themes",
     description:
-      "Eight built-in themes: default, material, iOS, glassmorphism, neon, minimal, neumorphism, and neumorphic.",
+      "Nine built-in themes: default, material, iOS, glassmorphism, neon, minimal, neumorphism, neumorphic, and compact.",
     section: "Guides",
     keywords: [
       "theme",
@@ -67,6 +67,7 @@ export const ROUTES: RouteMeta[] = [
       "minimal",
       "neumorphism",
       "neumorphic",
+      "compact",
       "soft ui",
       "style",
     ],
@@ -77,6 +78,28 @@ export const ROUTES: RouteMeta[] = [
     description: "Entrance and exit animations plus the smooth FLIP stack reflow.",
     section: "Guides",
     keywords: ["animation", "slide", "fade", "pop", "bounce", "motion", "flip"],
+  },
+  {
+    path: "/docs/presets",
+    title: "Animated Presets",
+    label: "Animated Presets",
+    description:
+      "517 animated, multi-coloured icon presets across 11 opt-in packs — layered on top of the toast type you already use.",
+    section: "Guides",
+    keywords: [
+      "preset",
+      "presets",
+      "animated",
+      "icon",
+      "icons",
+      "animation",
+      "pack",
+      "packs",
+      "lucide",
+      "cart-add",
+      "commerce",
+      "devops",
+    ],
   },
   {
     path: "/docs/positioning",

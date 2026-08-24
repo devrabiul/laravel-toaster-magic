@@ -19,8 +19,7 @@ const POSITION = `// config/laravel-toaster-magic.php
 ],`;
 
 const LIVEWIRE = `// config/laravel-toaster-magic.php
-'livewire_enabled' => true,
-'livewire_version' => 'v4', // must match your installed Livewire major version`;
+'livewire_enabled' => true,`;
 
 const REPUBLISH = `php artisan vendor:publish \\
     --provider="Devrabiul\\ToastMagic\\ToastMagicServiceProvider" --force`;
@@ -61,15 +60,15 @@ export default function Troubleshooting() {
 
       <H2 id="livewire-not-firing">Livewire toasts don't fire</H2>
       <p>
-        Event-based dispatching is opt-in. Make sure <code>livewire_enabled</code> is <code>true</code> and{" "}
-        <code>livewire_version</code> exactly matches the Livewire major version installed in your app:
+        Event-based dispatching is opt-in. Make sure <code>livewire_enabled</code> is{" "}
+        <code>true</code>:
       </p>
       <CodeBlock code={LIVEWIRE} language="php" />
       <Callout kind="warning">
-        A mismatched <code>livewire_version</code> (for example <code>'v3'</code> while running Livewire 4)
-        is the usual reason a dispatched <code>toastMagic</code> event is silently ignored. Confirm your
-        component dispatches the event with the <code>status</code>, <code>title</code>, and{" "}
-        <code>message</code> arguments — see <Link to="/docs/integration/livewire">Livewire</Link>.
+        There is no version key to match — one bridge serves both Livewire v3 and v4. If a
+        dispatched <code>toastMagic</code> event is silently ignored, confirm your component
+        dispatches it with the <code>status</code>, <code>title</code>, and <code>message</code>{" "}
+        arguments — see <Link to="/docs/integration/livewire">Livewire</Link>.
       </Callout>
 
       <H2 id="stale-assets">Stale assets after an update</H2>

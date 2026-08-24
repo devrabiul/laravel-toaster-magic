@@ -9,7 +9,7 @@ const BUMP = `# Move to the latest release (or pin the major you want).
 composer require devrabiul/laravel-toaster-magic
 
 # Or edit composer.json, then update:
-#   "devrabiul/laravel-toaster-magic": "^2.4"
+#   "devrabiul/laravel-toaster-magic": "^2.6"
 composer update devrabiul/laravel-toaster-magic`;
 
 const REPUBLISH = `# After a MAJOR upgrade, re-publish the assets and config.

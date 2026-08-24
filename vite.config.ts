@@ -45,9 +45,16 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
-          highlight: ["prism-react-renderer"],
+        // Rolldown (Vite 7+) only accepts the function form — the object form
+        // that worked under Rollup throws "manualChunks is not a function".
+        manualChunks(id: string) {
+          if (/[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/.test(id)) {
+            return "react-vendor";
+          }
+          if (/[\\/]node_modules[\\/]prism-react-renderer[\\/]/.test(id)) {
+            return "highlight";
+          }
+          return undefined;
         },
       },
     },

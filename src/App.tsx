@@ -14,6 +14,7 @@ import QuickStart from "./pages/QuickStart";
 import BasicUsage from "./pages/BasicUsage";
 import Themes from "./pages/Themes";
 import Animations from "./pages/Animations";
+import Presets from "./pages/Presets";
 import Positioning from "./pages/Positioning";
 import Configuration from "./pages/Configuration";
 import ColorGradientMode from "./pages/ColorGradientMode";
@@ -107,6 +108,7 @@ export default function App() {
               <Route path="/docs/basic-usage" element={<BasicUsage />} />
               <Route path="/docs/themes" element={<Themes />} />
               <Route path="/docs/animations" element={<Animations />} />
+              <Route path="/docs/presets" element={<Presets />} />
               <Route path="/docs/positioning" element={<Positioning />} />
               <Route path="/docs/configuration" element={<Configuration />} />
               <Route path="/docs/color-gradient-mode" element={<ColorGradientMode />} />

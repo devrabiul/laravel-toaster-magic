@@ -14,6 +14,7 @@ const TOAST_EXAMPLE = `ToastMagic::success('Order shipped', 'Your order is on it
     'timeOut'       => 8000,  // per-toast auto-dismiss (ms)
     'showDuration'  => 300,   // per-toast show delay (ms)
     'avatar'        => '/img/courier.png',
+    'preset'        => 'order-shipped', // animated icon (v2.6)
 ]);`;
 
 const CONFIG_EXAMPLE = `// config/laravel-toaster-magic.php
@@ -29,9 +30,12 @@ return [
         'color_mode'        => false,
         'pauseOnHover'      => true,
         'animation'         => 'default',
+        'escape_html'       => true,
+        'stagger'           => 800,
+        'maxVisible'        => 15,
     ],
-    'livewire_enabled'  => false,
-    'livewire_version'  => 'v3',
+    'presets'          => ['general'],
+    'livewire_enabled' => false,
 ];`;
 
 export default function Options() {

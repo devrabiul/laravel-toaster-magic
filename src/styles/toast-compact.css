@@ -1,0 +1,127 @@
+/*
+ * Compact theme — local shim for the live demos.
+ *
+ * The published npm runtime (toaster-magic@1.0.0) predates the compact theme
+ * added in package v2.5, so its stylesheet carries no `theme-compact` rules.
+ * These are copied verbatim from the package's own
+ * assets/css/laravel-toaster-magic.css so the theme chip on the home page
+ * renders what a real application would see.
+ *
+ * Mirrors the same approach already used by toast-neumorphic.css.
+ */
+
+/* ===== Compact theme (v2.5) ===== */
+/* A tightened version of the default surface — same solid background, same
+   semantic accents — with every piece of spacing pulled in: the container gap,
+   the item padding, the icon-to-text gap, the gap between the title and the
+   description, and the space around the close/action controls. Deliberately
+   plain: no gradients, no blur, no decorative depth — the only shadow is a
+   single hairline lift on the shared --toast-magic-box-shadow variable. */
+.toast-container.theme-compact {
+    gap: .375rem;
+}
+
+.toast-container.theme-compact .toast-item {
+    /* Narrower track, with the reduced padding kept inside it. */
+    --tm-toast-max-width: 320px;
+    --toast-magic-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .01);
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: .375rem;
+    padding: var(--tm-space-container, .5rem .625rem) !important;
+}
+
+body[theme="dark"] .toast-container.theme-compact .toast-item {
+    --toast-magic-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Slimmer progress bar so it doesn't add visual height. */
+.toast-container.theme-compact .toast-item::before,
+.toast-container.theme-compact .toast-item::after {
+    height: 2px;
+}
+
+.toast-container.theme-compact .toast-item-content-center {
+    align-items: center;
+    gap: var(--tm-space-close-gap, .5rem) !important;
+}
+
+.toast-container.theme-compact .toast-item-content-center .toast-body,
+.toast-container.theme-compact .toast-item-content-center .toast-body.toast-body-avatar {
+    align-items: center;
+    gap: var(--tm-space-icon-gap, .4375rem) !important;
+}
+
+.toast-container.theme-compact .toast-item-content-center .toast-body-container {
+    gap: var(--tm-space-content-gap, .0625rem);
+}
+
+/* The bundled icons ship with mixed intrinsic sizes; normalize them. */
+.toast-container.theme-compact .toast-body-icon-container svg {
+    width: 1.0625rem;
+    height: 1.0625rem;
+}
+
+.toast-container.theme-compact .toast-avatar {
+    width: 28px;
+    height: 28px;
+}
+
+.toast-container.theme-compact .toast-body-title {
+    min-height: 0;
+}
+
+.toast-container.theme-compact .toast-body h4 {
+    font-size: var(--tm-font-title-size, .8125rem);
+    font-weight: var(--tm-font-title-weight, 600);
+    line-height: var(--tm-line-height, 1.2);
+}
+
+.toast-container.theme-compact .toast-body p {
+    font-size: var(--tm-font-description-size, .75rem);
+    line-height: var(--tm-line-height, 1.35);
+}
+
+/* Controls share a single row, tight against the text instead of spread down
+   the full height of the toast. */
+.toast-container.theme-compact .toast-body-end {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--tm-space-close-gap, .375rem);
+}
+
+.toast-container.theme-compact .toast-close-btn {
+    width: .875rem;
+    height: .875rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.toast-container.theme-compact .toast-close-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+.toast-container.theme-compact .toast-custom-btn {
+    font-size: .6875rem;
+    padding: .1875rem .4375rem;
+    border-radius: .25rem;
+}
+
+@media (max-width: 575px) {
+    /* Match the shared mobile track; the theme's own width would otherwise win. */
+    .toast-container.theme-compact .toast-item {
+        --tm-toast-max-width: 100%;
+    }
+}
+
+/* The compact theme deliberately shrinks its controls, but not below the
+   minimum target size — the icon shrinks, the hit area does not. */
+.toast-container.theme-compact .toast-close-btn {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}

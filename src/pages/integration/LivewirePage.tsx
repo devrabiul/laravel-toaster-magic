@@ -14,7 +14,6 @@ return [
     ],
 
     'livewire_enabled' => true,   // turn on the Livewire bridge
-    'livewire_version' => 'v3',   // 'v3' or 'v4' — match your Livewire install
 ];`;
 
 const SIMPLE = `// Inside any Livewire component method.
@@ -89,10 +88,10 @@ export default function LivewirePage() {
       </p>
       <CodeBlock code={CONFIG} language="php" filename="config/laravel-toaster-magic.php" />
       <Callout kind="info">
-        Set <code>livewire_version</code> to <code>'v3'</code> or <code>'v4'</code>. The package
-        registers the matching listener so dispatched events are picked up on the front end
-        automatically — no extra JavaScript or Blade wiring beyond the standard{" "}
-        <Link to="/docs/integration/blade">asset setup</Link>.
+        <code>livewire_enabled</code> is all you need. One bridge serves both Livewire v3 and v4 —
+        they dispatch browser events identically, so there is no version to select. Dispatched
+        events are picked up on the front end automatically, with no extra JavaScript or Blade
+        wiring beyond the standard <Link to="/docs/integration/blade">asset setup</Link>.
       </Callout>
 
       <H2 id="dispatching-a-toast">Dispatching a toast</H2>
@@ -124,10 +123,10 @@ export default function LivewirePage() {
       <CodeBlock code={COMPAT} language="php" />
 
       <Callout kind="warning">
-        <strong>Livewire v3 &amp; v4.</strong> Both versions are fully supported — the only
-        difference is the <code>livewire_version</code> value in config. On v4 the dispatch API is
-        identical, so components written for v3 continue to work after upgrading; just bump the
-        config value to <code>'v4'</code>. Remember to escape any user-supplied text in{" "}
+        <strong>Livewire v3 &amp; v4.</strong> Both versions are fully supported by the same
+        bridge — there is nothing to configure per version. The dispatch API is identical, so
+        components written for v3 continue to work unchanged after upgrading to v4. Remember to
+        escape any user-supplied text in{" "}
         <code>title</code> or <code>message</code> — see{" "}
         <Link to="/docs/security">Security</Link>.
       </Callout>

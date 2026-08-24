@@ -23,7 +23,7 @@ export const CONFIG_OPTIONS: PropRow[] = [
     name: "theme",
     type: "string",
     default: `'default'`,
-    description: "One of the eight built-in visual themes.",
+    description: "One of the nine built-in visual themes.",
   },
   {
     name: "animation",
@@ -73,7 +73,81 @@ export const CONFIG_OPTIONS: PropRow[] = [
     default: "false",
     description: "Colored toast background matching the toast type.",
   },
+  {
+    name: "stagger",
+    type: "int",
+    default: "800",
+    description:
+      "Gap in milliseconds between consecutive queued toasts. The entrance animation runs for 500ms, so this staggers them into a cascade rather than a burst. Was 250 before v2.6.",
+  },
+  {
+    name: "maxVisible",
+    type: "int",
+    default: "15",
+    description:
+      "Most toasts on screen at once; the oldest is dismissed to make room. Use 0 for no limit. Added in v2.6.",
+  },
+  {
+    name: "escape_html",
+    type: "bool",
+    default: "true",
+    description:
+      "Escape toast text. Leave this on — turning it off makes every toast render raw HTML.",
+  },
+  {
+    name: "spacing",
+    type: "array",
+    default: "[...]",
+    description:
+      "Padding and gaps for any theme: enable, container, icon_gap, content_gap, close_gap.",
+  },
+  {
+    name: "typography",
+    type: "array",
+    default: "[...]",
+    description:
+      "Font sizes and weights for any theme: enable, title_size, description_size, plus optional title_weight, description_weight and line_height.",
+  },
+  {
+    name: "closeButtonLabel",
+    type: "string",
+    default: `'Close notification'`,
+    description: "Accessible name for the close button.",
+  },
+  {
+    name: "containerLabel",
+    type: "string",
+    default: `'Notifications'`,
+    description: "Accessible name for the toast region.",
+  },
 ];
+
+export interface PresetPack {
+  name: string;
+  covers: string;
+  count: number;
+}
+
+/** config/laravel-toaster-magic.php → 'presets'. Mirrors src/presets.php. */
+export const PRESET_PACKS: PresetPack[] = [
+  { name: "general", covers: "Loading, connectivity, auth, clipboard, preferences", count: 76 },
+  {
+    name: "commerce",
+    covers: "Carts, orders, payments, shipping, catalogue, promotions, stock",
+    count: 121,
+  },
+  { name: "devops", covers: "Builds, deploys, source control, infrastructure, incidents", count: 61 },
+  { name: "saas", covers: "Subscriptions, workspaces, seats, usage, integrations", count: 44 },
+  { name: "social", covers: "Messages, posts, connections, moderation", count: 38 },
+  { name: "files", covers: "Documents, storage, backups", count: 37 },
+  { name: "media", covers: "Capture, encoding, publishing, playback", count: 36 },
+  { name: "health", covers: "Appointments, prescriptions, vitals, lab work", count: 28 },
+  { name: "travel", covers: "Flights, stays, transport", count: 26 },
+  { name: "education", covers: "Courses, assignments, grading", count: 25 },
+  { name: "crm", covers: "Leads, deals, accounts, calls", count: 25 },
+];
+
+export const PRESET_TOTAL = PRESET_PACKS.reduce((sum, p) => sum + p.count, 0);
 
 /** Top-level keys in config/laravel-toaster-magic.php. */
 export const ROOT_CONFIG: PropRow[] = [
@@ -90,10 +164,24 @@ export const ROOT_CONFIG: PropRow[] = [
     description: "Enable event-based Livewire dispatching.",
   },
   {
-    name: "livewire_version",
-    type: "string",
-    default: `'v3'`,
-    description: "Which Livewire major version to target: 'v3' or 'v4'.",
+    name: "presets",
+    type: "array|string",
+    default: `['general']`,
+    description:
+      "Animated icon packs to load. Each pack is a separate script and stylesheet. Use 'all' for every pack, or [] for none. Added in v2.6.",
+  },
+  {
+    name: "csp_nonce",
+    type: "string|null",
+    default: "null",
+    description:
+      "Content-Security-Policy nonce applied to the inline script blocks. Or call ToastMagic::nonce($nonce) when it is only known at request time.",
+  },
+  {
+    name: "asset_path_prefix",
+    type: "string|null",
+    default: "null",
+    description: "Explicit path prefix for the published assets.",
   },
 ];
 
@@ -134,6 +222,20 @@ export const TOAST_OPTIONS: PropRow[] = [
     type: "string",
     default: "—",
     description: "Image URL rendered in place of the type icon.",
+  },
+  {
+    name: "preset",
+    type: "string",
+    default: "—",
+    description:
+      "Animated icon layered on top of the toast type. Its pack must be enabled in config, otherwise the toast falls back to the type icon. Added in v2.6.",
+  },
+  {
+    name: "html",
+    type: "bool",
+    default: "false",
+    description:
+      "Render this toast's text as HTML instead of escaping it. You own the safety of the string.",
   },
 ];
 
@@ -189,7 +291,7 @@ export const METHODS: MethodRow[] = [
  * here so the playground can offer the theme; drop this alias — and the vendored
  * stylesheet — once the JS build ships it.
  */
-export type DocsTheme = ToastMagicConfig["theme"] | "neumorphic";
+export type DocsTheme = ToastMagicConfig["theme"] | "neumorphic" | "compact";
 
 export interface ThemeInfo {
   id: string;
@@ -210,6 +312,12 @@ export const THEMES: ThemeInfo[] = [
     name: "Neumorphic",
     blurb:
       "Refined soft UI — dual-direction shadows, raised controls that press in on click, and a recessed progress groove.",
+  },
+  {
+    id: "compact",
+    name: "Compact",
+    blurb:
+      "Smaller and denser — tighter padding, controls on a single row, a slimmer progress bar and a 320px track. Deliberately plain, with no gradients or blur.",
   },
 ];
 

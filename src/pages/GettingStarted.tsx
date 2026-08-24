@@ -50,7 +50,7 @@ export default function GettingStarted() {
       <H2 id="what-it-is">What it is</H2>
       <p>
         Toaster Magic ships everything you need to flash beautiful notifications from your Laravel
-        backend: a <code>ToastMagic</code> facade for controllers, eight built-in themes, smooth
+        backend: a <code>ToastMagic</code> facade for controllers, nine built-in themes, smooth
         animations with automatic stack reflow, and first-class Livewire v3 &amp; v4 support. It has{" "}
         <strong>zero frontend dependencies</strong> — the styles and scripts are self-contained and
         published for you automatically.
