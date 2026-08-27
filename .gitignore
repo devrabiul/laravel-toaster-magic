@@ -5,6 +5,7 @@ dist-ssr
 .vite
 .DS_Store
 node_modules/.tmp
+vendor
 
 # Editors / tooling
 .idea
