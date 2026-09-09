@@ -16,7 +16,7 @@
     "esbuild": "^0.25.0",
     "eslint": "^9.0.0",
     "jsdom": "^26.0.0",
-    "vitest": "^3.0.0"
+    "vitest": "^4.1.11"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.62.2",
