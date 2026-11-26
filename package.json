@@ -13,13 +13,9 @@
     "lint": "eslint assets/js build tests-js"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.28.0",
     "eslint": "^9.0.0",
     "jsdom": "^26.0.0",
-    "vitest": "^3.0.0"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.62.2",
-    "@rollup/rollup-darwin-arm64": "^4.62.2"
+    "vitest": "^5.1.2"
   }
 }

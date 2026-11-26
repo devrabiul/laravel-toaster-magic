@@ -92,18 +92,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      # Vitest 5 requires Node 22.12 or newer.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
-      # Vitest pulls in Vite, which pulls in Rollup, and Rollup ships its native
-      # binary as ~27 platform-specific optional packages. npm records only the
-      # platform the lockfile was generated on (npm/cli#4828), so a lockfile
-      # committed from macOS left `@rollup/rollup-linux-x64-gnu` out entirely and
-      # this job failed on it. Declaring the binaries this project builds on as
-      # optionalDependencies in package.json makes npm record the whole family in
-      # the lockfile, so `npm ci` installs the right one per runner.
+      # The lockfile records the native binaries of esbuild and Rolldown (Vite's
+      # bundler) for every platform, so `npm ci` installs the right one per
+      # runner. Regenerate it with Node 22 so it matches this job.
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
