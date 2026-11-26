@@ -5,6 +5,57 @@ All notable changes to `laravel-toaster-magic` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2026-11-26
+
+An **"AI agent support"** release. The package now ships an Agent Skill and a
+Laravel Boost guideline that teach AI coding agents (Claude Code, Google
+Antigravity, and every agent Boost supports) how to use the package correctly.
+Nothing changes at runtime: no JavaScript, CSS, config or toast behaviour was
+touched.
+
+### Added
+
+- **Agent Skill** at `resources/boost/skills/laravel-toaster-magic`, in the open
+  [Agent Skills](https://agentskills.io) format. It covers setup, the PHP,
+  JavaScript, HTML and Livewire APIs, every config option, the security rules
+  and a troubleshooting table, and it calls out the mistakes agents tend to
+  make: swapping the Livewire `title` / `message` arguments, inventing preset
+  names, wrapping toast text in `e()`, or turning `escape_html` off. A
+  `references/presets.md` catalogue lists all 517 presets by pack with their icon
+  and recommended type, and the agent reads it only when it needs a name.
+- **Laravel Boost guideline** at `resources/boost/guidelines/core.blade.php`.
+  `php artisan boost:install` (or `boost:update`) picks up both the guideline and
+  the skill. No extra step is needed.
+- **`php artisan toast-magic:skills`** copies the skill into a project that does
+  not use Boost: `.claude/skills/` for Claude Code and `.agents/skills/` for
+  Google Antigravity, or only one of them with `--claude` / `--antigravity`.
+  Existing files are left alone unless `--force` is passed, so a skill the team
+  has customised is never replaced by accident.
+- **Plugin manifests for Claude Code and Google Antigravity**, so the skill can
+  be installed straight from GitHub:
+  `/plugin install laravel-toaster-magic --marketplace devrabiul/laravel-toaster-magic`
+  or `agy plugin install https://github.com/devrabiul/laravel-toaster-magic`.
+  Both manifests are left out of the Composer dist.
+
+### Changed
+
+- `illuminate/console` is now a declared dependency, needed by the new Artisan
+  command. Every Laravel application already includes it.
+- `npm run build` now also generates the preset catalogue and pack counts in the
+  skill and the Boost guideline from the shipped pack files, and copies the
+  `package.json` version into both plugin manifests. `npm run build:check`
+  (already run in CI) fails when any of them is out of date, and the build stops
+  if a preset has no recommended type.
+
+### Fixed
+
+- PRESETS.md referred to a `ToastMagic::PRESETS` constant that does not exist.
+  It now points to `ToastMagic::allPresets()`, `presetManifest()` and
+  `enabledPresets()`.
+- The `src/presets.php` header said `build/presets/generate.py` regenerates the
+  file, but it never did. The header now says how the file is kept in step with
+  the pack files.
+
 ## [2.6.0] - 2026-08-24
 
 An **"Animated presets"** release. A toast can now carry a `preset` — an animated,

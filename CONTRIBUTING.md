@@ -32,7 +32,20 @@ git checkout -b feature-or-fix-name
 Ensure all tests pass before submitting your contribution:
 ```sh
 vendor/bin/pest
+npm ci && npm test
 ```
+
+### 5a. Rebuild Generated Files
+If you changed a stylesheet or a preset pack, rebuild before committing:
+```sh
+npm run build
+```
+This regenerates the minified CSS and the AI reference files under `resources/boost/`
+(the Agent Skill's preset catalogue and the Laravel Boost guideline), and copies the
+`package.json` version into the Claude Code and Antigravity plugin manifests. CI runs
+`npm run build:check` and fails if any of them are out of date. A new preset also needs a
+recommended type, either in the PRESETS.md "Available presets" table or in a
+`build/presets` catalogue, or the build stops and names it.
 
 ### 6. Commit Your Changes
 Write meaningful commit messages following best practices:

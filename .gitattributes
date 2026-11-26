@@ -3,6 +3,8 @@
 # Keep the Composer dist tarball to what an application actually needs: src/,
 # assets/, the config file, the licence and the readme. Everything below is
 # development-only and used to be shipped to every installation.
+/.antigravity-plugin export-ignore
+/.claude-plugin     export-ignore
 /.github            export-ignore
 /.idea              export-ignore
 /art                export-ignore

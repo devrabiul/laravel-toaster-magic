@@ -15,6 +15,7 @@ use Throwable;
  * - Merge the package configuration with any published copy.
  * - Register the ToastMagic singleton.
  * - Register the publishable config and asset groups.
+ * - Register the `toast-magic:skills` Artisan command.
  * - Detect whether the application is served from `public/` or the project root.
  *
  * @package Devrabiul\ToastMagic
@@ -38,6 +39,7 @@ class ToastMagicServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishing();
+            $this->commands([Console\InstallSkillsCommand::class]);
         }
     }
 

@@ -1,0 +1,20 @@
+{
+  "name": "laravel-toaster-magic",
+  "version": "2.7.0",
+  "description": "Teaches Claude to add, configure and debug Laravel Toaster Magic toast notifications: setup, PHP/JS/Livewire APIs, themes, security rules and the animated icon preset catalogue.",
+  "skills": "./resources/boost/skills/",
+  "author": {
+    "name": "Muhammad Rabiul",
+    "url": "https://github.com/devrabiul"
+  },
+  "homepage": "https://github.com/devrabiul/laravel-toaster-magic",
+  "repository": "https://github.com/devrabiul/laravel-toaster-magic",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "toast",
+    "notifications",
+    "livewire",
+    "blade"
+  ]
+}

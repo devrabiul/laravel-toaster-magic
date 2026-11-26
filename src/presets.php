@@ -3,12 +3,13 @@
 /**
  * Preset pack manifest.
  *
- * Generated from the pack files in assets/js/presets. Each pack ships its own
- * script and stylesheet, and a project loads only the packs it lists under
- * `presets` in the config. A preset from a pack that is not enabled is dropped
+ * Mirrors the pack files in assets/js/presets. Each pack ships its own script
+ * and stylesheet, and a project loads only the packs it lists under `presets`
+ * in the config. A preset from a pack that is not enabled is dropped
  * server-side, exactly as an unregistered name would be.
  *
- * Regenerate with: python3 build/presets/generate.py
+ * When a preset is added to or removed from a pack, update its list here too.
+ * tests/Feature/ToastMagicTest.php fails if the two disagree.
  */
 
 return [

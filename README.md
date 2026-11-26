@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🍞 Laravel Toaster Magic — v2.6
+# 🍞 Laravel Toaster Magic — v2.7
 
 Laravel Toaster Magic is a lightweight, dependency-free toast notification package for Laravel with Livewire v3 & v4 support.
 
@@ -740,6 +740,41 @@ or set `csp_nonce` in the config when the value is known at config time. Externa
 ### Reporting
 
 Please report vulnerabilities privately — see [SECURITY.md](SECURITY.md).
+
+---
+
+## 🤖 AI Agent Skill (Claude Code, Google Antigravity, Laravel Boost)
+
+The package ships an [Agent Skill](https://agentskills.io) that teaches AI coding agents how to set up the
+layout tags, raise toasts from PHP, JavaScript and Livewire, pick themes and animated presets, keep toast
+content safe and avoid common mistakes, such as swapping the Livewire `title` / `message` arguments or
+inventing preset names. The agent loads it only when a task involves toasts or flash messages.
+
+**Laravel Boost** – nothing to do. Boost finds the skill in `resources/boost/skills` (and the guideline in
+`resources/boost/guidelines`) and installs it for your agents when you run `php artisan boost:install`
+(or `boost:update`).
+
+**Without Boost** – copy the skill into your project:
+
+```bash
+php artisan toast-magic:skills                 # Claude Code and Google Antigravity
+php artisan toast-magic:skills --claude        # only .claude/skills/laravel-toaster-magic
+php artisan toast-magic:skills --antigravity   # only .agents/skills/laravel-toaster-magic
+php artisan toast-magic:skills --force         # overwrite, e.g. after updating the package
+```
+
+Commit the created folder so everyone on your team gets the skill. Existing files are not overwritten unless you
+pass `--force`.
+
+**As a plugin** – to have the skill in every project on your machine instead:
+
+```bash
+# Claude Code
+/plugin install laravel-toaster-magic --marketplace devrabiul/laravel-toaster-magic
+
+# Google Antigravity
+agy plugin install https://github.com/devrabiul/laravel-toaster-magic
+```
 
 ---
 

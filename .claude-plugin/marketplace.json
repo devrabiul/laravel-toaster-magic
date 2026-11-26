@@ -1,0 +1,14 @@
+{
+  "name": "laravel-toaster-magic",
+  "owner": {
+    "name": "Muhammad Rabiul",
+    "url": "https://github.com/devrabiul"
+  },
+  "plugins": [
+    {
+      "name": "laravel-toaster-magic",
+      "source": "./",
+      "description": "Claude skill for the devrabiul/laravel-toaster-magic Laravel toast notification package."
+    }
+  ]
+}

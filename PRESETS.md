@@ -296,8 +296,9 @@ a restriction: any preset may be used with any type.
 | `cache-cleared` | lightning bolt | `bolt-flash` | `success` |
 | `trial-ending` | hourglass | `sand-fall` | `warning` |
 
-The list is available in code as `ToastMagic::PRESETS`, so it can be asserted
-against in tests or used to build a picker.
+The list is available in code as `ToastMagic::allPresets()` (every name) and
+`ToastMagic::presetManifest()` (names by pack), so it can be asserted against in
+tests or used to build a picker.
 
 > **`cart-remove` and `item-removed` overlap.** The first is cart-specific — the
 > same basket as `cart-add` and `cart-update`, with a minus in it. The second is
@@ -779,16 +780,16 @@ Specifically:
   absent.
 * **Inherited property names** (`constructor`, `toString`, `__proto__`) resolve
   to nothing — the registry is read through `hasOwnProperty`.
-* The value is validated **server-side against `ToastMagic::PRESETS`** before it
-  is emitted, so an unregistered name never reaches the DOM as a class name.
+* The value is validated **server-side against the enabled packs**
+  (`enabledPresets()`) before it is emitted, so an unregistered name never reaches the DOM as a class name.
   This is the same discipline already applied to `theme`, `animation` and
   `positionClass`.
 * The runtime validates again, so presets arriving from Livewire, `data-`
   attributes or direct JavaScript calls are checked too.
 
 > **Note:** because an invalid preset degrades silently, a typo is not reported
-> at runtime. Assert against `ToastMagic::PRESETS` in tests if you build preset
-> names dynamically.
+> at runtime. Assert against `ToastMagic::allPresets()` in tests if you build
+> preset names dynamically.
 
 ---
 

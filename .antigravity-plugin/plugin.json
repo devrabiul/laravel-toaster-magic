@@ -1,0 +1,29 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "laravel-toaster-magic",
+  "displayName": "Laravel Toaster Magic",
+  "version": "2.7.0",
+  "description": "Teaches the agent to add, configure and debug Laravel Toaster Magic toast notifications: setup, PHP/JS/Livewire APIs, themes, security rules and the animated icon preset catalogue.",
+  "suggestedPrompts": [
+    "Add a success toast after this controller saves the record",
+    "Show a toast from this Livewire component when the form is submitted",
+    "Pick an animated preset for a failed payment toast and enable its pack"
+  ],
+  "skills": [
+    "./resources/boost/skills"
+  ],
+  "author": {
+    "name": "Muhammad Rabiul",
+    "url": "https://github.com/devrabiul"
+  },
+  "homepage": "https://github.com/devrabiul/laravel-toaster-magic",
+  "repository": "https://github.com/devrabiul/laravel-toaster-magic",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "toast",
+    "notifications",
+    "livewire",
+    "blade"
+  ]
+}

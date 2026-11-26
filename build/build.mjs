@@ -10,12 +10,17 @@
  *   node build/build.mjs           write the minified assets
  *   node build/build.mjs --check   verify the committed files match a fresh
  *                                  build, and exit non-zero if they do not
+ *
+ * Both modes also cover the AI reference files (the Agent Skill and the Laravel
+ * Boost guideline), which are generated from the preset packs — see
+ * build/references.mjs.
  */
 import { build } from "esbuild";
 import { readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildReferences } from "./references.mjs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const checkOnly = process.argv.includes("--check");
@@ -81,5 +86,7 @@ for (const [source, output] of TARGETS) {
 
     console.log(`ok     ${output} matches ${source}`);
 }
+
+if (await buildReferences({ root, packs: PACKS, checkOnly })) failed = true;
 
 if (failed) process.exit(1);
